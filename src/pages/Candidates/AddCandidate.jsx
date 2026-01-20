@@ -34,6 +34,8 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPost } from "../../api/apiFetch";
 import apiPath from "../../api/apiPath";
+import AddCandidateValidation from "../../validation/addCandidate.validation";
+
 
 // Styled Components for better structure
 const StepContainer = ({ children, title }) => (
@@ -113,6 +115,7 @@ const commonSkills = [
 const AddCandidate = () => {
     const [activeStep, setActiveStep] = useState(0);
     const queryClient = useQueryClient();
+    const validation = AddCandidateValidation();
 
     const {
         control,
@@ -121,6 +124,8 @@ const AddCandidate = () => {
         trigger,
         watch,
     } = useForm({
+        mode: "onChange",        // 👈 validate on change
+        reValidateMode: "onChange", // 👈 re-validate when value changes
         defaultValues: {
             personalInfo: {
                 fullName: "",
@@ -174,7 +179,7 @@ const AddCandidate = () => {
     });
 
     const mutation = useMutation({
-        mutationFn: (data) => apiPost(apiPath.candidates.add, data),
+        mutationFn: (data) => apiPost(apiPath.AddCandidates, data),
         onSuccess: () => {
             queryClient.invalidateQueries(["candidates"]);
             alert("Candidate added successfully!");
@@ -210,6 +215,7 @@ const AddCandidate = () => {
     };
 
     const onSubmit = (data) => {
+        console.log("data",data);
         const formattedData = {
             ...data,
             personalInfo: {
@@ -243,7 +249,7 @@ const AddCandidate = () => {
                     <Controller
                         name="personalInfo.fullName"
                         control={control}
-                        rules={{ required: "Full name is required" }}
+                        rules={validation.personalInfo.fullName}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -259,7 +265,7 @@ const AddCandidate = () => {
                     <Controller
                         name="personalInfo.email"
                         control={control}
-                        rules={{ required: "Email is required" }}
+                        rules={validation.personalInfo.email}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -276,13 +282,13 @@ const AddCandidate = () => {
                     <Controller
                         name="personalInfo.phone"
                         control={control}
-                        rules={{ required: "Phone number is required" }}
+                        rules={validation.personalInfo.phone}
                         render={({ field }) => (
                             <FormControl fullWidth error={!!errors.personalInfo?.phone}>
                                 <InputLabel shrink>Phone Number</InputLabel>
                                 <Box sx={{ mt: 2 }}>
                                     <PhoneInput
-                                        country="us"
+                                        country="in"
                                         value={field.value}
                                         onChange={field.onChange}
                                     />
@@ -300,7 +306,7 @@ const AddCandidate = () => {
                         <Controller
                             name="personalInfo.dateOfBirth"
                             control={control}
-                            rules={{ required: "Date of birth is required" }}
+                            rules={validation.personalInfo.dateOfBirth}
                             render={({ field }) => (
                                 <DatePicker
                                     {...field}
@@ -326,7 +332,7 @@ const AddCandidate = () => {
                     <Controller
                         name="personalInfo.gender"
                         control={control}
-                        rules={{ required: "Gender is required" }}
+                        rules={validation.personalInfo.gender}
                         render={({ field }) => (
                             <Box>
                                 <Typography variant="body2" sx={{ mb: 0.5 }}>
@@ -359,7 +365,7 @@ const AddCandidate = () => {
                     <Controller
                         name="personalInfo.position"
                         control={control}
-                        rules={{ required: "Position is required" }}
+                        rules={validation.personalInfo.position}
                         render={({ field }) => (
                             <Box>
                                 <Typography variant="body2" sx={{ mb: 0.5 }}>
@@ -402,7 +408,7 @@ const AddCandidate = () => {
                     <Controller
                         name="personalInfo.address"
                         control={control}
-                        rules={{ required: "Address is required" }}
+                        rules={validation.personalInfo.address}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -446,7 +452,7 @@ const AddCandidate = () => {
                                 <Controller
                                     name={`education.${index}.degree`}
                                     control={control}
-                                    rules={{ required: "Degree is required" }}
+                                    rules={validation.education.degree}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -465,7 +471,7 @@ const AddCandidate = () => {
                                 <Controller
                                     name={`education.${index}.institution`}
                                     control={control}
-                                    rules={{ required: "Institution name is required" }}
+                                    rules={validation.education.institution}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -500,21 +506,7 @@ const AddCandidate = () => {
                                 <Controller
                                     name={`education.${index}.yearOfPassing`}
                                     control={control}
-                                    rules={{
-                                        required: "Year of passing is required",
-                                        pattern: {
-                                            value: /^[0-9]{4}$/,
-                                            message: "Invalid year (4 digits required)",
-                                        },
-                                        validate: (value) => {
-                                            const year = parseInt(value);
-                                            const currentYear = new Date().getFullYear();
-                                            if (year < 1900 || year > currentYear + 5) {
-                                                return `Year must be between 1900 and ${currentYear + 5}`;
-                                            }
-                                            return true;
-                                        },
-                                    }}
+                                    rules={validation.education.yearOfPassing}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -533,11 +525,7 @@ const AddCandidate = () => {
                                 <Controller
                                     name={`education.${index}.percentage`}
                                     control={control}
-                                    rules={{
-                                        required: "Percentage/CGPA is required",
-                                        min: { value: 0, message: "Percentage cannot be negative" },
-                                        max: { value: 100, message: "Percentage cannot exceed 100" },
-                                    }}
+                                    rules={validation.education.percentage}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -606,14 +594,14 @@ const AddCandidate = () => {
                                 <Controller
                                     name={`experience.${index}.company`}
                                     control={control}
-                                    rules={{ required: "Company name is required" }}
+                                    rules={validation.experience.company}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
                                             fullWidth
                                             label="Company Name"
                                             variant="outlined"
-                                            size="small"
+                                            // size="small"
                                             error={!!errors.experience?.[index]?.company}
                                             helperText={errors.experience?.[index]?.company?.message}
                                         />
@@ -625,14 +613,15 @@ const AddCandidate = () => {
                                 <Controller
                                     name={`experience.${index}.jobTitle`}
                                     control={control}
-                                    rules={{ required: "Job title is required" }}
+                                    rules={validation.experience.jobTitle}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
                                             fullWidth
                                             label="Job Title"
                                             variant="outlined"
-                                            size="small"
+                                            // size="small"
+
                                             error={!!errors.experience?.[index]?.jobTitle}
                                             helperText={errors.experience?.[index]?.jobTitle?.message}
                                         />
@@ -645,7 +634,7 @@ const AddCandidate = () => {
                                     <Controller
                                         name={`experience.${index}.fromDate`}
                                         control={control}
-                                        rules={{ required: "From date is required" }}
+                                        rules={validation.experience.fromDate}
                                         render={({ field }) => (
                                             <DatePicker
                                                 {...field}
@@ -699,7 +688,7 @@ const AddCandidate = () => {
                                 <Controller
                                     name={`experience.${index}.responsibilities`}
                                     control={control}
-                                    rules={{ required: "Responsibilities are required" }}
+                                    rules={validation.experience.responsibilities}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
@@ -740,76 +729,106 @@ const AddCandidate = () => {
             </Button>
 
             <FormSection title="Additional Information">
-                <FieldWrapper xs={12} md={6}>
-                    <Controller
-                        name="totalExperience"
-                        control={control}
-                        rules={{
-                            required: "Total experience is required",
-                            min: { value: 0, message: "Experience cannot be negative" },
-                            max: { value: 50, message: "Experience cannot exceed 50 years" },
-                        }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                fullWidth
-                                label="Total Experience"
-                                variant="outlined"
-                                size="medium"
-                                type="number"
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">years</InputAdornment>,
-                                    inputProps: { min: 0, max: 50, step: 0.5 }
-                                }}
-                                error={!!errors.totalExperience}
-                                helperText={errors.totalExperience?.message}
-                            />
-                        )}
-                    />
-                </FieldWrapper>
+                <Grid container spacing={2}>
+                    {/* Total Experience Field */}
+                    <Grid item xs={12} sm={6}>
+                        <Controller
+                            name="totalExperience"
+                            control={control}
+                            rules={validation.totalExperience}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    fullWidth
+                                    label="Total Experience"
+                                    variant="outlined"
+                                    type="number"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                years
+                                            </InputAdornment>
+                                        ),
+                                        inputProps: {
+                                            min: 0,
+                                            max: 50,
+                                            step: 0.5,
+                                            style: { width: '130px' }
+                                        },
+                                    }}
+                                    sx={{
+                                        '& .MuiInputBase-root': {
+                                            minHeight: 56,
+                                        }
+                                    }}
+                                    error={!!errors.totalExperience}
+                                    helperText={errors.totalExperience?.message}
+                                />
+                            )}
+                        />
+                    </Grid>
 
-                <FieldWrapper xs={12} md={6}>
-                    <Controller
-                        name="skills"
-                        control={control}
-                        rules={{ required: "At least one skill is required" }}
-                        render={({ field }) => (
-                            <Autocomplete
-                                multiple
-                                freeSolo
-                                value={field.value}
-                                onChange={(_, newValue) => {
-                                    field.onChange(newValue);
-                                }}
-                                options={commonSkills}
-                                renderTags={(value, getTagProps) =>
-                                    value.map((option, index) => (
-                                        <Chip
-                                            label={option}
-                                            {...getTagProps({ index })}
-                                            key={index}
-                                            size="small"
-                                            color="primary"
-                                            variant="outlined"
+                    {/* Skills Field - Takes full width or half depending on your preference */}
+                    <Grid item xs={12} sm={6}>
+                        <Controller
+                            name="skills"
+                            control={control}
+                            rules={validation.skills}
+                            render={({ field }) => (
+                                <Autocomplete
+                                    multiple
+                                    freeSolo
+                                    fullWidth
+                                    value={field.value || []}
+                                    onChange={(_, newValue) => field.onChange(newValue)}
+                                    options={commonSkills}
+                                    sx={{
+                                        "& .MuiOutlinedInput-root": {
+                                            minHeight: 56,
+                                            alignItems: "flex-start",
+                                            paddingTop: 1,
+                                            paddingBottom: 1,
+                                            flexWrap: 'wrap',
+                                        },
+                                        "& .MuiAutocomplete-input": {
+                                            minWidth: '150px !important',
+                                        }
+                                    }}
+                                    renderTags={(value, getTagProps) =>
+                                        value.map((option, index) => (
+                                            <Chip
+                                                label={option}
+                                                {...getTagProps({ index })}
+                                                key={index}
+                                                size="small"
+                                                variant="outlined"
+                                                sx={{ margin: 0.5 }}
+                                            />
+                                        ))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Skills"
+                                            placeholder="Type or select skills"
+                                            error={!!errors.skills}
+                                            helperText={errors.skills?.message}
+                                            sx={{
+                                                '& .MuiInputLabel-root': {
+                                                    whiteSpace: 'nowrap',
+                                                    overflow: 'hidden',
+                                                    textOverflow: 'ellipsis',
+                                                }
+                                            }}
                                         />
-                                    ))
-                                }
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="Skills"
-                                        placeholder="Type or select skills"
-                                        variant="outlined"
-                                        size="medium"
-                                        error={!!errors.skills}
-                                        helperText={errors.skills?.message}
-                                    />
-                                )}
-                            />
-                        )}
-                    />
-                </FieldWrapper>
+                                    )}
+                                />
+                            )}
+                        />
+                    </Grid>
+                </Grid>
             </FormSection>
+
         </StepContainer>
     );
 

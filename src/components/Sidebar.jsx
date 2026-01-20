@@ -78,7 +78,7 @@
 // export default function Sidebar({ isOpen, toggleSidebar }) {
 //   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
 //   const dispatch = useDispatch();
-  
+
 //   const [openMenus, setOpenMenus] = useState({
 //     recruitment: localStorage.getItem("openRecruitmentMenu") === "true",
 //     employees: localStorage.getItem("openEmployeeMenu") === "true",
@@ -224,7 +224,7 @@
 //               </>
 //             )}
 //           </button>
-          
+
 //           <AnimatePresence>
 //             {openMenus.recruitment && !collapsed && (
 //               <motion.div
@@ -274,7 +274,7 @@
 //               </>
 //             )}
 //           </button>
-          
+
 //           <AnimatePresence>
 //             {openMenus.employees && !collapsed && (
 //               <motion.div
@@ -349,7 +349,7 @@
 //               </>
 //             )}
 //           </button>
-          
+
 //           <AnimatePresence>
 //             {openMenus.analytics && !collapsed && (
 //               <motion.div
@@ -393,7 +393,7 @@
 //               </>
 //             )}
 //           </button>
-          
+
 //           <AnimatePresence>
 //             {openMenus.settings && !collapsed && (
 //               <motion.div
@@ -449,11 +449,11 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleSidebarCollapse } from '../features/ui/uislic';
 import { logout } from '../features/auth/authSlice';
-import { 
-  MdWork, 
-  MdPeople, 
-  MdCalendarToday, 
-  MdDescription, 
+import {
+  MdWork,
+  MdPeople,
+  MdCalendarToday,
+  MdDescription,
   MdAssignment,
   MdLogin,
   MdFolder,
@@ -462,16 +462,16 @@ import {
   MdNotifications,
   MdChat
 } from 'react-icons/md';
-import { 
+import {
   HiMenuAlt3,
   HiChevronLeft,
   HiChevronRight
 } from 'react-icons/hi';
-import { 
+import {
   FiUser,
   FiLogOut
 } from 'react-icons/fi';
-import { 
+import {
   FaLinkedin,
   FaTwitter,
   FaInstagram
@@ -481,7 +481,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
   const dispatch = useDispatch();
   const location = useLocation();
-  
+
   const [activeMenu, setActiveMenu] = useState('dashboard');
 
   // Navigation items - only the ones you specified
@@ -507,27 +507,27 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
   useEffect(() => {
     // Find which menu item matches the current path
     const currentPath = location.pathname;
-    
+
     // Check navigation items
-    const navItem = navigationItems.find(item => 
+    const navItem = navigationItems.find(item =>
       item.path === currentPath || currentPath.startsWith(item.path + '/')
     );
-    
+
     if (navItem) {
       setActiveMenu(navItem.id);
       return;
     }
-    
+
     // Check insight items
-    const insightItem = insightItems.find(item => 
+    const insightItem = insightItems.find(item =>
       item.path === currentPath || currentPath.startsWith(item.path + '/')
     );
-    
+
     if (insightItem) {
       setActiveMenu(insightItem.id);
       return;
     }
-    
+
     // Default to dashboard if no match
     setActiveMenu('dashboard');
   }, [location.pathname]);
@@ -541,10 +541,10 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
   // ✅ FIX: Simplified navigation item styling - Only use NavLink's isActive
   const navItemClass = (isActive) =>
     `flex items-center px-5 py-2 my-1 rounded-xl transition-all duration-300 group
-     ${isActive 
-        ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' 
-        : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'
-     } ${collapsed ? 'justify-center px-4' : ''}`;
+     ${isActive
+      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg'
+      : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'
+    } ${collapsed ? 'justify-center px-4' : ''}`;
 
   return (
     <aside
@@ -608,7 +608,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
               to={item.path}
               className={({ isActive }) => navItemClass(isActive)}
               onClick={() => handleMenuClick(item.id)}
-              end // This ensures exact matching for dashboard
+               end={item.id === 'dashboard'} // This ensures exact matching for dashboard
             >
               <div className={`${collapsed ? '' : 'mr-3'} transition-all duration-300`}>
                 <div className={`text-xl ${activeMenu === item.id ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}`}>

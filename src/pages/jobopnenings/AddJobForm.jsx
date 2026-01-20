@@ -1,0 +1,216 @@
+// AddJobForm.jsx
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { FaBriefcase, FaBuilding, FaMapMarkerAlt, FaUsers, FaFileAlt } from 'react-icons/fa';
+import apiPath from '../../api/apiPath';
+import { apiPost, apiPut } from '../../api/apiFetch';
+
+export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }) {
+  const [formData, setFormData] = useState({
+    title: "",
+    department: "",
+    location: "",
+    noOfOpenings: "",
+    description: "",
+    status: "open"
+  });
+
+  const queryClient = useQueryClient();
+
+  // Initialize form with job data for edit mode
+  useEffect(() => {
+    if (jobData && mode === 'edit') {
+      setFormData({
+        title: jobData.title || "",
+        department: jobData.department || "",
+        location: jobData.location || "",
+        noOfOpenings: jobData.noOfOpenings || "",
+        description: jobData.description || "",
+        status: jobData.status || "open"
+      });
+    }
+  }, [jobData, mode]);
+
+  // Create mutation
+  const createMutation = useMutation({
+    mutationFn: (data) => apiPost(apiPath.JobOpenings, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["jobOpenings"]);
+      onSuccess?.();
+    },
+  });
+
+  // Update mutation
+  const updateMutation = useMutation({
+    mutationFn: (data) => apiPut(`${apiPath.JobOpenings}/${jobData.id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["jobOpenings"]);
+      onSuccess?.();
+    },
+  });
+
+  const isLoading = createMutation.isPending || updateMutation.isPending;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (mode === 'edit') {
+      updateMutation.mutate(formData);
+    } else {
+      createMutation.mutate(formData);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+            <FaBriefcase className="text-blue-500" />
+            Job Title *
+          </label>
+          <input
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            placeholder="e.g., Senior Frontend Developer"
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+            <FaBuilding className="text-purple-500" />
+            Department *
+          </label>
+          <select
+            name="department"
+            value={formData.department}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            required
+          >
+            <option value="">Select Department</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Sales">Sales</option>
+            <option value="HR">Human Resources</option>
+            <option value="Finance">Finance</option>
+            <option value="Operations">Operations</option>
+            <option value="Design">Design</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+            <FaMapMarkerAlt className="text-amber-500" />
+            Location *
+          </label>
+          <select
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            required
+          >
+            <option value="">Select Location</option>
+            <option value="Remote">Remote</option>
+            <option value="New York, USA">New York, USA</option>
+            <option value="London, UK">London, UK</option>
+            <option value="Bangalore, India">Bangalore, India</option>
+            <option value="Sydney, Australia">Sydney, Australia</option>
+            <option value="Berlin, Germany">Berlin, Germany</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+            <FaUsers className="text-emerald-500" />
+            Number of Openings *
+          </label>
+          <input
+            name="noOfOpenings"
+            type="number"
+            min="1"
+            value={formData.noOfOpenings}
+            onChange={handleChange}
+            placeholder="e.g., 5"
+            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            required
+          />
+        </div>
+
+        {mode === 'edit' && (
+          <div className="space-y-2 md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Status
+            </label>
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            >
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="draft">Draft</option>
+              <option value="upcoming">Upcoming</option>
+            </select>
+          </div>
+        )}
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+          <FaFileAlt className="text-cyan-500" />
+          Job Description
+        </label>
+        <textarea
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          rows="4"
+          placeholder="Describe the role, responsibilities, and requirements..."
+          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+        />
+      </div>
+
+      <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
+        <button
+          type="button"
+          onClick={onClose}
+          className="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
+          disabled={isLoading}
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white rounded-xl transition-all duration-300 font-medium disabled:opacity-70 flex items-center gap-2"
+        >
+          {isLoading ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              {mode === 'edit' ? 'Updating...' : 'Creating...'}
+            </>
+          ) : (
+            <>
+              {mode === 'edit' ? 'Update Job' : 'Create Job'}
+            </>
+          )}
+        </button>
+      </div>
+    </form>
+  );
+}

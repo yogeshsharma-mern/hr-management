@@ -198,7 +198,7 @@ import {
   FaEdit,
   FaTrash
 } from "react-icons/fa";
-
+import { useSelector } from "react-redux";
 export default function ReusableTable({
   columns,
   data,
@@ -238,9 +238,9 @@ export default function ReusableTable({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-
+  const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
   return (
-    <div className="bg-white text-[14px] w-[81vw] overflow-auto  shadow-lg border border-gray-200 p-6 overflow-hidden">
+    <div className={`bg-white text-[14px] w-[99vw] lg:w-[81vw] overflow-auto  shadow-lg border border-gray-200 p-6 overflow-hidden ${collapsed ? 'lg:w-[94vw]' : ':w-[81vw]'}`}>
       
       {/* Header with search and actions */}
       <div className="flex flex-col md:flex-row  justify-between items-start md:items-center mb-6 gap-4">

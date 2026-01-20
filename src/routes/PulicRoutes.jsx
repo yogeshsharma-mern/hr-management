@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-export default function PublicRoute({ redirectPath = "/admin/dashboard" }) {
+export default function PublicRoute({ redirectPath = "/hr/dashboard" }) {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   // If user is already logged in, redirect to dashboard

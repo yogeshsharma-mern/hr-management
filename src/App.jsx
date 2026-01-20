@@ -9,9 +9,10 @@ import Sidebar from './components/Sidebar.jsx';
 import DashboardLayout from './layouts/DashboardLayout.jsx';
 import Example from './pages/Example.jsx';
 import Dashboard from './pages/Dashboard.jsx';
-import JobOpenings from './pages/JobOpenings.jsx';
+import JobOpenings from './pages/jobopnenings/JobOpenings.jsx';
 import Candidates from './pages/Candidates/Candidates.jsx';
 import AddCandidate from './pages/Candidates/AddCandidate.jsx';
+import Login from './pages/auth/Login.jsx';
 
 
 export default function App() {
@@ -21,7 +22,7 @@ export default function App() {
       <Toaster />
       <Routes>
         <Route element={<PublicRoute />}>
-
+<Route path="/login" element={<Login />} />
         </Route>
         <Route element={<ProtectedRoute/>}>
           <Route path="/hr" element={<DashboardLayout />}>
