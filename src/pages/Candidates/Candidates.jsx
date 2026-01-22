@@ -280,9 +280,10 @@ export default function Candidates() {
   }
 
   return (
-    <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "w-[78vw]"}`}>
+    <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "md:w-[78vw]"}`}>
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div className="hidden md:grid grid-cols-1 md:grid-cols-4 gap-4">
+
         <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>

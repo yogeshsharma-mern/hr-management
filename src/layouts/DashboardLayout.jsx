@@ -129,7 +129,7 @@ const user = data?.results || {};
 
         {/* Page Content */}
         <main className="flex-1 overflow-auto">
-          <div className="w-full p-4 overflow-x-auto">
+          <div className="w-full md:p-4 overflow-x-auto">
             <Outlet />
           </div>
         </main>
