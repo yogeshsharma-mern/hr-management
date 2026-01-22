@@ -9,23 +9,41 @@ import Modal from "../../components/reuseable/Modal.jsx";
 import apiPath from "../../api/apiPath.js";
 import { apiGet, apiPost, apiPut, apiDelete } from "../../api/apiFetch.js";
 import AddJobForm from "./AddJobForm.jsx";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import useDebounce from "../../hooks/useDebounce.js";
+import { se } from "date-fns/locale";
+import ToggleButton from "../../components/reuseable/ToggleButton.jsx";
 
 export default function JobOpenings() {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [openModal, setOpenModal] = useState(false);
   const [modalType, setModalType] = useState("add"); // 'add', 'edit', 'view', 'delete'
   const [selectedJob, setSelectedJob] = useState(null);
+  const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
+  console.log(
+    "selectedJob", selectedJob
+  )
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterStatus, setFilterStatus] = useState(null);
+  const debouncedSearch = useDebounce(searchTerm, 500);
+
   const queryClient = useQueryClient();
 
   // Fetch job openings
   const { data, isLoading, error } = useQuery({
-    queryKey: ["jobOpenings"],
-    queryFn: () => apiGet(apiPath.JobOpenings),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    queryKey: ["jobOpenings", debouncedSearch, pagination.pageIndex,
+      pagination.pageSize,filterStatus],
+    queryFn: () => apiGet(apiPath.JobOpenings, {
+      title: debouncedSearch,
+      limit: pagination.pageSize,
+      page: pagination.pageIndex + 1,
+      isActive:filterStatus
+    }),
+    // staleTime: 5 * 60 * 1000, // 5 minutes
   });
-
+console.log("data",data);
   // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: (id) => apiDelete(`${apiPath.JobOpenings}/${id}`),
@@ -35,20 +53,21 @@ export default function JobOpenings() {
   });
 
   const jobOpenings = data?.data || [];
+  console.log("jobopenings", jobOpenings);
 
   // Filter and search
-  const filteredJobs = useMemo(() => {
-    return jobOpenings.filter(job => {
-      const matchesSearch = 
-        job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.location?.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const matchesFilter = filterStatus === "all" || job.status === filterStatus;
-      
-      return matchesSearch && matchesFilter;
-    });
-  }, [jobOpenings, searchTerm, filterStatus]);
+  // const filteredJobs = useMemo(() => {
+  //   return jobOpenings.filter(job => {
+  //     const matchesSearch = 
+  //       job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       job.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       job.location?.toLowerCase().includes(searchTerm.toLowerCase());
+
+  //     const matchesFilter = filterStatus === "all" || job.status === filterStatus;
+
+  //     return matchesSearch && matchesFilter;
+  //   });
+  // }, [jobOpenings, searchTerm, filterStatus]);
 
   const handleView = (job) => {
     setSelectedJob(job);
@@ -70,7 +89,7 @@ export default function JobOpenings() {
 
   const confirmDelete = () => {
     if (selectedJob) {
-      deleteMutation.mutate(selectedJob.id);
+      deleteMutation.mutate(selectedJob._id);
       setOpenModal(false);
     }
   };
@@ -123,23 +142,56 @@ export default function JobOpenings() {
           </div>
         ),
       },
-      {
-        header: "STATUS",
-        accessorKey: "status",
+      // {
+      //   header: "STATUS",
+      //   accessorKey: "status",
+      //   cell: ({ row }) => {
+      //     const status = row.original.status || "open";
+      //     const statusConfig = {
+      //       open: { color: "bg-emerald-100 text-emerald-800", label: "Open" },
+      //       closed: { color: "bg-rose-100 text-rose-800", label: "Closed" },
+      //       draft: { color: "bg-amber-100 text-amber-800", label: "Draft" },
+      //       upcoming: { color: "bg-blue-100 text-blue-800", label: "Upcoming" },
+      //     };
+      //     const config = statusConfig[status.toLowerCase()] || statusConfig.open;
+
+      //     return (
+      //       <span className={`px-3 py-1.5 rounded-full text-xs font-medium ${config.color}`}>
+      //         {config.label}
+      //       </span>
+      //     );
+      //   },
+      // },
+        {
+        header: "Status",
+        accessorKey: "isActive", // backend field
         cell: ({ row }) => {
-          const status = row.original.status || "open";
-          const statusConfig = {
-            open: { color: "bg-emerald-100 text-emerald-800", label: "Open" },
-            closed: { color: "bg-rose-100 text-rose-800", label: "Closed" },
-            draft: { color: "bg-amber-100 text-amber-800", label: "Draft" },
-            upcoming: { color: "bg-blue-100 text-blue-800", label: "Upcoming" },
-          };
-          const config = statusConfig[status.toLowerCase()] || statusConfig.open;
-          
+          const item = row.original;
+console.log("itme",item.isActive);
+          // mutation for toggling active/inactive
+          const toggleMutation = useMutation({
+            mutationFn: (newStatus) =>
+              apiPut(`${apiPath.jobopeningToggleStatus}/${item._id}/status`, { isActive: newStatus }),
+            onSuccess: (data) => {
+              queryClient.invalidateQueries({ queryKey: ["jobOpenings"] });
+              toast.success(data.message || "Status updated successfully ✅");
+            },
+            onError: (err) => {
+              toast.error(err?.response?.data?.message || "Failed to update status ❌");
+            },
+          });
+
+          const handleToggle = () => {
+            const newStatus = item.isActive === true ? false : true;
+            toggleMutation.mutate(newStatus);
+          }
+
           return (
-            <span className={`px-3 py-1.5 rounded-full text-xs font-medium ${config.color}`}>
-              {config.label}
-            </span>
+            <ToggleButton
+              isActive={item.isActive}
+              onToggle={handleToggle}
+              disabled={toggleMutation.isLoading}
+            />
           );
         },
       },
@@ -180,7 +232,7 @@ export default function JobOpenings() {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading job openings...</p>
         </div>
       </div>
@@ -209,7 +261,7 @@ export default function JobOpenings() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "w-[78vw]"} `}>
       {/* Header */}
       {/* <div className="bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl p-6 text-white">
         <div className="flex items-center justify-between">
@@ -303,10 +355,10 @@ export default function JobOpenings() {
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
-                <option value="all">All Status</option>
-                <option value="open">Open</option>
-                <option value="closed">Closed</option>
-                <option value="draft">Draft</option>
+                <option value="">All Status</option>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+                {/* <option value="draft">Draft</option> */}
               </select>
             </div>
             <button
@@ -325,12 +377,14 @@ export default function JobOpenings() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-auto">
         <ReusableTable
           columns={columns}
-          data={filteredJobs}
+          data={jobOpenings}
           paginationState={pagination}
+          setPagination={setPagination}
           setPaginationState={setPagination}
+          totalCount={data?.totalPages}
         />
       </div>
 
@@ -338,12 +392,12 @@ export default function JobOpenings() {
       <Modal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
-        title={modalType === "add" ? "Add New Job" : 
-               modalType === "edit" ? "Edit Job" : 
-               modalType === "view" ? "Job Details" : 
-               "Confirm Delete"}
-        type={modalType === "delete" ? "error" : 
-              modalType === "view" ? "info" : "default"}
+        title={modalType === "add" ? "Add New Job" :
+          modalType === "edit" ? "Edit Job" :
+            modalType === "view" ? "Job Details" :
+              "Confirm Delete"}
+        type={modalType === "delete" ? "error" :
+          modalType === "view" ? "info" : "default"}
         size={modalType === "view" ? "lg" : "md"}
         showFooter={modalType === "delete"}
         primaryAction={modalType === "delete" ? {
@@ -396,8 +450,8 @@ export default function JobOpenings() {
             </div>
           </div>
         ) : (
-          <AddJobForm 
-            onClose={() => setOpenModal(false)} 
+          <AddJobForm
+            onClose={() => setOpenModal(false)}
             jobData={selectedJob}
             mode={modalType}
             onSuccess={() => {

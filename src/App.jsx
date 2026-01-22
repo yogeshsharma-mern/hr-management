@@ -1,7 +1,7 @@
 import React from 'react';
 // import Sidebar from './components/Sidebar';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { Toaster } from "react-hot-toast";
 import PublicRoute from './routes/PulicRoutes';
 import ProtectedRoute from './routes/ProtectedRoutes';
@@ -13,6 +13,8 @@ import JobOpenings from './pages/jobopnenings/JobOpenings.jsx';
 import Candidates from './pages/Candidates/Candidates.jsx';
 import AddCandidate from './pages/Candidates/AddCandidate.jsx';
 import Login from './pages/auth/Login.jsx';
+import HomePage from './pages/HomePage.jsx';
+
 
 
 export default function App() {
@@ -21,10 +23,13 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route element={<PublicRoute />}>
-<Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/" element={<HomePage />} /> */}f
+
         </Route>
-        <Route element={<ProtectedRoute/>}>
+        <Route element={<ProtectedRoute />}>
           <Route path="/hr" element={<DashboardLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="job-openings" element={<JobOpenings />} />

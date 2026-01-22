@@ -232,7 +232,7 @@ export default function ReusableTable({
     onPaginationChange: setPaginationState,
     onSortingChange: setSortingState,
     onColumnFiltersChange: setColumnFilters,
-    onGlobalFilterChange: setGlobalFilter,  
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -240,10 +240,10 @@ export default function ReusableTable({
   });
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
   return (
-    <div className={`bg-white text-[14px] w-[99vw] lg:w-[81vw] overflow-auto  shadow-lg border border-gray-200 p-6 overflow-hidden ${collapsed ? 'lg:w-[94vw]' : ':w-[81vw]'}`}>
-      
+    <div className={`bg-white text-[14px] w-[99vw] lg:w-[81vw] overflow-auto  shadow-lg border border-gray-200 p-4 overflow-auto ${collapsed ? 'lg:w-[94vw]' : ':w-[81vw]'}`}>
+
       {/* Header with search and actions */}
-      <div className="flex flex-col md:flex-row  justify-between items-start md:items-center mb-6 gap-4">
+      {/* <div className="flex flex-col md:flex-row  justify-between items-start md:items-center mb-6 gap-4">
         <div className="relative flex-1 max-w-md">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <FaSearch className="text-gray-400" />
@@ -269,7 +269,7 @@ export default function ReusableTable({
             <span>Export</span>
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Error Message */}
       {isError && (
@@ -332,20 +332,19 @@ export default function ReusableTable({
                 </tr>
               ))}
             </thead>
-            
+
             <tbody className="bg-white divide-y divide-gray-200">
               {table.getRowModel().rows.length > 0 ? (
                 table.getRowModel().rows.map((row, index) => (
-                  <tr 
-                    key={row.id} 
-                    className={`hover:bg-blue-50 transition-all duration-200 ${
-                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                    }`}
+                  <tr
+                    key={row.id}
+                    className={`hover:bg-blue-50 transition-all duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                      }`}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="px-6 py-4 whitespace-nowrap text-[12px] text-gray-900"
+                        className="px-6 py-3 whitespace-nowrap text-[12px] text-gray-900"
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
@@ -386,7 +385,7 @@ export default function ReusableTable({
           <span className="font-semibold">{totalCount}</span>
           <span>results</span>
         </div>
-        
+
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-700">Rows per page:</span>
@@ -395,14 +394,14 @@ export default function ReusableTable({
               onChange={(e) => table.setPageSize(Number(e.target.value))}
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              {[10, 20, 50, 100].map((size) => (
+              {[5,10, 20, 50, 100].map((size) => (
                 <option key={size} value={size}>
                   {size}
                 </option>
               ))}
             </select>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <button
               onClick={() =>
@@ -413,7 +412,7 @@ export default function ReusableTable({
             >
               <FaChevronLeft className="w-4 h-4" />
             </button>
-            
+
             <div className="flex items-center space-x-1">
               {Array.from({ length: Math.min(5, table.getPageCount()) }, (_, i) => {
                 const pageIndex = Math.max(
@@ -423,27 +422,26 @@ export default function ReusableTable({
                     table.getState().pagination.pageIndex - 2
                   )
                 ) + i;
-                
+
                 if (pageIndex >= table.getPageCount()) return null;
-                
+
                 return (
                   <button
                     key={pageIndex}
                     onClick={() =>
                       setPaginationState((old) => ({ ...old, pageIndex }))
                     }
-                    className={`w-10 h-10 rounded-lg text-sm font-medium transition-all ${
-                      table.getState().pagination.pageIndex === pageIndex
+                    className={`w-10 h-10 rounded-lg text-sm font-medium transition-all ${table.getState().pagination.pageIndex === pageIndex
                         ? 'bg-blue-600 text-white'
                         : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
-                    }`}
+                      }`}
                   >
                     {pageIndex + 1}
                   </button>
                 );
               })}
             </div>
-            
+
             <button
               onClick={() =>
                 setPaginationState((old) => ({ ...old, pageIndex: old.pageIndex + 1 }))
@@ -454,7 +452,7 @@ export default function ReusableTable({
               <FaChevronRight className="w-4 h-4" />
             </button>
           </div>
-          
+
           <div className="text-sm text-gray-700">
             Page <span className="font-semibold">{table.getState().pagination.pageIndex + 1}</span>
             <span className="mx-1">of</span>
@@ -464,7 +462,7 @@ export default function ReusableTable({
       </div>
 
       {/* Table Stats */}
-      <div className="mt-6 pt-6 border-t border-gray-200">
+      {/* <div className="mt-6 pt-6 border-t border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-xl p-4">
             <div className="flex items-center">
@@ -479,7 +477,7 @@ export default function ReusableTable({
               </div>
             </div>
           </div>
-          
+
           <div className="bg-emerald-50 rounded-xl p-4">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -495,7 +493,7 @@ export default function ReusableTable({
               </div>
             </div>
           </div>
-          
+
           <div className="bg-amber-50 rounded-xl p-4">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -506,7 +504,7 @@ export default function ReusableTable({
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Sorted By</p>
                 <p className="text-lg font-semibold text-gray-900">
-                  {sortingState?.length > 0 
+                  {sortingState?.length > 0
                     ? sortingState?.map(s => s.id).join(', ')
                     : 'None'
                   }
@@ -515,7 +513,7 @@ export default function ReusableTable({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

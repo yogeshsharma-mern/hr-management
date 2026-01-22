@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaBriefcase, FaBuilding, FaMapMarkerAlt, FaUsers, FaFileAlt } from 'react-icons/fa';
 import apiPath from '../../api/apiPath';
 import { apiPost, apiPut } from '../../api/apiFetch';
+import toast from 'react-hot-toast';
 
 export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }) {
   const [formData, setFormData] = useState({
@@ -35,16 +36,20 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
   // Create mutation
   const createMutation = useMutation({
     mutationFn: (data) => apiPost(apiPath.JobOpenings, data),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("data",data);
+      toast.success(data?.message || "Job created successfully");
       queryClient.invalidateQueries(["jobOpenings"]);
       onSuccess?.();
+
     },
   });
 
   // Update mutation
   const updateMutation = useMutation({
-    mutationFn: (data) => apiPut(`${apiPath.JobOpenings}/${jobData.id}`, data),
-    onSuccess: () => {
+    mutationFn: (data) => apiPut(`${apiPath.JobOpenings}/${jobData._id}`, data),
+    onSuccess: (data) => {
+      toast.success(data?.message || "Job updated successfully");
       queryClient.invalidateQueries(["jobOpenings"]);
       onSuccess?.();
     },
@@ -52,13 +57,21 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  let newValue = value;
+
+  if (name === "title" && value) {
+    newValue = value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  setFormData(prev => ({
+    ...prev,
+    [name]: newValue
+  }));
+};
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -101,12 +114,13 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             required
           >
             <option value="">Select Department</option>
-            <option value="Engineering">Engineering</option>
+            {/* <option value="Engineering">Engineering</option> */}
+            <option value="It">It</option>
             <option value="Marketing">Marketing</option>
             <option value="Sales">Sales</option>
             <option value="HR">Human Resources</option>
             <option value="Finance">Finance</option>
-            <option value="Operations">Operations</option>
+            {/* <option value="Operations">Operations</option> */}
             <option value="Design">Design</option>
           </select>
         </div>
@@ -125,11 +139,11 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
           >
             <option value="">Select Location</option>
             <option value="Remote">Remote</option>
-            <option value="New York, USA">New York, USA</option>
-            <option value="London, UK">London, UK</option>
-            <option value="Bangalore, India">Bangalore, India</option>
-            <option value="Sydney, Australia">Sydney, Australia</option>
-            <option value="Berlin, Germany">Berlin, Germany</option>
+            <option value="Jaipur">Jaipur (on-site)</option>
+            {/* <option value="London, UK">London, UK</option> */}
+            {/* <option value="Bangalore, India">Bangalore, India</option> */}
+            {/* <option value="Sydney, Australia">Sydney, Australia</option> */}
+            {/* <option value="Berlin, Germany">Berlin, Germany</option> */}
           </select>
         </div>
 
@@ -150,7 +164,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
           />
         </div>
 
-        {mode === 'edit' && (
+        {/* {mode === 'edit' && (
           <div className="space-y-2 md:col-span-2">
             <label className="block text-sm font-medium text-gray-700">
               Status
@@ -167,7 +181,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
               <option value="upcoming">Upcoming</option>
             </select>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="space-y-2">
@@ -189,7 +203,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
         <button
           type="button"
           onClick={onClose}
-          className="px-5 py-2.5 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
+          className="px-5 py-2.5 cursor-pointer border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
           disabled={isLoading}
         >
           Cancel
@@ -197,11 +211,11 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
         <button
           type="submit"
           disabled={isLoading}
-          className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white rounded-xl transition-all duration-300 font-medium disabled:opacity-70 flex items-center gap-2"
+          className="px-5 py-2.5 bg-gradient-to-r cursor-pointer from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white rounded-xl transition-all duration-300 font-medium disabled:opacity-70 flex items-center gap-2"
         >
           {isLoading ? (
             <>
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-4 h-4 border-2 border-white  border-t-transparent rounded-full animate-spin"></div>
               {mode === 'edit' ? 'Updating...' : 'Creating...'}
             </>
           ) : (

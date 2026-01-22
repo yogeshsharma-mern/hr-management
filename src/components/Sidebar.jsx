@@ -540,9 +540,9 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
   // ✅ FIX: Simplified navigation item styling - Only use NavLink's isActive
   const navItemClass = (isActive) =>
-    `flex items-center px-5 py-2 my-1 rounded-xl transition-all duration-300 group
+    `flex items-center px-5 py-3 my-1 rounded-xl transition-all duration-300 group
      ${isActive
-      ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg'
+      ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg'
       : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'
     } ${collapsed ? 'justify-center px-4' : ''}`;
 

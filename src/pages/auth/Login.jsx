@@ -263,7 +263,7 @@ Post job openings, track candidates, review documents, and manage interviewer sk
       {/* Footer */}
 
 
-      <style jsx>{`
+      <style >{`
         :root {
           --gradient-1-start: #3B82F6;
           --gradient-1-end: #06B6D4;

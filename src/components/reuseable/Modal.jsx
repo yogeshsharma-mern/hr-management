@@ -163,10 +163,10 @@ export default function Modal({
                 {showCloseIcon && (
                   <button
                     onClick={onClose}
-                    className="group w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50 text-gray-500 hover:text-red-500 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-200"
+                    className="group w-10 h-10 flex items-center justify-center cursor-pointer rounded-xl bg-gray-100 hover:bg-gradient-to-r hover:from-red-50 hover:to-rose-50 text-gray-500 hover:text-red-500 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-200"
                     aria-label="Close modal"
                   >
-                    <MdClose size={22} className="transition-transform group-hover:rotate-90" />
+                    <MdClose size={22} className="transition-transform cursor-pointer group-hover:rotate-90" />
                   </button>
                 )}
               </div>
