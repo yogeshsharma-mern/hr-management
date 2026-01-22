@@ -32,9 +32,12 @@ import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiPost } from "../../api/apiFetch";
+import { apiPost, apiGet } from "../../api/apiFetch";
 import apiPath from "../../api/apiPath";
 import AddCandidateValidation from "../../validation/addCandidate.validation";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 
 // Styled Components for better structure
@@ -78,6 +81,7 @@ const positions = [
     "Project Manager",
 ];
 
+
 const genderOptions = [
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
@@ -116,7 +120,21 @@ const AddCandidate = () => {
     const [activeStep, setActiveStep] = useState(0);
     const queryClient = useQueryClient();
     const validation = AddCandidateValidation();
+    const { data: positionData, isLoading, isFetching, error, isError } = useQuery({
+        queryKey: ["positions"],
+        queryFn: () =>
+            apiGet(apiPath.JobOpenings),
+    });
+    console.log("positonData", positionData);
+const navigate = useNavigate();
+    // const positions = positionData?.data.map((job) => job?.title) || [];
+const positions =
+  positionData?.data?.map((job) => ({
+    value: job._id,
+    label: job.title,
+  })) || [];
 
+    console.log("posotions", positions);
     const {
         control,
         handleSubmit,
@@ -134,13 +152,14 @@ const AddCandidate = () => {
                 dateOfBirth: null,
                 gender: "",
                 position: "",
+                jobId:"",
                 address: "",
             },
             education: [
                 {
-                    degree: "",
+                    qualification: "",
                     institution: "",
-                    specialization: "",
+                    // specialization: "",
                     yearOfPassing: "",
                     percentage: "",
                 },
@@ -159,6 +178,7 @@ const AddCandidate = () => {
             totalExperience: "",
         },
     });
+
 
     const {
         fields: educationFields,
@@ -180,13 +200,15 @@ const AddCandidate = () => {
 
     const mutation = useMutation({
         mutationFn: (data) => apiPost(apiPath.AddCandidates, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries(["candidates"]);
             alert("Candidate added successfully!");
             handleReset();
+            toast.success(data?.message);
+            navigate(-1);
         },
         onError: (error) => {
-            alert(`Error adding candidate: ${error.message}`);
+   toast.error(error?.response?.data?.message);
         },
     });
 
@@ -214,217 +236,298 @@ const AddCandidate = () => {
         setActiveStep(0);
     };
 
-    const onSubmit = (data) => {
-        console.log("data",data);
-        const formattedData = {
-            ...data,
-            personalInfo: {
-                ...data.personalInfo,
-                dateOfBirth: data.personalInfo.dateOfBirth
-                    ? new Date(data.personalInfo.dateOfBirth).toISOString()
-                    : null,
-            },
-            education: data.education.map((edu) => ({
-                ...edu,
-                yearOfPassing: parseInt(edu.yearOfPassing) || 0,
-                percentage: parseFloat(edu.percentage) || 0,
-            })),
-            experience: data.experience.map((exp) => ({
-                ...exp,
-                fromDate: exp.fromDate ? new Date(exp.fromDate).toISOString() : null,
-                toDate: exp.toDate ? new Date(exp.toDate).toISOString() : null,
-            })),
-            totalExperience: parseFloat(data.totalExperience) || 0,
-        };
+    // const onSubmit = (data) => {
+    //     console.log("data", data);
+    //     const formattedData = {
+    //         ...data,
+        
+    //             ...data.personalInfo,
+    //             dateOfBirth: data.personalInfo.dateOfBirth
+    //                 ? new Date(data.personalInfo.dateOfBirth).toISOString()
+    //                 : null,
 
-        mutation.mutate(formattedData);
+            
+    //         education: data.education.map((edu) => ({
+    //             ...edu,
+    //             yearOfPassing: parseInt(edu.yearOfPassing) || 0,
+    //             percentage: parseFloat(edu.percentage) || 0,
+    //         })),
+    //         experience: data.experience.map((exp) => ({
+    //             ...exp,
+    //             fromDate: exp.fromDate ? new Date(exp.fromDate).toISOString() : null,
+    //             toDate: exp.toDate ? new Date(exp.toDate).toISOString() : null,
+    //         })),
+    //         totalExperience: parseFloat(data.totalExperience) || 0,
+    //     };
+
+    //     mutation.mutate(formattedData);
+    // };
+
+const onSubmit = (data) => {
+    console.log("Form data:", data);
+    
+    // Format date to YYYY-MM-DD for API
+    const formatDate = (date) => {
+        if (!date) return "";
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     };
 
+    const payload = {
+        // Send personalInfo fields at root level
+        fullName: data.personalInfo.fullName,
+        email: data.personalInfo.email,
+        phone: data.personalInfo.phone,
+        jobId: data.personalInfo.jobId,
+        // Add other personalInfo fields if needed by API
+        dateOfBirth: data.personalInfo.dateOfBirth ? formatDate(data.personalInfo.dateOfBirth) : null,
+        gender: data.personalInfo.gender,
+        address: data.personalInfo.address,
+        
+        // Education array - CORRECTED FIELD NAMES
+        education: data.education.map(edu => ({
+            institution: edu.institution, // ✅
+            qualification: edu.qualification || "", // ✅ Changed from edu.specialization to edu.qualification
+            yearOfPassing: parseInt(edu.yearOfPassing) || 0,
+            cgpa: parseFloat(edu.percentage) || 0, // ✅ Changed from edu.cgpa to edu.percentage
+        })),
+        
+        // Experience array - CORRECTED FIELD NAMES
+        experience: data.experience.map(exp => ({
+            companyName: exp.company, // ✅ Changed from exp.companyName to exp.company
+            jobTitle: exp.jobTitle,
+            from: exp.fromDate ? formatDate(exp.fromDate) : null, // ✅ Changed from exp.from to exp.fromDate
+            to: exp.toDate ? formatDate(exp.toDate) : null, // ✅ Changed from exp.to to exp.toDate
+            responsibilities: exp.responsibilities,
+        })),
+        
+        // Total experience - CORRECTED FIELD NAME
+        totalExperienceInYears: parseFloat(data.totalExperience) || 0, // ✅ Changed from data.totalExperienceInYears to data.totalExperience
+        
+        // Skills array
+        skills: data.skills || [],
+    };
+
+    console.log("Final payload:", payload);
+    mutation.mutate(payload);
+};
     const renderPersonalInfo = () => (
         <StepContainer title="Personal Information">
-            <FormSection spacing={3}>
+            <FormSection spacing={4}>
 
-                {/* Basic Info */}
-                <FieldWrapper md={6}>
-                    <Controller
-                        name="personalInfo.fullName"
-                        control={control}
-                        rules={validation.personalInfo.fullName}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Full Name"
-                                error={!!errors.personalInfo?.fullName}
-                                helperText={errors.personalInfo?.fullName?.message}
-                            />
-                        )}
-                    />
-                </FieldWrapper>
+                {/* ================= BASIC INFORMATION ================= */}
+                <Box>
+                    <Typography variant="h6" gutterBottom>
+                        Basic Information
+                    </Typography>
 
-                <FieldWrapper md={6}>
-                    <Controller
-                        name="personalInfo.email"
-                        control={control}
-                        rules={validation.personalInfo.email}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                label="Email Address"
-                                error={!!errors.personalInfo?.email}
-                                helperText={errors.personalInfo?.email?.message}
-                            />
-                        )}
-                    />
-                </FieldWrapper>
-
-                {/* Contact Info */}
-                <FieldWrapper md={6}>
-                    <Controller
-                        name="personalInfo.phone"
-                        control={control}
-                        rules={validation.personalInfo.phone}
-                        render={({ field }) => (
-                            <FormControl fullWidth error={!!errors.personalInfo?.phone}>
-                                <InputLabel shrink>Phone Number</InputLabel>
-                                <Box sx={{ mt: 2 }}>
-                                    <PhoneInput
-                                        country="in"
-                                        value={field.value}
-                                        onChange={field.onChange}
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <Controller
+                                name="personalInfo.fullName"
+                                control={control}
+                                rules={validation.personalInfo.fullName}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Full Name"
+                                        error={!!errors.personalInfo?.fullName}
+                                        helperText={errors.personalInfo?.fullName?.message}
                                     />
-                                </Box>
-                                <FormHelperText>
-                                    {errors.personalInfo?.phone?.message}
-                                </FormHelperText>
-                            </FormControl>
-                        )}
-                    />
-                </FieldWrapper>
+                                )}
+                            />
+                        </Grid>
 
-                <FieldWrapper md={6}>
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <Controller
-                            name="personalInfo.dateOfBirth"
-                            control={control}
-                            rules={validation.personalInfo.dateOfBirth}
-                            render={({ field }) => (
-                                <DatePicker
-                                    {...field}
-                                    label="Date of Birth"
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            error={!!errors.personalInfo?.dateOfBirth}
-                                            helperText={errors.personalInfo?.dateOfBirth?.message}
+                        <Grid item xs={12} md={6}>
+                            <Controller
+                                name="personalInfo.email"
+                                control={control}
+                                rules={validation.personalInfo.email}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        label="Email Address"
+                                        error={!!errors.personalInfo?.email}
+                                        helperText={errors.personalInfo?.email?.message}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    </Grid>
+                </Box>
+
+                {/* ================= CONTACT INFORMATION ================= */}
+                <Box>
+                    {/* <Typography variant="h6" gutterBottom>
+          Contact Information
+        </Typography> */}
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} mt={4} md={6}>
+                            <Controller
+                                name="personalInfo.phone"
+                                control={control}
+                                rules={validation.personalInfo.phone}
+                                render={({ field }) => (
+                                    <FormControl fullWidth error={!!errors.personalInfo?.phone}>
+                                        <InputLabel shrink>Phone Number</InputLabel>
+                                        <Box sx={{ mt: 2 }}>
+                                            <PhoneInput
+                                                country="in"
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                inputStyle={{ width: "100%" }}
+                                            />
+                                        </Box>
+                                        <FormHelperText>
+                                            {errors.personalInfo?.phone?.message}
+                                        </FormHelperText>
+                                    </FormControl>
+                                )}
+                            />
+                        </Grid>
+
+                        <Grid container spacing={3} mt={4}>
+                            {/* <Grid item xs={12} md={6}> */}
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Controller
+                                    name="personalInfo.dateOfBirth"
+                                    control={control}
+                                    rules={validation.personalInfo.dateOfBirth}
+                                    render={({ field }) => (
+                                        <DatePicker
+                                            {...field}
+                                            label="Date of Birth"
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    fullWidth
+                                                    error={!!errors.personalInfo?.dateOfBirth}
+                                                    helperText={errors.personalInfo?.dateOfBirth?.message}
+                                                />
+                                            )}
                                         />
                                     )}
                                 />
-                            )}
-                        />
-                    </LocalizationProvider>
-                </FieldWrapper>
+                            </LocalizationProvider>
+                        </Grid>
+                    </Grid>
+                </Box>
 
-                {/* Selection */}
-                {/* Selection */}
-                {/* Selection */}
-                {/* Selection */}
-                <FieldWrapper xs={12} md={6}>
-                    <Controller
-                        name="personalInfo.gender"
-                        control={control}
-                        rules={validation.personalInfo.gender}
-                        render={({ field }) => (
-                            <Box>
-                                <Typography variant="body2" sx={{ mb: 0.5 }}>
-                                    Gender
-                                </Typography>
-                                <Select
-                                    {...field}
-                                    options={genderOptions}
-                                    placeholder="Select Gender"
-                                    onChange={(option) => field.onChange(option?.value)}
-                                    value={genderOptions.find(opt => opt.value === field.value)}
-                                    styles={{
-                                        container: (base) => ({ ...base, width: "100%" }),
-                                        control: (base) => ({
-                                            ...base,
-                                            minHeight: 56,
-                                            borderRadius: 4,
-                                        }),
-                                    }}
-                                />
-                                <FormHelperText error>
-                                    {errors.personalInfo?.gender?.message}
-                                </FormHelperText>
-                            </Box>
-                        )}
-                    />
-                </FieldWrapper>
+                {/* ================= PROFESSIONAL DETAILS ================= */}
+                <Box>
+                    {/* <Typography variant="h6" gutterBottom>
+          Professional Details
+        </Typography> */}
 
-                <FieldWrapper xs={12} md={6}>
-                    <Controller
-                        name="personalInfo.position"
-                        control={control}
-                        rules={validation.personalInfo.position}
-                        render={({ field }) => (
-                            <Box>
-                                <Typography variant="body2" sx={{ mb: 0.5 }}>
-                                    Position Applied
-                                </Typography>
-                                <Select
-                                    {...field}
-                                    options={positions.map(p => ({ label: p, value: p }))}
-                                    placeholder="Select Position"
-                                    onChange={(option) => field.onChange(option?.value)}
-                                    value={
-                                        positions
-                                            .map(p => ({ label: p, value: p }))
-                                            .find(opt => opt.value === field.value)
-                                    }
-                                    styles={{
-                                        container: (base) => ({ ...base, width: "100%" }),
-                                        control: (base) => ({
-                                            ...base,
-                                            minHeight: 56,
-                                            borderRadius: 4,
-                                        }),
-                                    }}
-                                />
-                                <FormHelperText error>
-                                    {errors.personalInfo?.position?.message}
-                                </FormHelperText>
-                            </Box>
-                        )}
-                    />
-                </FieldWrapper>
-
-
-
-
-
-
-                {/* Address */}
-                <FieldWrapper xs={12}>
-                    <Controller
-                        name="personalInfo.address"
-                        control={control}
-                        rules={validation.personalInfo.address}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                multiline
-                                rows={3}
-                                label="Current Address"
-                                error={!!errors.personalInfo?.address}
-                                helperText={errors.personalInfo?.address?.message}
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={6}>
+                            <Controller
+                                name="personalInfo.gender"
+                                control={control}
+                                rules={validation.personalInfo.gender}
+                                render={({ field }) => (
+                                    <Box>
+                                        <Typography variant="body2" sx={{ mb: 0.5 }}>
+                                            Gender
+                                        </Typography>
+                                        <Select
+                                            options={genderOptions}
+                                            placeholder="Select Gender"
+                                            onChange={(option) => field.onChange(option?.value)}
+                                            value={genderOptions.find(
+                                                (opt) => opt.value === field.value
+                                            )}
+                                            styles={{
+                                                container: (base) => ({ ...base, width: "100%" }),
+                                                control: (base) => ({
+                                                    ...base,
+                                                    minHeight: 56,
+                                                    borderRadius: 6,
+                                                }),
+                                            }}
+                                        />
+                                        <FormHelperText error>
+                                            {errors.personalInfo?.gender?.message}
+                                        </FormHelperText>
+                                    </Box>
+                                )}
                             />
-                        )}
-                    />
-                </FieldWrapper>
+                        </Grid>
+
+                        <Grid item xs={12} md={6}>
+                            <Controller
+                                name="personalInfo.jobId"
+                                control={control}
+                                rules={validation.personalInfo.position}
+                                render={({ field }) => (
+                                    <Box>
+                                        <Typography variant="body2" sx={{ mb: 0.5 }}>
+                                            Position Applied
+                                        </Typography>
+                                       <Select
+  options={positions}
+  placeholder="Select Position"
+  onChange={(option) => field.onChange(option?.value)} // 👈 yahan ID jayegi
+value={positions.find(opt => opt.value === field.value)}
+
+  styles={{
+    container: (base) => ({ ...base, width: "100%" }),
+    control: (base) => ({
+      ...base,
+      minHeight: 56,
+      borderRadius: 6,
+    }),
+  }}
+/>
+
+                                        <FormHelperText error>
+                                            {errors.personalInfo?.position?.message}
+                                        </FormHelperText>
+                                    </Box>
+                                )}
+                            />
+                        </Grid>
+                    </Grid>
+                </Box>
+
+                {/* ================= ADDRESS ================= */}
+                <Box>
+                    {/* <Typography variant="h6" gutterBottom>
+          Address
+        </Typography> */}
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                            <Controller
+                                name="personalInfo.address"
+                                control={control}
+                                rules={validation.personalInfo.address}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        fullWidth
+                                        multiline
+                                        rows={3}
+                                        label="Current Address"
+                                        error={!!errors.personalInfo?.address}
+                                        helperText={errors.personalInfo?.address?.message}
+                                    />
+                                )}
+                            />
+                        </Grid>
+                    </Grid>
+                </Box>
 
             </FormSection>
         </StepContainer>
     );
+
 
 
     const renderEducation = () => (
@@ -450,18 +553,18 @@ const AddCandidate = () => {
                         <FormSection spacing={2}>
                             <FieldWrapper xs={12} md={6}>
                                 <Controller
-                                    name={`education.${index}.degree`}
+                                    name={`education.${index}.qualification`}
                                     control={control}
-                                    rules={validation.education.degree}
+                                    rules={validation.education.qualification}
                                     render={({ field }) => (
                                         <TextField
                                             {...field}
                                             fullWidth
-                                            label="Degree/Qualification"
+                                            label="qualification/Qualification"
                                             variant="outlined"
                                             size="small"
-                                            error={!!errors.education?.[index]?.degree}
-                                            helperText={errors.education?.[index]?.degree?.message}
+                                            error={!!errors.education?.[index]?.qualification}
+                                            helperText={errors.education?.[index]?.qualification?.message}
                                         />
                                     )}
                                 />
@@ -486,7 +589,7 @@ const AddCandidate = () => {
                                 />
                             </FieldWrapper>
 
-                            <FieldWrapper xs={12} md={6}>
+                            {/* <FieldWrapper xs={12} md={6}>
                                 <Controller
                                     name={`education.${index}.specialization`}
                                     control={control}
@@ -500,7 +603,7 @@ const AddCandidate = () => {
                                         />
                                     )}
                                 />
-                            </FieldWrapper>
+                            </FieldWrapper> */}
 
                             <FieldWrapper xs={12} md={6}>
                                 <Controller
@@ -553,7 +656,7 @@ const AddCandidate = () => {
                 startIcon={<AddCircleOutlineIcon />}
                 onClick={() =>
                     appendEducation({
-                        degree: "",
+                        qualification: "",
                         institution: "",
                         specialization: "",
                         yearOfPassing: "",
@@ -564,7 +667,7 @@ const AddCandidate = () => {
                 color="primary"
                 sx={{ mt: 1 }}
             >
-                Add Another Degree
+                Add Another qualification
             </Button>
         </StepContainer>
     );

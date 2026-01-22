@@ -398,7 +398,7 @@ console.log("itme",item.isActive);
               "Confirm Delete"}
         type={modalType === "delete" ? "error" :
           modalType === "view" ? "info" : "default"}
-        size={modalType === "view" ? "lg" : "md"}
+        size={modalType === "view" ? "lg" : "xl"}
         showFooter={modalType === "delete"}
         primaryAction={modalType === "delete" ? {
           label: deleteMutation.isPending ? "Deleting..." : "Delete",

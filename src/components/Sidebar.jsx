@@ -571,7 +571,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         {!collapsed ? (
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 rounded-xl flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-xl">HR</span>
               </div>
             </div>
@@ -582,7 +582,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
           </div>
         ) : (
           <div className="flex justify-center">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+            <div className="w-12 h-12  bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 rounded-xl flex items-center justify-center shadow-md">
               <span className="text-white font-bold text-xl">HR</span>
             </div>
           </div>
