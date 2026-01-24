@@ -542,7 +542,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
   const navItemClass = (isActive) =>
     `flex items-center px-5 py-3 my-1 rounded-xl transition-all duration-300 group
      ${isActive
-      ? 'bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white shadow-lg'
+      ? ' text-blue-500 bg-blue-100'
       : 'text-gray-700 hover:bg-blue-50 hover:text-blue-700'
     } ${collapsed ? 'justify-center px-4' : ''}`;
 
@@ -559,7 +559,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       {/* Collapse Button */}
       <button
         onClick={() => dispatch(toggleSidebarCollapse())}
-        className="hidden md:flex absolute -right-3 top-8 w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 
+        className="hidden md:flex absolute -right-3 top-8 w-8 h-8 bg-blue-400 
                  border-2 border-white rounded-full items-center justify-center shadow-xl
                  cursor-pointer hover:shadow-2xl hover:scale-110 transition-all duration-300 z-10"
       >
@@ -571,7 +571,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         {!collapsed ? (
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 rounded-xl flex items-center justify-center shadow-md">
+              <div className="w-12 h-12 bg-blue-400 rounded-xl flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-xl">HR</span>
               </div>
             </div>
@@ -611,7 +611,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
                end={item.id === 'dashboard'} // This ensures exact matching for dashboard
             >
               <div className={`${collapsed ? '' : 'mr-3'} transition-all duration-300`}>
-                <div className={`text-xl ${activeMenu === item.id ? 'text-white' : 'text-gray-600 group-hover:text-blue-600'}`}>
+                <div className={`text-xl ${activeMenu === item.id ? 'text-blue-500' : 'text-gray-600 group-hover:text-blue-600'}`}>
                   {item.icon}
                 </div>
               </div>
@@ -674,7 +674,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         {!collapsed && (
           <div className="mt-4 pt-4 border-t border-gray-200">
             <p className="text-xs text-gray-500 text-center">
-              © 2024 HR Management System
+              © 2026 HR Management System
             </p>
           </div>
         )}

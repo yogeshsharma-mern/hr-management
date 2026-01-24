@@ -36,7 +36,8 @@ const { data } = useQuery({
 });
 
 const user = data?.results || {};
-  console.log("userdetail",user);
+let username = user?.username.charAt(0).toUpperCase();
+
   // console.log("user",user);
   const config = genConfig({ sex: "man", faceColor: "#d2a679", bgColor: "yellow" });
 
@@ -100,24 +101,28 @@ const user = data?.results || {};
             <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setMenuOpen((prev) => !prev)}>
                      <span className="hidden md:block font-semibold">{user.firstName} {user.lastName}</span>
        
-              {
+              {/* {
                 user?.profilePic !=="" ? <img className="w-[40px] h-[40px] cursor-pointer rounded-full" src={`${user.profilePic}`} alt="profilePicture" /> :<Avatar style={{ width: "40px", height: "40px" }} {...config} />
-              }
+              } */}
+
+            <div className="w-[40px] h-[40px] flex justify-center items-center text-white font-bold bg-blue-400 cursor-pointer rounded-full">
+              {username}
+            </div>
               {/* <img className="w-[40px] h-[40px] cursor-pointer rounded-full" src={`${user.profilePic}`} alt="profilePicture" /> */}
        
             </div>
 
             {/* Dropdown Menu */}
             {menuOpen && (
-              <div className="absolute right-0 mt-32 w-40 bg-[var(--color-neutral)] shadow-lg rounded-md overflow-hidden z-50">
+              <div className="absolute right-0 mt-32 w-40 bg-[var(--color-neutral)] bg-white shadow-lg rounded-md overflow-hidden z-[999999]">
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-yellow-100 dark:hover:bg-yellow-500 transition"
+                  className="block w-full text-left px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-500 transition"
                   onClick={goToProfile}
                 >
                   My Profile
                 </button>
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-yellow-100 dark:hover:bg-yellow-500 transition"
+                  className="block w-full text-left px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-500 transition"
                 onClick={()=>dispacth(logout())}
                 >
                   Logout

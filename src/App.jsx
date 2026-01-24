@@ -14,6 +14,14 @@ import Candidates from './pages/Candidates/Candidates.jsx';
 import AddCandidate from './pages/Candidates/AddCandidate.jsx';
 import Login from './pages/auth/Login.jsx';
 import HomePage from './pages/HomePage.jsx';
+import EditCandidate from './pages/Candidates/EditCandidate.jsx';
+import ViewCandidate from './pages/Candidates/ViewCandidate.jsx';
+import ScheduleInterview from './pages/interview/ScheduleInterview.jsx';
+import OfferLetter from './pages/offerletter/OfferLetter.jsx';
+import InterviewList from './pages/interview/InterviewList.jsx';
+import AppoinmentLetter from './pages/appoinmentletter/AppoinmentLetter.jsx';
+import Joining from './pages/joining/Joining.jsx';
+import Document from './pages/documents/Document.jsx';
 
 
 
@@ -35,6 +43,21 @@ export default function App() {
             <Route path="job-openings" element={<JobOpenings />} />
             <Route path="candidates" element={<Candidates />} />
             <Route path="candidates/add" element={<AddCandidate />} />
+            <Route path="candidates/edit/:id" element={<EditCandidate />} />
+            <Route path="candidates/view/:id" element={<ViewCandidate />} />
+            <Route path="interviews/schedule/:id" element={<ScheduleInterview />} />
+            <Route path="offer-letter" element={<OfferLetter />} />
+            <Route path="interviews" element={<InterviewList />} />
+            <Route path="appointment-letter" element={<AppoinmentLetter />} />
+            <Route path="joining" element={<Joining />} />
+            <Route path="documents" element={<Document />} />
+
+
+
+
+
+
+    
 
           </Route>
         </Route>

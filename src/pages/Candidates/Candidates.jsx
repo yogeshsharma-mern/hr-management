@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MdAdd, MdDelete, MdEdit, MdSearch, MdFilterList, MdClose } from "react-icons/md";
 import { FaEye, FaUser, FaGraduationCap, FaBriefcase, FaPhone } from "react-icons/fa";
@@ -19,29 +19,66 @@ export default function Candidates() {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
   const navigate = useNavigate();
-  
+
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState({
     appliedFor: "",
-    min: "",
-    max: ""
+    experienceRange: ""
   });
   const [showFilters, setShowFilters] = useState(false);
-  
+
   const debouncedSearch = useDebounce(searchTerm, 500);
 
   const queryClient = useQueryClient();
 
+  // Fetch positions from job openings
+  const { data: positionData } = useQuery({
+    queryKey: ["positions"],
+    queryFn: () => apiGet(apiPath.JobOpenings, { limit: 100 }),
+  });
+
+  const positions = positionData?.data?.map((job) => ({
+    value: job._id,
+    label: job.title,
+  })) || [];
+
+  // Helper function to parse experience range to min/max
+  const parseExperienceRange = (range) => {
+    switch (range) {
+      case "0-1": return { min: 0, max: 1 };
+      case "1-2": return { min: 1, max: 2 };
+      case "2-3": return { min: 2, max: 3 };
+      case "3-4": return { min: 3, max: 4 };
+      case "4+": return { min: 4, max: undefined }; // For "4+" we only need min
+      default: return { min: undefined, max: undefined };
+    }
+  };
+
   // Fetch candidates with filters
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["candidates", debouncedSearch, pagination.pageIndex, pagination.pageSize, filters],
-    queryFn: () => apiGet(apiPath.CANDIDATES, {
-      limit: pagination.pageSize,
-      page: pagination.pageIndex + 1,
-      appliedFor: filters.appliedFor || undefined,
-      min: filters.min || undefined,
-      max: filters.max || undefined
-    }),
+    queryFn: () => {
+      const { min, max } = parseExperienceRange(filters.experienceRange);
+      
+      const params = {
+        limit: pagination.pageSize,
+        page: pagination.pageIndex + 1,
+      };
+      
+      if (filters.appliedFor) {
+        // Find the position title from the selected ID
+        const selectedPosition = positions.find(pos => pos.value === filters.appliedFor);
+        if (selectedPosition) {
+          params.appliedFor = selectedPosition.label;
+        }
+      }
+      
+      if (min !== undefined) params.min = min;
+      if (max !== undefined) params.max = max;
+      
+      return apiGet(apiPath.CANDIDATES, params);
+    },
+    enabled: true, // Ensure this runs even when positions are loading
   });
 
   // Delete mutation
@@ -58,12 +95,11 @@ export default function Candidates() {
 
   const candidates = data?.data || [];
   const totalCount = data?.totalPages || 0;
-  console.log("data",data);
 
   // Helper function to calculate total experience from experience array
   const calculateTotalExperience = (experienceArray) => {
     if (!experienceArray || !Array.isArray(experienceArray)) return 0;
-    
+
     let totalYears = 0;
     experienceArray.forEach(exp => {
       if (exp.from && exp.to) {
@@ -76,11 +112,11 @@ export default function Candidates() {
   };
 
   const handleView = (candidate) => {
-    navigate(`/candidates/view/${candidate._id}`);
+    navigate(`/hr/candidates/view/${candidate._id}`);
   };
 
   const handleEdit = (candidate) => {
-    navigate(`/candidates/edit/${candidate._id}`);
+    navigate(`/hr/candidates/edit/${candidate._id}`);
   };
 
   const handleAdd = () => {
@@ -104,8 +140,7 @@ export default function Candidates() {
   const handleResetFilters = () => {
     setFilters({
       appliedFor: "",
-      min: "",
-      max: ""
+      experienceRange: ""
     });
     setSearchTerm("");
     setShowFilters(false);
@@ -118,7 +153,16 @@ export default function Candidates() {
   };
 
   // Check if any filter is active
-  const hasActiveFilters = filters.appliedFor || filters.min || filters.max;
+  const hasActiveFilters = filters.appliedFor || filters.experienceRange;
+
+  // Experience range options
+  const experienceRanges = [
+    { label: "0-1 year", value: "0-1" },
+    { label: "1-2 years", value: "1-2" },
+    { label: "2-3 years", value: "2-3" },
+    { label: "3-4 years", value: "3-4" },
+    { label: "4+ years", value: "4+" }
+  ];
 
   // Memoized columns
   const columns = useMemo(
@@ -129,7 +173,7 @@ export default function Candidates() {
         cell: ({ row }) => {
           const candidate = row.original;
           const initials = candidate.fullName?.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2) || 'NA';
-          
+
           return (
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center">
@@ -146,19 +190,16 @@ export default function Candidates() {
       {
         header: "APPLIED FOR",
         accessorKey: "title",
-        cell: ({ row }) => {
-            console.log("row",row.original);
-        return(
-            
+        cell: ({ row }) => (
           <div className="flex items-center space-x-2">
             <FaBriefcase className="text-gray-400" />
             <span className="font-medium text-gray-700">
-              {typeof row.original.jobId.title === 'string' 
-                ? row.original.jobId.title 
+              {typeof row.original.jobId.title === 'string'
+                ? row.original.jobId.title
                 : JSON.stringify(row.original.jobId.title)}
             </span>
-          </div>)
-        }
+          </div>
+        )
       },
       {
         header: "EXPERIENCE",
@@ -174,7 +215,7 @@ export default function Candidates() {
               <FaPhone className="text-gray-400" />
               <span className="text-gray-600">
                 {typeof phoneValue === 'string' || typeof phoneValue === 'number'
-                  ? phoneValue 
+                  ? phoneValue
                   : "N/A"}
               </span>
             </div>
@@ -279,11 +320,24 @@ export default function Candidates() {
     );
   }
 
+  // Get selected position label for display
+  const getSelectedPositionLabel = () => {
+    if (!filters.appliedFor) return "";
+    const selected = positions.find(pos => pos.value === filters.appliedFor);
+    return selected ? selected.label : "";
+  };
+
+  // Get selected experience label for display
+  const getSelectedExperienceLabel = () => {
+    if (!filters.experienceRange) return "";
+    const selected = experienceRanges.find(range => range.value === filters.experienceRange);
+    return selected ? selected.label : "";
+  };
+
   return (
     <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "md:w-[78vw]"}`}>
       {/* Stats Cards */}
-<div className="hidden md:grid grid-cols-1 md:grid-cols-4 gap-4">
-
+      <div className="hidden  grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
@@ -367,19 +421,18 @@ export default function Candidates() {
                 </button>
               </div>
             )}
-            
+
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 ${
-                hasActiveFilters 
-                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600" 
+              className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 ${hasActiveFilters
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
+                }`}
             >
               <MdFilterList size={18} />
               <span>Filters</span>
             </button>
-            
+
             <button
               onClick={handleAdd}
               className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-4 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
@@ -402,46 +455,44 @@ export default function Candidates() {
                 <MdClose size={20} />
               </button>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Applied Position
                 </label>
-                <input
-                  type="text"
-                  placeholder="e.g., NodeJs Developer"
+                <select
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   value={filters.appliedFor}
                   onChange={(e) => setFilters(prev => ({ ...prev, appliedFor: e.target.value }))}
-                />
+                >
+                  <option value="">All Positions</option>
+                  {positions.map((position) => (
+                    <option key={position.value} value={position.value}>
+                      {position.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-              
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Experience Range (years)
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Experience Range
                 </label>
-                <div className="flex items-center space-x-3">
-                  <input
-                    type="number"
-                    min="0"
-                    placeholder="Min"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    value={filters.min}
-                    onChange={(e) => setFilters(prev => ({ ...prev, min: e.target.value }))}
-                  />
-                  <span className="text-gray-400">to</span>
-                  <input
-                    type="number"
-                    min="0"
-                    placeholder="Max"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                    value={filters.max}
-                    onChange={(e) => setFilters(prev => ({ ...prev, max: e.target.value }))}
-                  />
-                </div>
+                <select
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  value={filters.experienceRange}
+                  onChange={(e) => setFilters(prev => ({ ...prev, experienceRange: e.target.value }))}
+                >
+                  <option value="">All Experience Levels</option>
+                  {experienceRanges.map((range) => (
+                    <option key={range.value} value={range.value}>
+                      {range.label}
+                    </option>
+                  ))}
+                </select>
               </div>
-              
+
               <div className="flex items-end space-x-3">
                 <button
                   onClick={handleResetFilters}
@@ -464,7 +515,7 @@ export default function Candidates() {
                 <span className="text-sm text-gray-500">Active filters:</span>
                 {filters.appliedFor && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                    Position: {filters.appliedFor}
+                    Position: {getSelectedPositionLabel()}
                     <button
                       onClick={() => setFilters(prev => ({ ...prev, appliedFor: "" }))}
                       className="ml-2 text-blue-600 hover:text-blue-800"
@@ -473,11 +524,11 @@ export default function Candidates() {
                     </button>
                   </span>
                 )}
-                {(filters.min || filters.max) && (
+                {filters.experienceRange && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-emerald-100 text-emerald-800">
-                    Experience: {filters.min || "0"} - {filters.max || "∞"} years
+                    Experience: {getSelectedExperienceLabel()}
                     <button
-                      onClick={() => setFilters(prev => ({ ...prev, min: "", max: "" }))}
+                      onClick={() => setFilters(prev => ({ ...prev, experienceRange: "" }))}
                       className="ml-2 text-emerald-600 hover:text-emerald-800"
                     >
                       <MdClose size={14} />

@@ -25,7 +25,7 @@ export default function Login() {
     onSuccess: (data) => {
         // toast.success(data?.message || 'Login successful!');
         console.log("data",data.data);
-         dispatch(loginSuccess({ user: data?.data?.hr, token: data?.data?.token }));
+         dispatch(loginSuccess({ hr: data?.data?.hr, token: data?.data?.token }));
         toast.success(data?.message);
         navigate("/hr/dashboard");
     },
@@ -84,7 +84,7 @@ export default function Login() {
         </div>
       </div> */}
 
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-6 py-12 ">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Hero Content */}
           <div className="space-y-8 hidden lg:block">
@@ -135,7 +135,7 @@ Post job openings, track candidates, review documents, and manage interviewer sk
 
           {/* Right Column - Login Form */}
           <div>
-            <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-md mx-auto border border-blue-50">
+            <div className="bg-white rounded-3xl shadow-2xl mt-10 p-10 max-w-md mx-auto border border-blue-50">
               <div className="text-center mb-10">
                 <div className="w-18 h-18 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                   <FaRocket className="text-white text-3xl" />

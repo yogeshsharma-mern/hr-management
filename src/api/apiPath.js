@@ -6,6 +6,9 @@ const apiPath = Object.freeze({
   AddCandidates:"/candidates",
   jobopeningToggleStatus:"/job-openings",
   CANDIDATES:"candidates",
+  candidateDetails:"/candidates",
+  scheduleInterview:"/interviews/schedule",
+  interviewList:"/interviews"
 });
 
-export default apiPath;
+export default apiPath;2
