@@ -14,8 +14,8 @@ export default function Login() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Mutation for login
   const loginMutation = useMutation({
@@ -23,14 +23,14 @@ export default function Login() {
       return await apiPost(apiPath.hrLogin, credentials);
     },
     onSuccess: (data) => {
-        // toast.success(data?.message || 'Login successful!');
-        console.log("data",data.data);
-         dispatch(loginSuccess({ hr: data?.data?.hr, token: data?.data?.token }));
-        toast.success(data?.message);
-        navigate("/hr/dashboard");
+      // toast.success(data?.message || 'Login successful!');
+      console.log("data", data.data);
+      dispatch(loginSuccess({ hr: data?.data?.hr, token: data?.data?.token }));
+      toast.success(data?.message);
+      navigate("/hr/dashboard");
     },
     onError: (error) => {
-        toast.error(error?.response?.data?.message || 'Login failed. Please check your credentials and try again.');
+      toast.error(error?.response?.data?.message || 'Login failed. Please check your credentials and try again.');
     }
   });
 
@@ -90,10 +90,10 @@ export default function Login() {
           <div className="space-y-8 hidden lg:block">
             <div>
               <h1 className="text-5xl font-bold text-gray-900 leading-tight mb-6">
-        Hr Mangement <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">For, interview,</span> and <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Talent Insights</span>.
+                Hr Mangement <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">For, interview,</span> and <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Talent Insights</span>.
               </h1>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              A complete HRM platform that enables HR teams to create job openings, manage candidates, review documents, track interviewer skills, and conduct structured interviews — all in one place.
+                A complete HRM platform that enables HR teams to create job openings, manage candidates, review documents, track interviewer skills, and conduct structured interviews — all in one place.
               </p>
             </div>
 
@@ -105,7 +105,7 @@ export default function Login() {
                 <div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Hr Magement</h3>
                   <p className="text-gray-600 leading-relaxed">
-Post job openings, track candidates, review documents, and manage interviewer skills seamlessly with a powerful HR management system.
+                    Post job openings, track candidates, review documents, and manage interviewer skills seamlessly with a powerful HR management system.
                   </p>
                 </div>
               </div>
@@ -115,8 +115,8 @@ Post job openings, track candidates, review documents, and manage interviewer sk
                 <div className="flex items-center justify-between">
                   <div className="flex -space-x-3">
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <div 
-                        key={i} 
+                      <div
+                        key={i}
                         className="w-12 h-12 rounded-full border-3 border-white shadow-md"
                         style={{
                           background: `linear-gradient(135deg, var(--gradient-${i}-start), var(--gradient-${i}-end))`
@@ -246,8 +246,8 @@ Post job openings, track candidates, review documents, and manage interviewer sk
                 <div className="text-center pt-6 border-t border-blue-50">
                   <p className="text-gray-600">
                     Need help?{' '}
-                    <a href="mailto:hello@hatypo.studio" className="text-blue-600 hover:text-blue-800 font-semibold transition-colors">
-                  hr@waplia.in
+                    <a href="hr@waplia.in" className="text-blue-600 hover:text-blue-800 font-semibold transition-colors">
+                      hr@waplia.in
                     </a>
                   </p>
                 </div>
@@ -255,7 +255,7 @@ Post job openings, track candidates, review documents, and manage interviewer sk
             </div>
 
             {/* Stats Section */}
- 
+
           </div>
         </div>
       </div>

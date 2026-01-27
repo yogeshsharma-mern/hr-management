@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import apiPath from '../../api/apiPath';
-import { apiPost } from '../../api/apiFetch';
+import { apiPost,apiGet } from '../../api/apiFetch';
 import './OfferLetter.css';
+import { useQuery } from '@tanstack/react-query';
+
 
 export default function OfferLetter() {
   const [formData, setFormData] = useState({
@@ -19,13 +21,29 @@ export default function OfferLetter() {
   });
 
   const [loading, setLoading] = useState(false);
+const { data, isLoading, isError, error } = useQuery({
+  queryKey: ["candidatesdata"],
+  queryFn: () => apiGet(apiPath.CANDIDATES)
+});
+
+if (isLoading) {
+  return <p>Loading candidates...</p>;
+}
+
+if (isError) {
+  return <p>Error: {error.message}</p>;
+}
+
+// console.log("candidates", data.data);
+const candidates= data?.data;
+console.log("candidates",candidates);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'basicSalary' || name === 'hra' || name === 'specialAllowance' || name === 'annualBonus' 
-        ? parseFloat(value) || 0 
+      [name]: name === 'basicSalary' || name === 'hra' || name === 'specialAllowance' || name === 'annualBonus'
+        ? parseFloat(value) || 0
         : value
     }));
   };
@@ -88,7 +106,7 @@ export default function OfferLetter() {
                     <label htmlFor="candidate">
                       Select Candidate <span className="required">*</span>
                     </label>
-                    <input
+                    {/* <input
                       type="text"
                       id="candidate"
                       name="candidate"
@@ -97,7 +115,26 @@ export default function OfferLetter() {
                       placeholder="Search and select candidate..."
                       className="form-control"
                       required
-                    />
+                    /> */}
+                    <select
+                      id="position"
+                      name="candidate"
+                      value={formData.candidate}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    >
+                      <option value="Software Engineer">Software Engineer</option>
+                      {
+                        candidates?.map((item,index)=>
+                        {
+                    return     <option value={item.fullName}>{item?.fullName} </option>
+                      // <option value="Team Lead">Team Lead</option>
+                      // <option value="Project Manager">Project Manager</option>
+                      // <option value="Product Manager">Product Manager</option>
+                        })
+                      }
+                    </select>
                   </div>
 
                   <div className="form-group">
@@ -320,10 +357,10 @@ export default function OfferLetter() {
                   </div>
                   <div className="letter-title">
                     <h1>OFFER LETTER</h1>
-                    <p className="letter-date">{new Date().toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
+                    <p className="letter-date">{new Date().toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
                     })}</p>
                   </div>
                 </div>
@@ -332,7 +369,7 @@ export default function OfferLetter() {
                   <div className="candidate-info">
                     <p><strong>Dear {formData.candidate || '[Candidate Name]'},</strong></p>
                     <p>
-                      We are pleased to offer you the position of <strong>{formData.position}</strong> 
+                      We are pleased to offer you the position of <strong>{formData.position}</strong>
                       at HRMS Portal. This letter outlines the terms and conditions of your employment.
                     </p>
                   </div>
@@ -407,7 +444,7 @@ export default function OfferLetter() {
 
                   <div className="closing-section">
                     <p>
-                      We look forward to welcoming you to our team and are confident that you will 
+                      We look forward to welcoming you to our team and are confident that you will
                       make valuable contributions to our company.
                     </p>
                     <br />

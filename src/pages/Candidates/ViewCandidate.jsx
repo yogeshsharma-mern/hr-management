@@ -346,7 +346,7 @@ const interviews = data?.data?.interviews || [];
                                 <iframe
                                     src={candidate.resume}
                                     title={`${candidate.fullName}'s Resume`}
-                                    className="resume-frame"
+                                    className="resume-iframe"
                                 />
                             ) : (
                                 <div className="resume-image-container">

@@ -22,6 +22,7 @@ import InterviewList from './pages/interview/InterviewList.jsx';
 import AppoinmentLetter from './pages/appoinmentletter/AppoinmentLetter.jsx';
 import Joining from './pages/joining/Joining.jsx';
 import Document from './pages/documents/Document.jsx';
+import HrProfile from './pages/profile/HrProfile.jsx';
 
 
 
@@ -51,6 +52,8 @@ export default function App() {
             <Route path="appointment-letter" element={<AppoinmentLetter />} />
             <Route path="joining" element={<Joining />} />
             <Route path="documents" element={<Document />} />
+            <Route path="profile" element={<HrProfile />} />
+
 
 
 

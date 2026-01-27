@@ -55,7 +55,7 @@ let username = user?.username.charAt(0).toUpperCase();
   const toggleTheme = () => setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
   const goToProfile = () => {
-    navigate("/admin/profile");
+    navigate("/hr/profile");
     setMenuOpen(false);
   };
 

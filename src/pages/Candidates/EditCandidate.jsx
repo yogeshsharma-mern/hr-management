@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiPost, apiGet } from "../../api/apiFetch";
+import { apiPost, apiGet,apiPut } from "../../api/apiFetch";
 import apiPath from "../../api/apiPath";
 import AddCandidateValidation from "../../validation/addCandidate.validation";
 import { useNavigate } from "react-router-dom";
@@ -191,7 +191,7 @@ const EditCandidate = () => {
     // If you don't want to modify apiFetch.js, use this custom mutation function
     const mutation = useMutation({
         mutationFn: (formData) =>
-            apiPost(apiPath.AddCandidates, formData),
+            apiPut(`${apiPath.editCandidate}/${id}`, formData),
 
         onSuccess: (data) => {
             queryClient.invalidateQueries(["candidates"]);
@@ -266,6 +266,8 @@ const EditCandidate = () => {
 }
 
 // Only append resume if user uploaded a NEW one
+        const formData = new FormData();
+
 if (!resumeFile.existing) {
   formData.append("resume", resumeFile);
 }
@@ -278,7 +280,6 @@ if (!resumeFile.existing) {
         };
 
         // Create FormData
-        const formData = new FormData();
 
         // Add all form fields as per cURL structure
         formData.append('fullName', data.personalInfo.fullName);
@@ -318,7 +319,7 @@ if (!resumeFile.existing) {
         formData.append('skills', JSON.stringify(data.skills || []));
 
         // Add resume file
-        formData.append('resume', resumeFile);
+        // formData.append('resume', resumeFile);
 
         // Use mutation
         mutation.mutate(formData);
