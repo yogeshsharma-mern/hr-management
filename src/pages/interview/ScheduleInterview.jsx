@@ -29,8 +29,8 @@ import './ScheduleInterview.css';
 
 const interviewRounds = [
   { value: 'HR', label: 'HR Round', icon: '👥', color: '#3b82f6' },
-  { value: 'Technical', label: 'Technical Round', icon: '💻', color: '#06b6d4' },
-  { value: 'Managerial', label: 'Managerial Round', icon: '👨‍💼', color: '#8b5cf6' },
+  // { value: 'Technical', label: 'Technical Round', icon: '💻', color: '#06b6d4' },
+  // { value: 'Managerial', label: 'Managerial Round', icon: '👨‍💼', color: '#8b5cf6' },
 //   { value: 'Final', label: 'Final Round', icon: '🎯', color: '#10b981' },
 //   { value: 'Screening', label: 'Screening', icon: '🔍', color: '#f59e0b' }
 ];

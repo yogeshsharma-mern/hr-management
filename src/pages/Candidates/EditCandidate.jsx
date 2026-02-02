@@ -949,7 +949,7 @@ if (!resumeFile.existing) {
                                         <input
                                             {...field}
                                             type="number"
-                                            className={`form-input ${errors.totalExperience ? 'error' : ''}`}
+                                            className={`form-input mr-[25px] ${errors.totalExperience ? 'error' : ''}`}
                                             placeholder="e.g., 3.5"
                                             min="0"
                                             max="50"

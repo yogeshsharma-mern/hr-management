@@ -23,7 +23,7 @@ import AppoinmentLetter from './pages/appoinmentletter/AppoinmentLetter.jsx';
 import Joining from './pages/joining/Joining.jsx';
 import Document from './pages/documents/Document.jsx';
 import HrProfile from './pages/profile/HrProfile.jsx';
-
+import ScheduleInterviewtechManagerial from "../src/pages/interview/ScheduleInterviewtechManagerial.jsx";
 
 
 export default function App() {
@@ -53,6 +53,8 @@ export default function App() {
             <Route path="joining" element={<Joining />} />
             <Route path="documents" element={<Document />} />
             <Route path="profile" element={<HrProfile />} />
+            <Route path="interview/schedule/:id" element={<ScheduleInterviewtechManagerial />} />
+
 
 
 

@@ -19,7 +19,7 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const menuRef = useRef(null);
 const getStoredUser = () => {
-  const user = localStorage.getItem("user");
+  const user = localStorage.getItem("hr");
   return user ? JSON.parse(user) : null;
 };
 
@@ -36,7 +36,9 @@ const { data } = useQuery({
 });
 
 const user = data?.results || {};
-let username = user?.username.charAt(0).toUpperCase();
+console.log("user",user);
+let username = user?.username?.charAt(0).toUpperCase();
+console.log("username",username);
 
   // console.log("user",user);
   const config = genConfig({ sex: "man", faceColor: "#d2a679", bgColor: "yellow" });
@@ -74,6 +76,12 @@ let username = user?.username.charAt(0).toUpperCase();
     <div className="flex h-screen w-full bg-[var(--color-neutral)]">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      {sidebarOpen && (
+  <div
+    className="fixed inset-0 bg-black/40 z-[4] md:hidden"
+    onClick={() => setSidebarOpen(false)}
+  />
+)}
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
@@ -105,7 +113,7 @@ let username = user?.username.charAt(0).toUpperCase();
                 user?.profilePic !=="" ? <img className="w-[40px] h-[40px] cursor-pointer rounded-full" src={`${user.profilePic}`} alt="profilePicture" /> :<Avatar style={{ width: "40px", height: "40px" }} {...config} />
               } */}
 
-            <div className="w-[40px] h-[40px] flex justify-center items-center text-white font-bold bg-blue-400 cursor-pointer rounded-full">
+            <div className="w-[40px] h-[40px] flex justify-center items-center text-white font-bold bg-blue-500 cursor-pointer rounded-full">
               {username}
             </div>
               {/* <img className="w-[40px] h-[40px] cursor-pointer rounded-full" src={`${user.profilePic}`} alt="profilePicture" /> */}

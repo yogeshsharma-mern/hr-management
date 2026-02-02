@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import apiPath from '../../api/apiPath';
-import { apiPost,apiGet } from '../../api/apiFetch';
+import { apiPost, apiGet } from '../../api/apiFetch';
 import './OfferLetter.css';
 import { useQuery } from '@tanstack/react-query';
 
@@ -21,22 +21,30 @@ export default function OfferLetter() {
   });
 
   const [loading, setLoading] = useState(false);
-const { data, isLoading, isError, error } = useQuery({
-  queryKey: ["candidatesdata"],
-  queryFn: () => apiGet(apiPath.CANDIDATES)
-});
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["candidatesdata"],
+    queryFn: () => apiGet(apiPath.CANDIDATES)
+  });
 
-if (isLoading) {
-  return <p>Loading candidates...</p>;
-}
+  // if (isLoading) {
+  //   return <p>Loading candidates...</p>;
+  // }
 
-if (isError) {
-  return <p>Error: {error.message}</p>;
-}
+  // if (isError) {
+  //   return <p>Error: {error.message}</p>;
+  // }
 
-// console.log("candidates", data.data);
-const candidates= data?.data;
-console.log("candidates",candidates);
+  // console.log("candidates", data.data);
+  // const candidates= data?.data;
+  // console.log("candidates",candidates);
+  const candidates = [
+    {
+      fullName: "yogesh"
+    },
+    {
+      fullName: "nitin"
+    }
+  ]
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,12 +134,11 @@ console.log("candidates",candidates);
                     >
                       <option value="Software Engineer">Software Engineer</option>
                       {
-                        candidates?.map((item,index)=>
-                        {
-                    return     <option value={item.fullName}>{item?.fullName} </option>
-                      // <option value="Team Lead">Team Lead</option>
-                      // <option value="Project Manager">Project Manager</option>
-                      // <option value="Product Manager">Product Manager</option>
+                        candidates?.map((item, index) => {
+                          return <option value={item.fullName}>{item?.fullName} </option>
+                          // <option value="Team Lead">Team Lead</option>
+                          // <option value="Project Manager">Project Manager</option>
+                          // <option value="Product Manager">Product Manager</option>
                         })
                       }
                     </select>
@@ -197,7 +204,7 @@ console.log("candidates",candidates);
                   <div className="form-group">
                     <label htmlFor="basicSalary">Basic Salary</label>
                     <div className="input-group">
-                      <span className="input-group-text">£</span>
+                      <span className="input-group-text">₹</span>
                       <input
                         type="number"
                         id="basicSalary"
@@ -213,7 +220,7 @@ console.log("candidates",candidates);
                   <div className="form-group">
                     <label htmlFor="hra">HRA (House Rent Allowance)</label>
                     <div className="input-group">
-                      <span className="input-group-text">£</span>
+                      <span className="input-group-text">₹</span>
                       <input
                         type="number"
                         id="hra"
@@ -229,7 +236,7 @@ console.log("candidates",candidates);
                   <div className="form-group">
                     <label htmlFor="specialAllowance">Special Allowance</label>
                     <div className="input-group">
-                      <span className="input-group-text">£</span>
+                      <span className="input-group-text">₹</span>
                       <input
                         type="number"
                         id="specialAllowance"
@@ -245,7 +252,7 @@ console.log("candidates",candidates);
                   <div className="form-group">
                     <label htmlFor="annualBonus">Annual Bonus</label>
                     <div className="input-group">
-                      <span className="input-group-text">£</span>
+                      <span className="input-group-text">₹</span>
                       <input
                         type="number"
                         id="annualBonus"
@@ -262,15 +269,15 @@ console.log("candidates",candidates);
                 <div className="ctc-summary">
                   <div className="ctc-item">
                     <span className="ctc-label">Monthly Gross Salary:</span>
-                    <span className="ctc-value">£ {calculateMonthlyGross().toLocaleString()}</span>
+                    <span className="ctc-value">₹ {calculateMonthlyGross().toLocaleString()}</span>
                   </div>
                   <div className="ctc-item">
                     <span className="ctc-label">Annual Bonus:</span>
-                    <span className="ctc-value">£ {formData.annualBonus.toLocaleString()}</span>
+                    <span className="ctc-value">₹ {formData.annualBonus.toLocaleString()}</span>
                   </div>
                   <div className="ctc-item total">
                     <span className="ctc-label">Total Annual CTC:</span>
-                    <span className="ctc-value">£ {calculateTotalCTC().toLocaleString()}</span>
+                    <span className="ctc-value">₹ {calculateTotalCTC().toLocaleString()}</span>
                   </div>
                 </div>
 
@@ -413,23 +420,23 @@ console.log("candidates",candidates);
                         </tr>
                         <tr>
                           <td>HRA</td>
-                          <td>£ {formData.hra.toLocaleString()}</td>
-                          <td>£ {(formData.hra * 12).toLocaleString()}</td>
+                          <td>₹ {formData.hra.toLocaleString()}</td>
+                          <td>₹ {(formData.hra * 12).toLocaleString()}</td>
                         </tr>
                         <tr>
                           <td>Special Allowance</td>
-                          <td>£ {formData.specialAllowance.toLocaleString()}</td>
-                          <td>£ {(formData.specialAllowance * 12).toLocaleString()}</td>
+                          <td>₹ {formData.specialAllowance.toLocaleString()}</td>
+                          <td>₹ {(formData.specialAllowance * 12).toLocaleString()}</td>
                         </tr>
                         <tr>
                           <td>Annual Bonus</td>
                           <td>—</td>
-                          <td>£ {formData.annualBonus.toLocaleString()}</td>
+                          <td>₹ {formData.annualBonus.toLocaleString()}</td>
                         </tr>
                         <tr className="total-row">
                           <td><strong>Total CTC</strong></td>
-                          <td><strong>£ {calculateMonthlyGross().toLocaleString()}</strong></td>
-                          <td><strong>£ {calculateTotalCTC().toLocaleString()}</strong></td>
+                          <td><strong>₹ {calculateMonthlyGross().toLocaleString()}</strong></td>
+                          <td><strong>₹ {calculateTotalCTC().toLocaleString()}</strong></td>
                         </tr>
                       </tbody>
                     </table>

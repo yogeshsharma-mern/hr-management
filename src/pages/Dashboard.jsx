@@ -206,9 +206,9 @@ export default function HRDashboard() {
                 <AreaChart data={[
                   { value: 10 }, { value: 25 }, { value: 18 }, { value: 30 }, { value: 22 }, { value: metric.trend === 'up' ? 35 : 15 }
                 ]}>
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
+                  <Area
+                    type="monotone"
+                    dataKey="value"
                     stroke={metric.chartColor}
                     fill={metric.chartColor}
                     fillOpacity={0.2}
@@ -320,28 +320,28 @@ export default function HRDashboard() {
           </div>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <RadialBarChart 
-                innerRadius="20%" 
-                outerRadius="90%" 
-                data={performanceData} 
-                startAngle={180} 
+              <RadialBarChart
+                innerRadius="20%"
+                outerRadius="90%"
+                data={performanceData}
+                startAngle={180}
                 endAngle={0}
               >
-                <RadialBar 
-                  minAngle={15} 
-                  label={{ position: 'insideStart', fill: '#fff' }} 
-                  background 
-                  clockWise 
+                <RadialBar
+                  minAngle={15}
+                  label={{ position: 'insideStart', fill: '#fff' }}
+                  background
+                  clockWise
                   dataKey="value"
                 >
                   {performanceData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </RadialBar>
-                <Legend 
-                  iconSize={10} 
-                  layout="vertical" 
-                  verticalAlign="middle" 
+                <Legend
+                  iconSize={10}
+                  layout="vertical"
+                  verticalAlign="middle"
                   align="right"
                   wrapperStyle={{ right: -40 }}
                 />
@@ -371,18 +371,18 @@ export default function HRDashboard() {
                 <YAxis stroke="#6b7280" />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
-                <Line 
-                  type="monotone" 
-                  dataKey="present" 
-                  stroke="#10B981" 
+                <Line
+                  type="monotone"
+                  dataKey="present"
+                  stroke="#10B981"
                   strokeWidth={3}
                   dot={{ fill: '#10B981', r: 5 }}
                   activeDot={{ r: 8 }}
                 />
-                <Line 
-                  type="monotone" 
-                  dataKey="absent" 
-                  stroke="#EF4444" 
+                <Line
+                  type="monotone"
+                  dataKey="absent"
+                  stroke="#EF4444"
                   strokeWidth={3}
                   dot={{ fill: '#EF4444', r: 5 }}
                   activeDot={{ r: 8 }}

@@ -200,7 +200,7 @@
 /* Form Elements */
 .form-group {
     margin-bottom: 16px;
-     margin-top: 15px;
+    margin-top: 15px;
 }
 
 .form-label {
@@ -506,43 +506,43 @@ select.form-input {
     .main-card {
         padding: 20px;
     }
-    
+
     .add-candidate-container {
-        padding: 12px;
+        padding: 3px;
     }
-    
+
     .grid-2 {
         grid-template-columns: 1fr;
         gap: 12px;
     }
-    
+
     .stepper-step {
         min-width: 70px;
     }
-    
+
     .step-label {
         font-size: 11px;
     }
-    
+
     .action-buttons {
         flex-direction: column;
         gap: 12px;
     }
-    
+
     .right-actions {
         width: 100%;
         justify-content: space-between;
     }
-    
+
     .btn {
         width: 100%;
         /* justify-content: center; */
     }
-    
+
     .page-title {
         font-size: 24px;
     }
-    
+
     .step-title {
         font-size: 18px;
     }
@@ -569,6 +569,7 @@ select.form-input {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -852,11 +853,13 @@ select.form-input {
 /* Responsive adjustments for phone input */
 @media (max-width: 768px) {
     .phone-container .react-tel-input .form-control {
-        font-size: 16px !important; /* Prevents zoom on iOS */
+        font-size: 16px !important;
+        /* Prevents zoom on iOS */
     }
-    
+
     .custom-select .select__control {
-        font-size: 16px !important; /* Prevents zoom on iOS */
+        font-size: 16px !important;
+        /* Prevents zoom on iOS */
     }
 }
 
@@ -1107,39 +1110,39 @@ select.form-input {
     .upload-area {
         padding: 30px 16px;
     }
-    
+
     .upload-icon {
         font-size: 36px;
     }
-    
+
     .upload-title {
         font-size: 16px;
     }
-    
+
     .upload-subtitle {
         font-size: 13px;
     }
-    
+
     .file-preview-header {
         padding: 16px;
         flex-wrap: wrap;
     }
-    
+
     .file-name {
         font-size: 14px;
     }
-    
+
     .file-actions {
         flex-direction: column;
     }
-    
+
     .file-actions .btn {
         width: 100%;
     }
 }
 
 /* Accessibility */
-.file-input:focus + .upload-label {
+.file-input:focus+.upload-label {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
     border-radius: 8px;
@@ -1151,6 +1154,7 @@ select.form-input {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);

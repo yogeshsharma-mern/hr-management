@@ -6,7 +6,7 @@ import { FaBriefcase, FaBuilding, FaMapMarkerAlt, FaUsers, FaFileAlt } from 'rea
 import apiPath from '../../api/apiPath';
 import { apiPost, apiPut } from '../../api/apiFetch';
 import toast from 'react-hot-toast';
-
+import { validateJobForm } from '../../validations/jobvalidation';
 export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }) {
   const [formData, setFormData] = useState({
     title: "",
@@ -16,6 +16,8 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
     description: "",
     status: "open"
   });
+  const [errors, setErrors] = useState({});
+  console.log("errrors",errors);
 
   const queryClient = useQueryClient();
 
@@ -37,7 +39,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
   const createMutation = useMutation({
     mutationFn: (data) => apiPost(apiPath.JobOpenings, data),
     onSuccess: (data) => {
-      console.log("data",data);
+      console.log("data", data);
       toast.success(data?.message || "Job created successfully");
       queryClient.invalidateQueries(["jobOpenings"]);
       onSuccess?.();
@@ -57,25 +59,37 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  let newValue = value;
+    let newValue = value;
 
-  if (name === "title" && value) {
-    newValue = value.charAt(0).toUpperCase() + value.slice(1);
-  }
+    if (name === "title" && value) {
+      newValue = value.charAt(0).toUpperCase() + value.slice(1);
+    }
 
-  setFormData(prev => ({
-    ...prev,
-    [name]: newValue
-  }));
-};
+    setFormData(prev => ({
+      ...prev,
+      [name]: newValue
+    }));
+    setErrors(prev => ({
+  ...prev,
+  [name]: ""
+}));
+  };
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    console.log("hey");
+    const validationErrors = validateJobForm(formData);
+    console.log("validationErrors",validationErrors);
+    // console.log("validationerrors",validationErrors);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
     if (mode === 'edit') {
       updateMutation.mutate(formData);
     } else {
@@ -96,9 +110,14 @@ const handleChange = (e) => {
             value={formData.title}
             onChange={handleChange}
             placeholder="e.g., Senior Frontend Developer"
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-            required
+            className={`w-full ${
+    errors.title ? "border-red-500" : "border-gray-300"
+  } px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+            
           />
+          {errors.title && (
+  <p className="text-red-500 text-sm">{errors.title}</p>
+)}
         </div>
 
         <div className="space-y-2">
@@ -110,8 +129,10 @@ const handleChange = (e) => {
             name="department"
             value={formData.department}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-            required
+            className={`w-full px-4 py-3 ${
+    errors.department ? "border-red-500" : "border-gray-300"
+  } border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+
           >
             <option value="">Select Department</option>
             {/* <option value="Engineering">Engineering</option> */}
@@ -123,6 +144,9 @@ const handleChange = (e) => {
             {/* <option value="Operations">Operations</option> */}
             <option value="Design">Design</option>
           </select>
+            {errors.department && (
+  <p className="text-red-500 text-sm">{errors.department}</p>
+)}
         </div>
 
         <div className="space-y-2">
@@ -134,8 +158,10 @@ const handleChange = (e) => {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-            required
+            className={`w-full px-4 ${
+    errors.location ? "border-red-500" : "border-gray-300"
+  } py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+
           >
             <option value="">Select Location</option>
             <option value="Remote">Remote</option>
@@ -145,10 +171,15 @@ const handleChange = (e) => {
             {/* <option value="Sydney, Australia">Sydney, Australia</option> */}
             {/* <option value="Berlin, Germany">Berlin, Germany</option> */}
           </select>
+                      {errors.location && (
+  <p className="text-red-500 text-sm">{errors.location}</p>
+)}
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+          <label className={`block text-sm ${
+    errors.noOfOpenings ? "border-red-500" : "border-gray-300"
+  } font-medium text-gray-700 flex items-center gap-2`}>
             <FaUsers className="text-emerald-500" />
             Number of Openings *
           </label>
@@ -159,9 +190,14 @@ const handleChange = (e) => {
             value={formData.noOfOpenings}
             onChange={handleChange}
             placeholder="e.g., 5"
-            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-            required
+            className={`w-full px-4 py-3  ${
+    errors.noOfOpenings ? "border-red-500" : "border-gray-300"
+  }  border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+
           />
+           {errors.noOfOpenings && (
+  <p className="text-red-500 text-sm">{errors.noOfOpenings}</p>
+)}
         </div>
 
         {/* {mode === 'edit' && (
@@ -195,8 +231,13 @@ const handleChange = (e) => {
           onChange={handleChange}
           rows="4"
           placeholder="Describe the role, responsibilities, and requirements..."
-          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+          className={`w-full  ${
+    errors.description ? "border-red-500" : "border-gray-300"
+  }  px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
         />
+                   {errors.description && (
+  <p className="text-red-500 text-sm">{errors.description}</p>
+)}
       </div>
 
       <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">

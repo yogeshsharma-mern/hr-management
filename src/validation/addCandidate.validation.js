@@ -79,6 +79,9 @@ const AddCandidateValidation = () => {
             institution: {
                 required: "Institution name is required",
             },
+                        qualification: {
+                required: "Qualification  is required",
+            },
             yearOfPassing: {
                 required: "Year of passing is required",
                 pattern: {

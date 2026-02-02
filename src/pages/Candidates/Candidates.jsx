@@ -63,6 +63,7 @@ export default function Candidates() {
       const params = {
         limit: pagination.pageSize,
         page: pagination.pageIndex + 1,
+        title:debouncedSearch
       };
       
       if (filters.appliedFor) {
@@ -550,6 +551,7 @@ export default function Candidates() {
           setPagination={setPagination}
           setPaginationState={setPagination}
           totalCount={totalCount}
+          searchTerm={searchTerm}
         />
       </div>
 

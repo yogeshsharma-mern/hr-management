@@ -10,18 +10,18 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import Select from "react-select";
 import {
-  FaUpload,
-  FaFilePdf,
-  FaFileWord,
-  FaTimes,
-  FaCloudUploadAlt
+    FaUpload,
+    FaFilePdf,
+    FaFileWord,
+    FaTimes,
+    FaCloudUploadAlt
 } from "react-icons/fa";
 import "./AddCandidate.css";
 
 const steps = ["Personal Information", "Education Details", "Work Experience", "Resume Upload"];
 const commonSkills = [
-    "JavaScript", "React", "Node.js", "Python", "Java", "HTML/CSS", "SQL", 
-    "AWS", "Docker", "Git", "TypeScript", "Angular", "Vue.js", "MongoDB", 
+    "JavaScript", "React", "Node.js", "Python", "Java", "HTML/CSS", "SQL",
+    "AWS", "Docker", "Git", "TypeScript", "Angular", "Vue.js", "MongoDB",
     "PostgreSQL", "Redis", "Kubernetes", "CI/CD", "Agile/Scrum"
 ];
 
@@ -86,7 +86,7 @@ const AddCandidate = () => {
             totalExperience: "",
         },
     });
-
+    console.log("errors", errors);
     const {
         fields: educationFields,
         append: appendEducation,
@@ -101,38 +101,38 @@ const AddCandidate = () => {
 
     const handleFileUpload = async (file) => {
         if (!file) return null;
-        
+
         const allowedTypes = [
             'application/pdf',
             'application/msword',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'text/plain'
         ];
-        
+
         const maxSize = 5 * 1024 * 1024; // 5MB
-        
+
         if (!allowedTypes.includes(file.type)) {
             toast.error('Please upload a PDF, DOC, DOCX, or TXT file');
             return null;
         }
-        
+
         if (file.size > maxSize) {
             toast.error('File size must be less than 5MB');
             return null;
         }
-        
+
         return file;
     };
 
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
-        
+
         const validFile = await handleFileUpload(file);
         if (validFile) {
             setResumeFile(validFile);
             setUploadProgress(0);
-            
+
             // Simulate upload progress (UI only)
             const interval = setInterval(() => {
                 setUploadProgress(prev => {
@@ -182,25 +182,25 @@ const AddCandidate = () => {
     */
 
     // If you don't want to modify apiFetch.js, use this custom mutation function
-const mutation = useMutation({
-  mutationFn: (formData) =>
-    apiPost(apiPath.AddCandidates, formData),
+    const mutation = useMutation({
+        mutationFn: (formData) =>
+            apiPost(apiPath.AddCandidates, formData),
 
-  onSuccess: (data) => {
-    queryClient.invalidateQueries(["candidates"]);
-    toast.success(data?.message || "Candidate added successfully!");
-    handleReset();
-    navigate(-1);
-  },
+        onSuccess: (data) => {
+            queryClient.invalidateQueries(["candidates"]);
+            toast.success(data?.message || "Candidate added successfully!");
+            handleReset();
+            navigate(-1);
+        },
 
-  onError: (error) => {
-    toast.error(
-      error?.response?.data?.message ||
-      error?.message ||
-      "Failed to add candidate"
-    );
-  },
-});
+        onError: (error) => {
+            toast.error(
+                error?.response?.data?.message ||
+                error?.message ||
+                "Failed to add candidate"
+            );
+        },
+    });
 
 
     const onSubmit = async (data) => {
@@ -217,13 +217,13 @@ const mutation = useMutation({
 
         // Create FormData
         const formData = new FormData();
-        
+
         // Add all form fields as per cURL structure
         formData.append('fullName', data.personalInfo.fullName);
         formData.append('email', data.personalInfo.email);
         formData.append('phone', data.personalInfo.phone);
         formData.append('jobId', data.personalInfo.jobId);
-        
+
         // Add optional fields if they exist
         if (data.personalInfo.dateOfBirth) {
             formData.append('dateOfBirth', formatDate(data.personalInfo.dateOfBirth));
@@ -234,9 +234,9 @@ const mutation = useMutation({
         if (data.personalInfo.address) {
             formData.append('address', data.personalInfo.address);
         }
-        
+
         formData.append('totalExperienceInYears', parseFloat(data.totalExperience) || 0);
-        
+
         // Add arrays as JSON strings
         formData.append('education', JSON.stringify(data.education.map(edu => ({
             institution: edu.institution,
@@ -244,7 +244,7 @@ const mutation = useMutation({
             yearOfPassing: parseInt(edu.yearOfPassing) || 0,
             cgpa: parseFloat(edu.percentage) || 0,
         }))));
-        
+
         formData.append('experience', JSON.stringify(data.experience.map(exp => ({
             companyName: exp.company,
             jobTitle: exp.jobTitle,
@@ -252,9 +252,9 @@ const mutation = useMutation({
             to: exp.toDate ? formatDate(exp.toDate) : null,
             responsibilities: exp.responsibilities,
         }))));
-        
+
         formData.append('skills', JSON.stringify(data.skills || []));
-        
+
         // Add resume file
         formData.append('resume', resumeFile);
 
@@ -370,13 +370,13 @@ const mutation = useMutation({
         <div className="step-container">
             <h2 className="step-title">Personal Information</h2>
             <p className="step-subtitle">DigiRoad collects this information to better understand and serve candidates.</p>
-            
+
             <div className="section">
                 <h3 className="section-title">Basic Information</h3>
                 <div className="grid-2">
                     <div className="form-group">
                         <label className="form-label">
-                            Full Name
+                            Name
                             <Controller
                                 name="personalInfo.fullName"
                                 control={control}
@@ -398,7 +398,7 @@ const mutation = useMutation({
 
                     <div className="form-group">
                         <label className="form-label">
-                            Email Address
+                            Email
                             <Controller
                                 name="personalInfo.email"
                                 control={control}
@@ -662,6 +662,7 @@ const mutation = useMutation({
                                                     type="number"
                                                     className={`form-input ${errors.education?.[index]?.percentage ? 'error' : ''}`}
                                                     placeholder="e.g., 85.5"
+                                                    style={{ marginRight: "75px" }}
                                                     min="0"
                                                     max="100"
                                                     step="0.01"
@@ -702,7 +703,7 @@ const mutation = useMutation({
 
             {experienceFields.map((field, index) => {
                 const currentlyWorking = watch(`experience.${index}.currentlyWorking`);
-                
+
                 return (
                     <div key={field.id} className="card">
                         <div className="card-header">
@@ -886,7 +887,7 @@ const mutation = useMutation({
                                         <input
                                             {...field}
                                             type="number"
-                                            className={`form-input ${errors.totalExperience ? 'error' : ''}`}
+                                            className={`form-input mr-[25px] ${errors.totalExperience ? 'error' : ''}`}
                                             placeholder="e.g., 3.5"
                                             min="0"
                                             max="50"
@@ -936,7 +937,7 @@ const mutation = useMutation({
         <div className="step-container">
             <h2 className="step-title">Upload Resume</h2>
             <p className="step-subtitle">Upload the candidate's resume in PDF, DOC, or DOCX format (Max 5MB).</p>
-            
+
             <div className="resume-upload-container">
                 {!resumeFile ? (
                     <div className="upload-area">
@@ -991,11 +992,11 @@ const mutation = useMutation({
                                 <FaTimes />
                             </button>
                         </div>
-                        
+
                         {mutation.isLoading && (
                             <div className="upload-progress">
                                 <div className="progress-bar">
-                                    <div 
+                                    <div
                                         className="progress-fill"
                                         style={{ width: `${uploadProgress}%` }}
                                     ></div>
@@ -1005,7 +1006,7 @@ const mutation = useMutation({
                                 </span>
                             </div>
                         )}
-                        
+
                         <div className="file-actions">
                             <button
                                 type="button"
@@ -1018,7 +1019,7 @@ const mutation = useMutation({
                         </div>
                     </div>
                 )}
-                
+
                 <div className="upload-note">
                     <p className="note-text">
                         <strong>Note:</strong> The resume will be parsed automatically to extract candidate information.
