@@ -11,7 +11,8 @@ const apiPath = Object.freeze({
   scheduleInterview: "/interviews/schedule",
   interviewList: "/interviews",
   updateInterviewStatus: "/interviews/status",
-  updateScheduleInterview:"/interviews/assign"
+  updateScheduleInterview:"/interviews/assign",
+  offerLetters:"/offer-letters"
 
 });
 

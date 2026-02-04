@@ -195,9 +195,9 @@ export default function Candidates() {
           <div className="flex items-center space-x-2">
             <FaBriefcase className="text-gray-400" />
             <span className="font-medium text-gray-700">
-              {typeof row.original.jobId.title === 'string'
-                ? row.original.jobId.title
-                : JSON.stringify(row.original.jobId.title)}
+              {typeof row?.original?.jobId?.title === 'string'
+                ? row?.original?.jobId?.title
+                : JSON.stringify(row?.original?.jobId?.title)}
             </span>
           </div>
         )

@@ -4,6 +4,7 @@ function getHeaders() {
   return { "Content-Type": "application/json" };
 }
 
+
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: getHeaders(),
@@ -18,6 +19,8 @@ instance.interceptors.request.use((config) => {
     headers: { ...config.headers, Authorization: `Bearer ${token}` },
   };
 });
+
+
 
 function apiPost(url, body) {
   let headers = {};

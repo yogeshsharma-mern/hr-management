@@ -1,24 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import apiPath from '../../api/apiPath';
 import { apiPost, apiGet } from '../../api/apiFetch';
 import './OfferLetter.css';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 
 export default function OfferLetter() {
   const [formData, setFormData] = useState({
-    candidate: '',
+    candidateName: '',
     position: 'Software Engineer',
     joiningDate: '31/03/2023',
     reportingManager: '',
     basicSalary: 20000,
-    hra: 0,
+    houseRentAllowance: 0,
     specialAllowance: 0,
     annualBonus: 0,
     probationPeriod: 3,
     noticePeriod: 2,
     specialRemarks: '',
   });
+  // const [jobId,setJobId] = useState("");
+  // console.log("jobId",jobId);
+  const navigate = useNavigate();
+  console.log("formdata", formData);
 
   const [loading, setLoading] = useState(false);
   const { data, isLoading, isError, error } = useQuery({
@@ -35,29 +42,42 @@ export default function OfferLetter() {
   // }
 
   // console.log("candidates", data.data);
-  // const candidates= data?.data;
-  // console.log("candidates",candidates);
-  const candidates = [
-    {
-      fullName: "yogesh"
-    },
-    {
-      fullName: "nitin"
-    }
-  ]
+  const candidates = data?.data;
+  console.log("candidates", candidates);
+
+  const selectPosition = candidates?.find((can) => can?.fullName === formData?.candidateName);
+  const jobId = selectPosition?.jobId?._id;
+  const candidateId = selectPosition?._id;
+  console.log("candidateId",candidateId);
+  console.log("jobid",jobId);
+// useEffect(()=>
+// {
+//   setJobId(selectPosition?.jobId?._id);
+// },[selectPosition])
+  console.log("selectedposition", selectPosition);
+
+
+  // const candidates = [
+  //   {
+  //     fullName: "yogesh"
+  //   },
+  //   {
+  //     fullName: "nitin"
+  //   }
+  // ]
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'basicSalary' || name === 'hra' || name === 'specialAllowance' || name === 'annualBonus'
+      [name]: name === 'basicSalary' || name === 'houseRentAllowance' || name === 'specialAllowance' || name === 'annualBonus'
         ? parseFloat(value) || 0
         : value
     }));
   };
 
   const calculateMonthlyGross = () => {
-    return formData.basicSalary + formData.hra + formData.specialAllowance;
+    return formData.basicSalary + formData.houseRentAllowance + formData.specialAllowance;
   };
 
   const calculateTotalCTC = () => {
@@ -71,13 +91,18 @@ export default function OfferLetter() {
     try {
       const payload = {
         ...formData,
-        monthlyGrossSalary: calculateMonthlyGross(),
-        totalCTC: calculateTotalCTC()
+        jobId
+        // monthlyGrossSalary: calculateMonthlyGross(),
+        // totalCTC: calculateTotalCTC()
       };
       const response = await apiPost(apiPath.offerLetters, payload);
-      alert('Offer letter generated successfully!');
+      // alert('Offer letter generated successfully!');
+      toast.success(response?.data);
+      navigate(-1);
+    
     } catch (error) {
-      alert('Error generating offer letter');
+      // alert('Error generating offer letter');
+      toast.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -96,7 +121,14 @@ export default function OfferLetter() {
 
   return (
     <div className="offer-letter-container">
+      <button
+        className="bg-gray-200 flex items-center gap-2 py-1 px-3 rounded cursor-pointer"
+        onClick={() => navigate(-1)}
+      >
+        <FaArrowLeft /> Go Back
+      </button>
       <div className="header-section">
+
         <h1 className="page-title">Create and Send Offer Letters</h1>
         <p className="page-subtitle">Generate professional offer letters for selected candidates</p>
       </div>
@@ -111,7 +143,7 @@ export default function OfferLetter() {
               <form onSubmit={handleSubmit}>
                 <div className="form-grid">
                   <div className="form-group">
-                    <label htmlFor="candidate">
+                    <label htmlFor="candidateName">
                       Select Candidate <span className="required">*</span>
                     </label>
                     {/* <input
@@ -124,26 +156,24 @@ export default function OfferLetter() {
                       className="form-control"
                       required
                     /> */}
-                    <select
-                      id="position"
-                      name="candidate"
-                      value={formData.candidate}
-                      onChange={handleChange}
-                      className="form-control"
-                      required
-                    >
-                      <option value="Software Engineer">Software Engineer</option>
-                      {
-                        candidates?.map((item, index) => {
-                          return <option value={item.fullName}>{item?.fullName} </option>
-                          // <option value="Team Lead">Team Lead</option>
-                          // <option value="Project Manager">Project Manager</option>
-                          // <option value="Product Manager">Product Manager</option>
-                        })
-                      }
-                    </select>
-                  </div>
+                 <select
+  name="candidateName"
+  value={formData.candidateName}
+  onChange={handleChange}
+  className="form-control"
+  required
+>
+  <option value="">Select Candidate</option>
 
+  {candidates?.map((item) => (
+    <option key={item._id} value={item.fullName}>
+      {item.fullName}
+    </option>
+  ))}
+</select>
+
+                  </div>
+                  {/* 
                   <div className="form-group">
                     <label htmlFor="position">
                       Position <span className="required">*</span>
@@ -162,6 +192,22 @@ export default function OfferLetter() {
                       <option value="Project Manager">Project Manager</option>
                       <option value="Product Manager">Product Manager</option>
                     </select>
+                  </div> */}
+
+                  <div className="form-group">
+                    <label htmlFor="reportingManager">
+                      Position  <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="reportingManager"
+                      name="reportingManager"
+                      value={selectPosition?.jobId?.title}
+                      onChange={handleChange}
+                      placeholder="Enter position of candidate"
+                      className="form-control disabled"
+                      required
+                    />
                   </div>
 
                   <div className="form-group">
@@ -218,14 +264,14 @@ export default function OfferLetter() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="hra">HRA (House Rent Allowance)</label>
+                    <label htmlFor="houseRentAllowance">HRA (House Rent Allowance)</label>
                     <div className="input-group">
                       <span className="input-group-text">₹</span>
                       <input
                         type="number"
-                        id="hra"
-                        name="hra"
-                        value={formData.hra}
+                        id="houseRentAllowance"
+                        name="houseRentAllowance"
+                        value={formData.houseRentAllowance}
                         onChange={handleChange}
                         className="form-control"
                         min="0"
@@ -328,18 +374,18 @@ export default function OfferLetter() {
                   />
                 </div>
 
-                <div className="action-buttons">
-                  <button
+                <div className="flex justify-end mt-3">
+                  {/* <button
                     type="button"
                     onClick={handlePreview}
                     className="btn btn-secondary"
                     disabled={loading}
                   >
                     Preview
-                  </button>
+                  </button> */}
                   <button
                     type="submit"
-                    className="btn btn-primary"
+                    className="flex justify-center items-center cursor-pointer px-4 py-2 rounded btn-primary"
                     disabled={loading}
                   >
                     {loading ? 'Generating...' : 'Generate Offer Letter'}
@@ -350,7 +396,7 @@ export default function OfferLetter() {
           </div>
         </div>
 
-        <div className="preview-section">
+        {/* <div className="preview-section">
           <div className="card preview-card">
             <div className="card-header">
               <h2>Offer Letter Preview</h2>
@@ -419,9 +465,9 @@ export default function OfferLetter() {
                           <td>£ {(formData.basicSalary * 12).toLocaleString()}</td>
                         </tr>
                         <tr>
-                          <td>HRA</td>
-                          <td>₹ {formData.hra.toLocaleString()}</td>
-                          <td>₹ {(formData.hra * 12).toLocaleString()}</td>
+                          <td>houseRentAllowance</td>
+                          <td>₹ {formData.houseRentAllowance.toLocaleString()}</td>
+                          <td>₹ {(formData.houseRentAllowance * 12).toLocaleString()}</td>
                         </tr>
                         <tr>
                           <td>Special Allowance</td>
@@ -464,7 +510,7 @@ export default function OfferLetter() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

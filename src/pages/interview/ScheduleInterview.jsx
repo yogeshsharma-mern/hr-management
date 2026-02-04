@@ -72,6 +72,7 @@ export default function ScheduleInterview() {
   });
 
   const candidate = candidateData?.data;
+  console.log("candidate",candidate);
 
   const { control, handleSubmit, formState: { errors }, watch, reset } = useForm({
     defaultValues: {
@@ -95,7 +96,7 @@ export default function ScheduleInterview() {
     mutationFn: (data) => apiPost(`${apiPath.scheduleInterview}/${id}`, data),
     onSuccess: (response) => {
       toast.success(response?.message || 'Interview scheduled successfully!');
-      navigate(`/candidates/view/${id}`);
+      navigate(`/hr/interviews`);
     },
     onError: (error) => {
       toast.error(error?.response?.data?.message || 'Failed to schedule interview');
@@ -157,7 +158,7 @@ export default function ScheduleInterview() {
             <div className="profile-main-info">
               <div className="profile-avatar-section">
                 <div className="avatar-circle">
-                  {candidate?.fullName?.split(' ').map(n => n[0]).join('').toUpperCase()}
+                  {candidate?.candidate?.fullName?.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </div>
                 <div className="candidate-badge">
                   <div className="badge-dot active"></div>
@@ -167,7 +168,7 @@ export default function ScheduleInterview() {
               
               <div className="profile-details-section">
                 <div className="profile-header-info">
-                  <h2 className="candidate-name">{candidate?.fullName}</h2>
+                  <h2 className="candidate-name">{candidate?.candidate?.fullName.toUpperCase()}</h2>
                   <div className="candidate-meta-row">
                     <div className="meta-item">
                       <MdWork />
@@ -175,7 +176,7 @@ export default function ScheduleInterview() {
                     </div>
                     <div className="meta-item">
                       <MdWork />
-                      <span>{candidate?.totalExperienceInYears || 0} years experience</span>
+                      <span>{candidate?.candidate?.totalExperienceInYears || 0} years experience</span>
                     </div>
                   </div>
                 </div>
@@ -183,11 +184,11 @@ export default function ScheduleInterview() {
                 <div className="profile-contact-info">
                   <div className="contact-item">
                     <FaEnvelope />
-                    <span>{candidate?.email}</span>
+                    <span>{candidate?.candidate?.email}</span>
                   </div>
                   <div className="contact-item">
                     <FaPhone />
-                    <span>{candidate?.phone}</span>
+                    <span>{candidate?.candidate?.phone}</span>
                   </div>
                 </div>
               </div>
@@ -195,12 +196,12 @@ export default function ScheduleInterview() {
               <div className="profile-skills-section">
                 <h3 className="skills-title">Top Skills</h3>
                 <div className="skills-grid">
-                  {candidate?.skills?.slice(0, 4).map((skill, index) => (
+                  {candidate?.candidate?.skills?.slice(0, 4).map((skill, index) => (
                     <div key={index} className="skill-badge">
                       {skill}
                     </div>
                   ))}
-                  {candidate?.skills?.length > 4 && (
+                  {candidate?.candidate?.skills?.length > 4 && (
                     <div className="skill-badge more">
                       +{candidate.skills.length - 4} more
                     </div>
@@ -214,10 +215,10 @@ export default function ScheduleInterview() {
                 <MdSchool />
                 <div>
                   <div className="edu-degree">
-                    {candidate?.education?.[0]?.qualification || 'Education not specified'}
+                    {candidate?.candidate?.education?.[0]?.qualification || 'Education not specified'}
                   </div>
                   <div className="edu-school">
-                    {candidate?.education?.[0]?.institution || ''}
+                    {candidate?.candidate?.education?.[0]?.institution || ''}
                   </div>
                 </div>
               </div>
