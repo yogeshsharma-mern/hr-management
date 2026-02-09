@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MdAdd, MdDelete, MdEdit, MdSearch, MdFilterList, MdClose } from "react-icons/md";
-import { FaEye, FaUser, FaGraduationCap, FaBriefcase, FaPhone } from "react-icons/fa";
+import { FaEye, FaUser, FaGraduationCap, FaBriefcase, FaPhone, FaBuilding } from "react-icons/fa";
 import ReusableTable from "../../components/reuseable/ReuseableTable.jsx";
 import Modal from "../../components/reuseable/Modal.jsx";
 import apiPath from "../../api/apiPath.js";
@@ -10,12 +10,25 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import useDebounce from "../../hooks/useDebounce.js";
+import { apiGetPdf } from "../../api/apiFetch.js";
+import { RiAiGenerate } from "react-icons/ri";
+import { AiOutlineFileText } from "react-icons/ai";
+// import { apiPut } from "../../api/apiFetch.js";
+
 import dayjs from "dayjs";
+import { m } from "framer-motion";
 
 export default function OfferLetterList() {
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
     const [openModal, setOpenModal] = useState(false);
     const [modalType, setModalType] = useState("delete");
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [editStatus, setEditStatus] = useState("");
+    const [pdfId, setPdfId] = useState(false);
+    const token = useSelector((state) => state.auth.token);
+
+    console.log("token", token);
+
     const [selectedCandidate, setSelectedCandidate] = useState(null);
     const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
     const navigate = useNavigate();
@@ -81,6 +94,67 @@ export default function OfferLetterList() {
         },
         enabled: true, // Ensure this runs even when positions are loading
     });
+    // const { data: pdfBlob, isLoading: isViewLoading, error: viewError } = useQuery({
+
+
+    //   queryKey: ["offerLetterPdf", pdfId],
+
+    //   queryFn: async () => {
+
+    //     const res = await apiGet(`${apiPath.offerLetterPdf}/${pdfId}`, {
+
+    //       responseType: "blob", // <-- important
+
+    //     });
+
+    //     return res.data; // this is already a Blob
+
+    //   },
+
+    //   enabled: !!pdfId,
+
+    // });
+    // const pdfBlob=async(pdfId)=>
+    // {
+    //     const res = await fetch(`${apiPath.offerLetterPdf}/${pdfId}`);
+    // const pdfBlob = await res.blob();
+    // console.log("pdfBlob", pdfBlob);
+    //     const pdfUrl = URL.createObjectURL(pdfBlob);
+    //     console.log("[pdfurl]",pdfUrl);
+
+    // return pdfBlob;
+    // }
+    // useEffect(()=>
+    // {
+    // // pdfBlob(pdfId).then(blob => {
+
+    // //   const pdfUrl = URL.createObjectURL(blob);
+
+    // //   window.open(pdfUrl, "_blank");
+    // pdfBlob(pdfId);
+    // },[pdfId])
+
+
+    //  console.log("pdfBlod",pdfBlob);
+    // useEffect(() => {
+
+    //   if (pdfBlob) {
+
+    //     // const pdfUrl = URL.createObjectURL(pdfBlob);
+
+    //     window.open(pdfUrl, "_blank");
+
+    //     // cleanup after a delay so browser can load it
+
+    //     setTimeout(() => URL.revokeObjectURL(pdfUrl), 1000);
+
+    //     setPdfId(null);
+
+    //   }
+
+    // }, [pdfBlob]);
+
+
 
     // Delete mutation
     const deleteMutation = useMutation({
@@ -93,6 +167,39 @@ export default function OfferLetterList() {
             toast.error(error?.response?.data?.message || "Failed to delete candidate");
         },
     });
+    const updateStatusMutation = useMutation({
+        mutationFn: ({ id, status }) =>
+            apiPut(`${apiPath.updateOfferStatus}/${id}`, { status }),
+
+        onSuccess: (res) => {
+            toast.success(res?.message || "Status updated successfully");
+
+            // 🔄 Refresh list
+            queryClient.invalidateQueries(["offerlettersData"]);
+
+            setEditModalOpen(false);
+            setSelectedCandidate(null);
+            setEditStatus("");
+        },
+
+        onError: (error) => {
+            toast.error(
+                error?.response?.data?.message || "Failed to update status"
+            );
+        },
+    });
+    const handleUpdateStatus = () => {
+        if (!editStatus) {
+            toast.error("Please select a status");
+            return;
+        }
+
+        updateStatusMutation.mutate({
+            id: selectedCandidate._id,
+            status: editStatus,
+        });
+    };
+
 
     const offerLetterData = data?.data || [];
     console.log("offerLetterData", offerLetterData);
@@ -113,13 +220,51 @@ export default function OfferLetterList() {
         return totalYears;
     };
 
-    const handleView = (candidate) => {
-        navigate(`/hr/candidates/view/${candidate._id}`);
-    };
+
+
+    //     const handleView = async (pdfId) => {
+    //   try {
+    //     const res = await apiGetPdf(
+    //       `${apiPath.offerLetterPdf}/${pdfId}`
+    //     );
+
+    //     console.log("status:", res.status); // ✅ works
+
+    //     const blob = res.data; // ✅ already a Blob
+
+    //     console.log("Blob type:", blob.type);
+
+    //     const pdfUrl = URL.createObjectURL(blob);
+    //     window.open(pdfUrl,"_blank");
+
+    //     setTimeout(() => URL.revokeObjectURL(pdfUrl), 60000);
+    //   } catch (err) {
+    //     console.error(err);
+    //     toast.error("Unauthorized or failed to fetch PDF");
+    //   }
+    // };
+    const handleView = async (pdfId) => {
+        try {
+            const res = await apiGetPdf(`${apiPath.offerLetterPdf}/${pdfId}`);
+            const blob = res.data;
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, "_blank");
+            setTimeout(() => URL.revokeObjectURL(pdfUrl), 60000);
+        } catch (error) {
+            console.error("Error fetching PDF:", error);
+            toast.error("Unauthorized or failed to fetch PDF");
+        }
+    }
+
+
+
 
     const handleEdit = (candidate) => {
-        navigate(`/hr/candidates/edit/${candidate._id}`);
+        setSelectedCandidate(candidate); // 🔴 important
+        setEditStatus(candidate.status || "");
+        setEditModalOpen(true);
     };
+
 
     const handleAdd = () => {
         navigate("/hr/offer-letter/add");
@@ -229,15 +374,27 @@ export default function OfferLetterList() {
                 header: "STATUS",
                 accessorKey: "status",
                 cell: ({ row }) => {
-                    const status = row.original.status;
+                    const status = (row.original.status || "").toLowerCase();
+
                     const statusConfig = {
-                        applied: { color: "bg-green-100 text-green-800", label: "Generated" },
-                        // shortlisted: { color: "bg-emerald-100 text-emerald-800", label: "Shortlisted" },
-                        // rejected: { color: "bg-rose-100 text-rose-800", label: "Rejected" },
-                        // hired: { color: "bg-purple-100 text-purple-800", label: "Hired" },
-                        // interview: { color: "bg-amber-100 text-amber-800", label: "Interview" },
+                        generated: {
+                            color: "bg-blue-100 text-blue-800",
+                            label: "Generated",
+                        },
+                        accepted: {
+                            color: "bg-green-100 text-green-800",
+                            label: "Accepted",
+                        },
+                        rejected: {
+                            color: "bg-red-100 text-red-800",
+                            label: "Rejected",
+                        },
                     };
-                    const config = statusConfig[status.toLowerCase()] || statusConfig.applied;
+
+                    const config = statusConfig[status] || {
+                        color: "bg-gray-100 text-gray-800",
+                        label: row.original.status || "Unknown",
+                    };
 
                     return (
                         <span className={`px-3 py-1.5 rounded-full text-xs font-medium ${config.color}`}>
@@ -246,12 +403,13 @@ export default function OfferLetterList() {
                     );
                 },
             },
+
             {
                 header: "ACTIONS",
                 cell: ({ row }) => (
                     <div className="flex items-center space-x-2">
                         <button
-                            onClick={() => handleView(row.original)}
+                            onClick={() => handleView(row.original._id)}
                             className="p-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-all duration-300 hover:scale-110"
                             title="View Details"
                         >
@@ -264,13 +422,31 @@ export default function OfferLetterList() {
                         >
                             <MdEdit size={18} />
                         </button>
-                        <button
-                            onClick={() => handleDelete(row.original)}
-                            className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-all duration-300 hover:scale-110"
-                            title="Delete"
-                        >
-                            <MdDelete size={18} />
-                        </button>
+
+                        {
+                            (row.original.isAppointmentLetter === false && row.original.status === "accepted") &&
+                            (
+                                <button
+                                    onClick={() => navigate("/hr/appointment-letter")}
+                                    className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-all duration-300 hover:scale-110"
+                                    title="Generate Appoinment Letter"
+                                >
+                                    <RiAiGenerate size={18} />
+                                </button>
+                            )
+                        }
+                        {
+                            row.original.isAppointmentLetter === true &&
+                            (
+                                <button
+                                    onClick={""}
+                                    className="p-2 bg-cyan-50 hover:bg-cyan-100 text-cyan-600 rounded-lg transition-all duration-300 hover:scale-110"
+                                    title="View Appoinment Letter"
+                                >
+                                    <AiOutlineFileText size={18} />
+                                </button>
+                            )
+                        }
                     </div>
                 ),
             },
@@ -574,6 +750,50 @@ export default function OfferLetterList() {
                     <p className="text-gray-600">
                         This action cannot be undone. All data for this candidate will be permanently removed.
                     </p>
+                </div>
+            </Modal>
+            <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)} title="Edit Offer Letter Actions">
+                <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                        <FaBuilding className="text-purple-500" />
+                        Status *
+                    </label>
+                    <select
+                        name="status"
+                        value={editStatus}
+                        onChange={(e) => setEditStatus(e.target.value)}
+                        className={`w-full px-4 py-3 
+         
+  border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+
+                    >
+                        <option value="">Select Status</option>
+                        {/* <option value="Engineering">Engineering</option> */}
+                        <option value="accepted">Accepted</option>
+                        <option value="rejected">Rejected</option>
+
+                    </select>
+                    {/* {errors.department && (
+  <p className="text-red-500 text-sm">{errors.department}</p>
+)} */}
+                </div>
+                <div className="flex justify-end">
+                    <button
+                        type="button"
+                        onClick={handleUpdateStatus}
+                        disabled={updateStatusMutation.isPending}
+                        className="px-5 py-2.5 bg-gradient-to-r cursor-pointer from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white rounded-xl transition-all duration-300 font-medium disabled:opacity-70 flex items-center gap-2"
+                    >
+                        {updateStatusMutation.isPending ? (
+                            <>
+                                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                Updating...
+                            </>
+                        ) : (
+                            "Update Status"
+                        )}
+                    </button>
+
                 </div>
             </Modal>
 

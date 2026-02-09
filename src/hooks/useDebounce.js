@@ -1,12 +1,25 @@
-// hooks/useDebounce.js
-import { useState, useEffect } from "react";
+// // hooks/useDebounce.js
+// import { useState, useEffect } from "react";
+
+// export default function useDebounce(value, delay = 500) {
+//   const [debounced, setDebounced] = useState(value);
+
+//   useEffect(() => {
+//     const handler = setTimeout(() => setDebounced(value), delay);
+//     return () => clearTimeout(handler);
+//   }, [value, delay]);
+//   return debounced;
+// }
+
+
+import React from 'react';
+import { useState, useEffect } from 'react';
 
 export default function useDebounce(value, delay = 500) {
   const [debounced, setDebounced] = useState(value);
-
   useEffect(() => {
     const handler = setTimeout(() => setDebounced(value), delay);
-    return () => clearTimeout(handler);
+    return () => clearInterval(handler);
   }, [value, delay]);
   return debounced;
 }

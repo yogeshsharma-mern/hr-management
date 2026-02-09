@@ -31,6 +31,7 @@ export default function InterviewList() {
   const [selectedInterview, setSelectedInterview] = useState(null);
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
 
+
   // Filter states
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRound, setFilterRound] = useState("");

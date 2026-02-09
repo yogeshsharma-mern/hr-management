@@ -73,6 +73,22 @@ export default function ScheduleInterview() {
     const [interviewRounds, setInterviewRounds] = useState([]);
     const [defaultRound, setDefaultRound] = useState('');
 
+
+    const getTodayDate = () => {
+        const today = new Date();
+        return today.toISOString().split('T')[0]; // YYYY-MM-DD
+    };
+
+    const isPastDateTime = (date, time) => {
+        if (!date || !time) return false;
+
+        const selectedDateTime = new Date(`${date}T${time}`);
+        const now = new Date();
+
+        return selectedDateTime < now;
+    };
+
+
     console.log("data", state?.data);
 
     // Fetch candidate details
@@ -86,17 +102,39 @@ export default function ScheduleInterview() {
 
     // Determine which round to show based on previous data
     useEffect(() => {
-        if (state?.data) {
-            const { round: previousRound, status: previousStatus, result: previousResult } = state.data;
-            const rounds = getInterviewRounds(previousRound, previousStatus, previousResult);
-            setInterviewRounds(rounds);
-            
-            // Set default round to the only available round
-            if (rounds.length > 0) {
-                setDefaultRound(rounds[0].value);
-            }
+        if (!state?.data?.round) return;
+
+        const currentRound = state.data.round;
+
+        const roundMap = {
+            HR: {
+                value: "HR",
+                label: "HR Round",
+                icon: "🧑‍💼",
+                color: "#10b981",
+            },
+            Technical: {
+                value: "Technical",
+                label: "Technical Round",
+                icon: "💻",
+                color: "#06b6d4",
+            },
+            Managerial: {
+                value: "Managerial",
+                label: "Managerial Round",
+                icon: "👨‍💼",
+                color: "#8b5cf6",
+            },
+        };
+
+        const roundConfig = roundMap[currentRound];
+
+        if (roundConfig) {
+            setInterviewRounds([roundConfig]);
+            setDefaultRound(roundConfig.value);
         }
     }, [state?.data]);
+
 
     const { control, handleSubmit, formState: { errors }, watch, reset, setValue } = useForm({
         defaultValues: {
@@ -122,6 +160,8 @@ export default function ScheduleInterview() {
 
     // Watch mode to conditionally show fields
     const watchMode = watch('mode');
+    const interviewDate = watch('interviewDate');
+    const startTime = watch('startTime');
 
     const scheduleMutation = useMutation({
         mutationFn: (data) => apiPut(`${apiPath.updateScheduleInterview}/${id}`, data),
@@ -135,10 +175,14 @@ export default function ScheduleInterview() {
     });
 
     const onSubmit = (data) => {
+        if (isPastDateTime(data.interviewDate, data.startTime)) {
+            toast.error('Interview date & time must be in the future');
+            return;
+        }
         const formattedData = {
             interviewerName: data.interviewerName,
             interviewDate: data.interviewDate,
-            round: data.round, // Include round in data
+            // round: data.round, // Include round in data
             mode: data.mode,
             meetingLink: data.meetingLink || '',
             location: data.location || '',
@@ -154,49 +198,33 @@ export default function ScheduleInterview() {
     // Show info about previous round
     const getRoundInfo = () => {
         if (!state?.data) return null;
-        
-        const { round: previousRound, status: previousStatus, result: previousResult } = state.data;
-        
-        if (previousRound === "HR" && previousStatus === "Completed" && previousResult === "Passed") {
-            return (
-                <div className="info-banner success">
-                    <div className="info-content">
-                        <FaCheck className="info-icon" />
-                        <div>
-                            <h4>Previous Round: HR ✓</h4>
-                            <p>HR round completed successfully. Now scheduling <strong>Technical Round</strong>.</p>
-                        </div>
+
+        const { round, status, result } = state.data;
+
+        console.log("currentRound", round);
+        console.log("currentStatus", status);
+        console.log("currentResult", result);
+
+        return (
+            <div className="info-banner info">
+                <div className="info-content">
+                    <MdWork className="info-icon" />
+                    <div>
+                        <h4>Current Round: {round}</h4>
+                        <p>
+                            Status: <strong>{status}</strong>
+                            {result && (
+                                <>
+                                    {" "} | Result: <strong>{result}</strong>
+                                </>
+                            )}
+                        </p>
                     </div>
                 </div>
-            );
-        } else if (previousRound === "Technical" && previousStatus === "Completed" && previousResult === "Passed") {
-            return (
-                <div className="info-banner success">
-                    <div className="info-content">
-                        <FaCheck className="info-icon" />
-                        <div>
-                            <h4>Previous Round: Technical ✓</h4>
-                            <p>Technical round completed successfully. Now scheduling <strong>Managerial Round</strong>.</p>
-                        </div>
-                    </div>
-                </div>
-            );
-        } else if (previousRound === "HR" && previousStatus === "Cancelled") {
-            return (
-                <div className="info-banner warning">
-                    <div className="info-content">
-                        <MdWork className="info-icon" />
-                        <div>
-                            <h4>Previous Round: HR (Cancelled)</h4>
-                            <p>HR round was cancelled. Scheduling new <strong>Technical Round</strong>.</p>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-        
-        return null;
+            </div>
+        );
     };
+
 
     // Add CSS for info banner
     const infoBannerStyle = `
@@ -323,15 +351,21 @@ export default function ScheduleInterview() {
                                         <Controller
                                             name="interviewDate"
                                             control={control}
-                                            rules={{ required: 'Interview date is required' }}
+                                            rules={{
+                                                required: 'Interview date is required',
+                                                validate: (value) =>
+                                                    value >= getTodayDate() || 'Past dates are not allowed'
+                                            }}
                                             render={({ field }) => (
                                                 <input
                                                     {...field}
                                                     type="date"
+                                                    min={getTodayDate()}   // 👈 blocks past dates
                                                     className={`form-input ${errors.interviewDate ? 'error' : ''}`}
                                                 />
                                             )}
                                         />
+
                                         {errors.interviewDate && (
                                             <span className="error-message">{errors.interviewDate.message}</span>
                                         )}
@@ -347,7 +381,18 @@ export default function ScheduleInterview() {
                                         <Controller
                                             name="startTime"
                                             control={control}
-                                            rules={{ required: 'Start time is required' }}
+                                            rules={{
+                                                required: 'Start time is required',
+                                                validate: (value) => {
+                                                    if (!interviewDate) return true;
+
+                                                    if (isPastDateTime(interviewDate, value)) {
+                                                        return 'Start time cannot be in the past';
+                                                    }
+
+                                                    return true;
+                                                }
+                                            }}
                                             render={({ field }) => (
                                                 <input
                                                     {...field}
@@ -356,6 +401,11 @@ export default function ScheduleInterview() {
                                                 />
                                             )}
                                         />
+
+                                        {errors.startTime && (
+                                            <span className="error-message">{errors.startTime.message}</span>
+                                        )}
+
                                     </div>
 
                                     <div className="form-group">
@@ -428,7 +478,7 @@ export default function ScheduleInterview() {
                                         {errors.round && (
                                             <span className="error-message">{errors.round.message}</span>
                                         )}
-                                        <div className="round-info-note">
+                                        <div className="round-info-note mt-4">
                                             <p>
                                                 <strong>Note:</strong> This round is automatically determined based on the previous round's result.
                                             </p>

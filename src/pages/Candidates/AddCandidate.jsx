@@ -476,6 +476,7 @@ const AddCandidate = () => {
                     </div>
                 </div>
             </div>
+            
 
             <div className="section">
                 <h3 className="section-title">Professional Details</h3>
@@ -527,6 +528,27 @@ const AddCandidate = () => {
                             />
                             {errors.personalInfo?.jobId && (
                                 <span className="error-message">{errors.personalInfo.jobId.message}</span>
+                            )}
+                        </label>
+                    </div>
+                     <div className="form-group">
+                        <label className="form-label">
+                            Address
+                            <Controller
+                                name="personalInfo.address"
+                                control={control}
+                                rules={validation.personalInfo.address}
+                                render={({ field }) => (
+                                    <input
+                                        {...field}
+                                        type="textarea"
+                                        className={`form-input ${errors.personalInfo?.address ? 'error' : ''}`}
+                                        placeholder="Enter your address"
+                                    />
+                                )}
+                            />
+                            {errors.personalInfo?.address && (
+                                <span className="error-message">{errors.personalInfo.address.message}</span>
                             )}
                         </label>
                     </div>

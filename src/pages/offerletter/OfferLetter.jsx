@@ -14,7 +14,7 @@ export default function OfferLetter() {
     position: 'Software Engineer',
     joiningDate: '31/03/2023',
     reportingManager: '',
-    basicSalary: 20000,
+    basicSalary: 200000,
     houseRentAllowance: 0,
     specialAllowance: 0,
     annualBonus: 0,
@@ -48,12 +48,12 @@ export default function OfferLetter() {
   const selectPosition = candidates?.find((can) => can?.fullName === formData?.candidateName);
   const jobId = selectPosition?.jobId?._id;
   const candidateId = selectPosition?._id;
-  console.log("candidateId",candidateId);
-  console.log("jobid",jobId);
-// useEffect(()=>
-// {
-//   setJobId(selectPosition?.jobId?._id);
-// },[selectPosition])
+  console.log("candidateId", candidateId);
+  console.log("jobid", jobId);
+  // useEffect(()=>
+  // {
+  //   setJobId(selectPosition?.jobId?._id);
+  // },[selectPosition])
   console.log("selectedposition", selectPosition);
 
 
@@ -77,12 +77,12 @@ export default function OfferLetter() {
   };
 
   const calculateMonthlyGross = () => {
-    return formData.basicSalary + formData.houseRentAllowance + formData.specialAllowance;
+    return (formData.basicSalary + formData.houseRentAllowance + formData.specialAllowance + formData.annualBonus) / 12;
   };
 
   const calculateTotalCTC = () => {
-    const monthlyGross = calculateMonthlyGross();
-    return (monthlyGross * 12) + formData.annualBonus;
+    // const monthlyGross = calculateMonthlyGross();
+    return (formData.annualBonus + formData.houseRentAllowance + formData.specialAllowance + formData.basicSalary);
   };
 
   const handleSubmit = async (e) => {
@@ -91,15 +91,17 @@ export default function OfferLetter() {
     try {
       const payload = {
         ...formData,
-        jobId
+        jobId,
+        candidateId
         // monthlyGrossSalary: calculateMonthlyGross(),
         // totalCTC: calculateTotalCTC()
       };
       const response = await apiPost(apiPath.offerLetters, payload);
+      console.log("res", res);
       // alert('Offer letter generated successfully!');
       toast.success(response?.data);
       navigate(-1);
-    
+
     } catch (error) {
       // alert('Error generating offer letter');
       toast.error(error?.response?.data?.message);
@@ -156,21 +158,21 @@ export default function OfferLetter() {
                       className="form-control"
                       required
                     /> */}
-                 <select
-  name="candidateName"
-  value={formData.candidateName}
-  onChange={handleChange}
-  className="form-control"
-  required
->
-  <option value="">Select Candidate</option>
+                    <select
+                      name="candidateName"
+                      value={formData.candidateName}
+                      onChange={handleChange}
+                      className="form-control"
+                      required
+                    >
+                      <option value="">Select Candidate</option>
 
-  {candidates?.map((item) => (
-    <option key={item._id} value={item.fullName}>
-      {item.fullName}
-    </option>
-  ))}
-</select>
+                      {candidates?.map((item) => (
+                        <option key={item._id} value={item.fullName}>
+                          {item.fullName}
+                        </option>
+                      ))}
+                    </select>
 
                   </div>
                   {/* 
@@ -209,7 +211,21 @@ export default function OfferLetter() {
                       required
                     />
                   </div>
-
+                  <div className="form-group">
+                    <label htmlFor="fathersname">
+                      Father's Name  <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="fatherName"
+                      name="fatherName"
+                      // value={}
+                      onChange={handleChange}
+                      placeholder="Enter fathers name of candidate"
+                      className="form-control disabled"
+                      required
+                    />
+                  </div>
                   <div className="form-group">
                     <label htmlFor="joiningDate">
                       Joining Date <span className="required">*</span>
@@ -243,12 +259,12 @@ export default function OfferLetter() {
                 </div>
 
                 <div className="section-divider">
-                  <span>Salary Components (Monthly)</span>
+                  <span>Salary Components (Yearly)</span>
                 </div>
 
                 <div className="form-grid">
                   <div className="form-group">
-                    <label htmlFor="basicSalary">Basic Salary</label>
+                    <label htmlFor="basicSalary">Basic Salary (yearly)</label>
                     <div className="input-group">
                       <span className="input-group-text">₹</span>
                       <input
@@ -264,7 +280,7 @@ export default function OfferLetter() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="houseRentAllowance">HRA (House Rent Allowance)</label>
+                    <label htmlFor="houseRentAllowance">HRA (House Rent Allowance, yearly)</label>
                     <div className="input-group">
                       <span className="input-group-text">₹</span>
                       <input
@@ -280,7 +296,7 @@ export default function OfferLetter() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="specialAllowance">Special Allowance</label>
+                    <label htmlFor="specialAllowance">Special Allowance (yearly)</label>
                     <div className="input-group">
                       <span className="input-group-text">₹</span>
                       <input
@@ -296,7 +312,7 @@ export default function OfferLetter() {
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="annualBonus">Annual Bonus</label>
+                    <label htmlFor="annualBonus">Annual Bonus (yearly)</label>
                     <div className="input-group">
                       <span className="input-group-text">₹</span>
                       <input

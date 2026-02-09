@@ -12,8 +12,10 @@ const apiPath = Object.freeze({
   interviewList: "/interviews",
   updateInterviewStatus: "/interviews/status",
   updateScheduleInterview:"/interviews/assign",
-  offerLetters:"/offer-letters"
+  offerLetters:"/offer-letters",
+  updateOfferStatus:"/offer-letters/status",
+  offerLetterPdf:"/offer-letters"
 
 });
 
-export default apiPath; 2
+export default apiPath; 

@@ -41,6 +41,12 @@ function apiPost(url, body) {
     });
 }
 
+export const apiGetPdf = (url) => {
+  return instance.get(url, {
+    responseType: "blob",
+  });
+};
+
 
 
 function apiGet(url, params = {}) {

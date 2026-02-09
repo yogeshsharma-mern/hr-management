@@ -485,7 +485,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     { id: 'candidates', label: 'Candidates', icon: <MdPeople />, path: '/hr/candidates' },
     { id: 'interview-management', label: 'Interviews', icon: <MdCalendarToday />, path: '/hr/interviews' },
     { id: 'offer-letter', label: 'Offer Letter', icon: <MdDescription />, path: '/hr/offer-letter' },
-    { id: 'appointment-letter', label: 'Appointment', icon: <MdAssignment />, path: '/hr/appointment-letter' },
+    // { id: 'appointment-letter', label: 'Appointment', icon: <MdAssignment />, path: '/hr/appointment-letter' },
     { id: 'joining', label: 'Onboarding', icon: <MdLogin />, path: '/hr/joining' },
     { id: 'documents', label: 'Documents', icon: <MdFolder />, path: '/hr/documents' }
   ];

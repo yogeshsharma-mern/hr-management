@@ -5,12 +5,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiGet, apiPost } from '../../api/apiFetch';
 import apiPath from '../../api/apiPath';
 import toast from 'react-hot-toast';
-import { 
-  FaCalendarAlt, 
-  FaUser, 
-  FaVideo, 
-  FaMapMarkerAlt, 
-  FaStickyNote, 
+import {
+  FaCalendarAlt,
+  FaUser,
+  FaVideo,
+  FaMapMarkerAlt,
+  FaStickyNote,
   FaArrowLeft,
   FaCheck,
   FaClock,
@@ -19,9 +19,9 @@ import {
   FaEnvelope,
   FaBriefcase
 } from 'react-icons/fa';
-import { 
-  MdWork, 
-  MdSchool, 
+import {
+  MdWork,
+  MdSchool,
   MdAccessTime,
   MdLocationOn
 } from 'react-icons/md';
@@ -31,32 +31,32 @@ const interviewRounds = [
   { value: 'HR', label: 'HR Round', icon: '👥', color: '#3b82f6' },
   // { value: 'Technical', label: 'Technical Round', icon: '💻', color: '#06b6d4' },
   // { value: 'Managerial', label: 'Managerial Round', icon: '👨‍💼', color: '#8b5cf6' },
-//   { value: 'Final', label: 'Final Round', icon: '🎯', color: '#10b981' },
-//   { value: 'Screening', label: 'Screening', icon: '🔍', color: '#f59e0b' }
+  //   { value: 'Final', label: 'Final Round', icon: '🎯', color: '#10b981' },
+  //   { value: 'Screening', label: 'Screening', icon: '🔍', color: '#f59e0b' }
 ];
 
 const interviewModes = [
-  { 
-    value: 'Online', 
-    label: 'Video Call', 
+  {
+    value: 'Online',
+    label: 'Video Call',
     description: 'Schedule a video interview',
     icon: <FaVideo />,
     color: '#3b82f6'
   },
-  { 
-    value: 'Offline', 
-    label: 'In-Person', 
+  {
+    value: 'Offline',
+    label: 'In-Person',
     description: 'Meet at office location',
     icon: <FaMapMarkerAlt />,
     color: '#10b981'
   },
-//   { 
-//     value: 'Phone', 
-//     label: 'Phone Call', 
-//     description: 'Conduct phone interview',
-//     icon: <FaPhone />,
-//     color: '#f59e0b'
-//   }
+  //   { 
+  //     value: 'Phone', 
+  //     label: 'Phone Call', 
+  //     description: 'Conduct phone interview',
+  //     icon: <FaPhone />,
+  //     color: '#f59e0b'
+  //   }
 ];
 
 export default function ScheduleInterview() {
@@ -72,7 +72,7 @@ export default function ScheduleInterview() {
   });
 
   const candidate = candidateData?.data;
-  console.log("candidate",candidate);
+  // console.log("candidate", candidate);
 
   const { control, handleSubmit, formState: { errors }, watch, reset } = useForm({
     defaultValues: {
@@ -88,6 +88,11 @@ export default function ScheduleInterview() {
       sendEmailNotification: true
     }
   });
+  const interviewDate = watch('interviewDate');
+  const interviewerName= watch("interviewerName");
+  // console.log("interviewername",interviewerName);
+  // console.log("innterviewDate",interviewDate);
+  // const watchMode = watch('mode');
 
   // Watch mode to conditionally show fields
   const watchMode = watch('mode');
@@ -102,8 +107,17 @@ export default function ScheduleInterview() {
       toast.error(error?.response?.data?.message || 'Failed to schedule interview');
     }
   });
-
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0]; // YYYY-MM-DD
+  };
   const onSubmit = (data) => {
+    console.log("data",data);
+    if (isPastDateTime(data.interviewDate, data.startTime)) {
+      toast.error('Interview date & time must be in the future');
+      return;
+    }
+
     const formattedData = {
       interviewerName: data.interviewerName,
       interviewDate: data.interviewDate,
@@ -115,8 +129,10 @@ export default function ScheduleInterview() {
       startTime: data.startTime,
       duration: parseInt(data.duration)
     };
+
     scheduleMutation.mutate(formattedData);
   };
+
 
   if (candidateLoading) {
     return (
@@ -130,12 +146,24 @@ export default function ScheduleInterview() {
     );
   }
 
+
+  const isPastDateTime = (date, time) => {
+    console.log("date,time",date,time);
+    if (!date || !time) return false;
+
+    const selectedDateTime = new Date(`${date}T${time}`);
+    const now = new Date();
+
+    return selectedDateTime < now;
+  };
+
+
   return (
     <div className="schedule-page">
       {/* Header */}
       <div className="page-header">
         <div className="container">
-          <button 
+          <button
             className="btn-back"
             onClick={() => navigate(-1)}
           >
@@ -165,7 +193,7 @@ export default function ScheduleInterview() {
                   <span>Available for Interview</span>
                 </div>
               </div>
-              
+
               <div className="profile-details-section">
                 <div className="profile-header-info">
                   <h2 className="candidate-name">{candidate?.candidate?.fullName.toUpperCase()}</h2>
@@ -180,7 +208,7 @@ export default function ScheduleInterview() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="profile-contact-info">
                   <div className="contact-item">
                     <FaEnvelope />
@@ -192,7 +220,7 @@ export default function ScheduleInterview() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="profile-skills-section">
                 <h3 className="skills-title">Top Skills</h3>
                 <div className="skills-grid">
@@ -209,7 +237,7 @@ export default function ScheduleInterview() {
                 </div>
               </div>
             </div>
-            
+
             <div className="profile-footer-info">
               <div className="education-info">
                 <MdSchool />
@@ -281,15 +309,21 @@ export default function ScheduleInterview() {
                     <Controller
                       name="interviewDate"
                       control={control}
-                      rules={{ required: 'Interview date is required' }}
+                      rules={{
+                        required: 'Interview date is required',
+                        validate: (value) =>
+                          value >= getTodayDate() || 'Past dates are not allowed'
+                      }}
                       render={({ field }) => (
                         <input
                           {...field}
                           type="date"
+                          min={getTodayDate()}   // 👈 blocks past dates
                           className={`form-input ${errors.interviewDate ? 'error' : ''}`}
                         />
                       )}
                     />
+
                     {errors.interviewDate && (
                       <span className="error-message">{errors.interviewDate.message}</span>
                     )}
@@ -305,7 +339,18 @@ export default function ScheduleInterview() {
                     <Controller
                       name="startTime"
                       control={control}
-                      rules={{ required: 'Start time is required' }}
+                      rules={{
+                        required: 'Start time is required',
+                        validate: (value) => {
+                          if (!interviewDate) return true;
+
+                          if (isPastDateTime(interviewDate, value)) {
+                            return 'Start time cannot be in the past';
+                          }
+
+                          return true;
+                        }
+                      }}
                       render={({ field }) => (
                         <input
                           {...field}
@@ -314,6 +359,11 @@ export default function ScheduleInterview() {
                         />
                       )}
                     />
+
+                    {errors.startTime && (
+                      <span className="error-message">{errors.startTime.message}</span>
+                    )}
+
                   </div>
 
                   <div className="form-group">
@@ -324,7 +374,7 @@ export default function ScheduleInterview() {
                     <Controller
                       name="duration"
                       control={control}
-                      rules={{ 
+                      rules={{
                         required: 'Duration is required',
                         min: { value: 15, message: 'Minimum 15 minutes' },
                         max: { value: 480, message: 'Maximum 8 hours' }
