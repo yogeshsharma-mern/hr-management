@@ -55,7 +55,7 @@ export default function App() {
             <Route path="interviews/schedule/:id" element={<ScheduleInterview />} />
             <Route path="offer-letter" element={<OfferLetterList />} />
             <Route path="interviews" element={<InterviewList />} />
-            <Route path="appointment-letter" element={<AppoinmentLetter />} />
+            <Route path="appointment-letter/:id" element={<AppoinmentLetter />} />
             <Route path="joining" element={<Joining />} />
             <Route path="documents" element={<Document />} />
             <Route path="profile" element={<HrProfile />} />

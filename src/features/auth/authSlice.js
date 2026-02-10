@@ -15,17 +15,18 @@ const authSlice = createSlice({
       state.user = action.payload.hr;
       state.token = action.payload.token;
       localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("hr",JSON.stringify(action.payload.hr));
+      localStorage.setItem("hr", JSON.stringify(action.payload.hr));
     },
     logout: (state) => {
       state.isAuthenticated = false;
       state.user = null;
       state.token = null;
       localStorage.removeItem("token");
-      // localStorage.removeItem("user");
+      localStorage.removeItem("hr");
     },
   },
 });
 
 export const { loginSuccess, logout } = authSlice.actions;
 export default authSlice.reducer;
+

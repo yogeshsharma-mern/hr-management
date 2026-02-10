@@ -59,13 +59,13 @@ export default function Candidates() {
     queryKey: ["candidates", debouncedSearch, pagination.pageIndex, pagination.pageSize, filters],
     queryFn: () => {
       const { min, max } = parseExperienceRange(filters.experienceRange);
-      
+
       const params = {
         limit: pagination.pageSize,
         page: pagination.pageIndex + 1,
-        title:debouncedSearch
+        title: debouncedSearch
       };
-      
+
       if (filters.appliedFor) {
         // Find the position title from the selected ID
         const selectedPosition = positions.find(pos => pos.value === filters.appliedFor);
@@ -73,10 +73,10 @@ export default function Candidates() {
           params.appliedFor = selectedPosition.label;
         }
       }
-      
+
       if (min !== undefined) params.min = min;
       if (max !== undefined) params.max = max;
-      
+
       return apiGet(apiPath.CANDIDATES, params);
     },
     enabled: true, // Ensure this runs even when positions are loading
@@ -426,8 +426,8 @@ export default function Candidates() {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 ${hasActiveFilters
-                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
             >
               <MdFilterList size={18} />

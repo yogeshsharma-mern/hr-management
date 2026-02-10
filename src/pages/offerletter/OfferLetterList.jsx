@@ -427,7 +427,7 @@ export default function OfferLetterList() {
                             (row.original.isAppointmentLetter === false && row.original.status === "accepted") &&
                             (
                                 <button
-                                    onClick={() => navigate("/hr/appointment-letter")}
+                                    onClick={() => navigate(`/hr/appointment-letter/${row.original._id}`)}
                                     className="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-all duration-300 hover:scale-110"
                                     title="Generate Appoinment Letter"
                                 >
