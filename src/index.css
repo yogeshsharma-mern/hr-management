@@ -104,3 +104,65 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
+
+
+
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Blue theme variables */
+/* :root {
+  --primary-blue: #0ea5e9;
+  --primary-blue-light: #38bdf8;
+  --primary-blue-dark: #0284c7;
+  --blue-bg: #f8fafc;
+  --blue-border: #e2e8f0;
+} */
+
+/* Optional: Add some blue theme enhancements */
+.header-gradient {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+
+:root {
+  --bg-main: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+
+  --border-color: #e5e7eb;
+
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+
+  --primary: #2563eb;
+  --primary-soft: #eff6ff;
+}
+
+/* 🌙 DARK THEME */
+[data-theme="dark"] {
+  --bg-main: #0b1220;
+  --bg-surface: #0f172a;
+  --bg-card: #111827;
+
+  --border-color: #1e293b;
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #94a3b8;
+
+  --primary: #38bdf8;
+  --primary-soft: rgba(56, 189, 248, 0.15);
+}

@@ -339,7 +339,8 @@ export default function Candidates() {
     <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "md:w-[78vw]"}`}>
       {/* Stats Cards */}
       <div className="hidden  grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">New Applicants</p>
@@ -352,7 +353,8 @@ export default function Candidates() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Shortlisted</p>
@@ -365,7 +367,8 @@ export default function Candidates() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">In Interview</p>
@@ -378,7 +381,8 @@ export default function Candidates() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Hired</p>
@@ -394,7 +398,8 @@ export default function Candidates() {
       </div>
 
       {/* Toolbar */}
-      <div className="bg-white rounded-xl p-4 border border-gray-200">
+      <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 relative">
             <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -543,7 +548,8 @@ export default function Candidates() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-auto shadow-sm">
+      <div className="bg-[var(--bg-surface)]
+ rounded-xl border border-gray-200 overflow-auto shadow-sm">
         <ReusableTable
           columns={columns}
           data={candidates}

@@ -14,13 +14,11 @@ import { apiGetPdf } from "../../api/apiFetch.js";
 import { RiAiGenerate } from "react-icons/ri";
 import { AiOutlineFileText } from "react-icons/ai";
 // import { apiPut } from "../../api/apiFetch.js";
-import AppointmentLetterLoader from "../appoinmentletter/AppointmentLetterLoader.jsx";
-
 
 import dayjs from "dayjs";
 import { m } from "framer-motion";
 
-export default function OfferLetterList() {
+export default function AppointmentLetterList() {
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
     const [openModal, setOpenModal] = useState(false);
     const [modalType, setModalType] = useState("delete");
@@ -71,7 +69,7 @@ export default function OfferLetterList() {
 
     // Fetch candidates with filters
     const { data, isLoading, error, refetch } = useQuery({
-        queryKey: ["offerlettersData", debouncedSearch, pagination.pageIndex, pagination.pageSize, filters],
+        queryKey: ["appointmentLettersData", debouncedSearch, pagination.pageIndex, pagination.pageSize, filters],
         queryFn: () => {
             const { min, max } = parseExperienceRange(filters.experienceRange);
 
@@ -92,7 +90,7 @@ export default function OfferLetterList() {
             if (min !== undefined) params.min = min;
             if (max !== undefined) params.max = max;
 
-            return apiGet(apiPath.offerLetters, params);
+            return apiGet(apiPath.appointmentLetterList, params);
         },
         enabled: true, // Ensure this runs even when positions are loading
     });
@@ -217,8 +215,8 @@ export default function OfferLetterList() {
     };
 
 
-    const offerLetterData = data?.data || [];
-    console.log("offerLetterData", offerLetterData);
+    const appointmentLetterData = data?.data || [];
+    console.log("appointmentLetterData", appointmentLetterData);
     const totalCount = data?.totalPages || 0;
 
     // Helper function to calculate total experience from experience array
@@ -344,7 +342,7 @@ export default function OfferLetterList() {
                                 <span className="text-white font-semibold">{initials}</span>
                             </div>
                             <div>
-                                <div className="font-semibold text-gray-900">{candidate.candidateName}</div>
+                                <div className="font-semibold text-[var(--text-primary)]">{candidate.candidateName}</div>
                                 {/* <div className="text-xs text-gray-500">{candidate.email}</div> */}
                             </div>
                         </div>
@@ -356,8 +354,8 @@ export default function OfferLetterList() {
                 accessorKey: "title",
                 cell: ({ row }) => (
                     <div className="flex items-center space-x-2">
-                        <FaBriefcase className="text-gray-400" />
-                        <span className="font-medium text-gray-700">
+                        <FaBriefcase className="text-[var(--text-primary)]" />
+                        <span className="font-medium text-[var(--text-primary)]">
                             {typeof row?.original?.position === 'string'
                                 ? row?.original?.position
                                 : JSON.stringify(row?.original?.position)}
@@ -386,6 +384,10 @@ export default function OfferLetterList() {
             //       );
             //     },
             //   },
+            {
+header:"Location",
+accessorKey:"location",
+            },
             {
                 header: "STATUS",
                 accessorKey: "status",
@@ -490,7 +492,7 @@ export default function OfferLetterList() {
                     <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <MdDelete size={32} className="text-rose-600" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load</h3>
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Failed to load</h3>
                     <p className="text-gray-600 mb-4">Unable to fetch candidates at the moment.</p>
                     <button
                         onClick={() => refetch()}
@@ -521,12 +523,13 @@ export default function OfferLetterList() {
         <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "md:w-[78vw]"}`}>
             {/* Stats Cards */}
             <div className="hidden  grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">New Applicants</p>
                             <p className="text-2xl font-bold text-gray-900">
-                                {offerLetterData.filter(c => c.status === "applied").length}
+                                {/* {offerLetterData.filter(c => c.status === "applied").length} */}
                             </p>
                         </div>
                         <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -534,12 +537,13 @@ export default function OfferLetterList() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">Shortlisted</p>
                             <p className="text-2xl font-bold text-gray-900">
-                                {offerLetterData?.filter(c => c.status === "shortlisted").length}
+                                {/* {offerLetterData?.filter(c => c.status === "shortlisted").length} */}
                             </p>
                         </div>
                         <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
@@ -547,12 +551,13 @@ export default function OfferLetterList() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">In Interview</p>
                             <p className="text-2xl font-bold text-gray-900">
-                                {offerLetterData?.filter(c => c.status === "interview").length}
+                                {/* {offerLetterData?.filter(c => c.status === "interview").length} */}
                             </p>
                         </div>
                         <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
@@ -560,12 +565,13 @@ export default function OfferLetterList() {
                         </div>
                     </div>
                 </div>
-                <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">Hired</p>
                             <p className="text-2xl font-bold text-gray-900">
-                                {offerLetterData?.filter(c => c.status === "hired").length}
+                                {/* {appointmentLetterData?.filter(c => c.status === "hired").length} */}
                             </p>
                         </div>
                         <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -576,14 +582,15 @@ export default function OfferLetterList() {
             </div>
 
             {/* Toolbar */}
-            <div className="bg-white rounded-xl p-4 border border-gray-200">
+            <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex-1 relative">
                         <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
                             type="text"
-                            placeholder="Search offer letter by name, email or position"
-                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Search appointment letter by name, email or position"
+                            className="w-full pl-10 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)]  pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -616,13 +623,13 @@ export default function OfferLetterList() {
                             <span>Filters</span>
                         </button>
 
-                        <button
+                        {/* <button
                             onClick={handleAdd}
                             className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-4 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
                         >
                             <MdAdd size={20} />
                             <span>Add New</span>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
@@ -725,10 +732,11 @@ export default function OfferLetterList() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl border border-gray-200 overflow-auto shadow-sm">
+            <div className="bg-[var(--bg-surface)]
+ rounded-xl border border-gray-200 overflow-auto shadow-sm">
                 <ReusableTable
                     columns={columns}
-                    data={offerLetterData}
+                    data={appointmentLetterData}
                     paginationState={pagination}
                     setPagination={setPagination}
                     setPaginationState={setPagination}
@@ -760,7 +768,7 @@ export default function OfferLetterList() {
                     <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <MdDelete size={32} className="text-rose-600" />
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
                         Delete {selectedCandidate?.name}?
                     </h3>
                     <p className="text-gray-600">
@@ -829,10 +837,6 @@ export default function OfferLetterList() {
           animation: fadeIn 0.2s ease-out;
         }
       `}</style>
-      {generateAppointmentLetterMutation.isPending && (
-  <AppointmentLetterLoader />
-)}
-
         </div>
     );
 }

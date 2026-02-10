@@ -362,7 +362,8 @@ const formatDateForInput = (dateString) => {
       <Toaster />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-blue-50/30">
         {/* Header */}
-        <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-gray-200/80">
+        <div className="sticky top-0 z-10 bg-[var(--bg-surface)]
+/95 backdrop-blur-sm border-b border-gray-200/80">
           <div className="md:px-8 px-2 py-2  md:py-5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -426,7 +427,8 @@ const formatDateForInput = (dateString) => {
               {/* Left Column - Employee Information */}
               <div className="lg:col-span-2 space-y-8">
                 {/* Employee Information Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden">
+                <div className="bg-[var(--bg-surface)]
+ rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden">
                   <div className="px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -591,7 +593,8 @@ const formatDateForInput = (dateString) => {
                 </div>
 
                 {/* Salary Breakdown Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden">
+                <div className="bg-[var(--bg-surface)]
+ rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden">
                   <div className="px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -682,7 +685,8 @@ const formatDateForInput = (dateString) => {
                 {/* Generate Card */}
                 {/* <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 text-white shadow-lg">
                   <div className="text-center mb-8">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[var(--bg-surface)]
+/20 backdrop-blur-sm flex items-center justify-center">
                       <FileSignature className="w-8 h-8" />
                     </div>
                     <h3 className="text-xl font-bold mb-2">Ready to Generate</h3>
@@ -695,14 +699,16 @@ const formatDateForInput = (dateString) => {
                     <button
                       onClick={handleDownloadPDF}
                       disabled={!apiData?.fileName}
-                      className="w-full py-3 rounded-xl border border-white/30 text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-3 rounded-xl border border-white/30 text-white hover:bg-[var(--bg-surface)]
+/10 transition-colors flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
                       Download PDF
                     </button>
                     <button
                       onClick={handleSendEmail}
-                      className="w-full py-3 rounded-xl border border-white/30 text-white hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-3 rounded-xl border border-white/30 text-white hover:bg-[var(--bg-surface)]
+/10 transition-colors flex items-center justify-center gap-2"
                     >
                       <Send className="w-4 h-4" />
                       Send via Email
@@ -711,7 +717,8 @@ const formatDateForInput = (dateString) => {
                 </div> */}
 
                 {/* Status Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200/80 p-6">
+                <div className="bg-[var(--bg-surface)]
+ rounded-2xl shadow-sm border border-gray-200/80 p-6">
                   <h4 className="font-semibold text-gray-900 mb-6 flex items-center gap-2">
                     <Info className="w-5 h-5 text-gray-400" />
                     Letter Status
@@ -771,7 +778,8 @@ const formatDateForInput = (dateString) => {
                 </div>
 
                 {/* Preview Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden">
+                <div className="bg-[var(--bg-surface)]
+ rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden">
                   <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
                     <h4 className="font-semibold text-gray-900 flex items-center gap-2">
                       <Eye className="w-5 h-5 text-gray-400" />

@@ -25,18 +25,19 @@ import Document from './pages/documents/Document.jsx';
 import HrProfile from './pages/profile/HrProfile.jsx';
 import ScheduleInterviewtechManagerial from "../src/pages/interview/ScheduleInterviewtechManagerial.jsx";
 import OfferLetterList from './pages/offerletter/OfferLetterList.jsx';
+import AppointmentLetterList from './pages/appoinmentletter/AppointmentLetterList.jsx';
 
 
 export default function App() {
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-   <Toaster
-  // position="top-right"
-  containerStyle={{
-    zIndex: 9999999,
-  }}
-/>
+      <Toaster
+        // position="top-right"
+        containerStyle={{
+          zIndex: 9999999,
+        }}
+      />
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route element={<PublicRoute />}>
@@ -61,16 +62,7 @@ export default function App() {
             <Route path="profile" element={<HrProfile />} />
             <Route path="interview/schedule/:id" element={<ScheduleInterviewtechManagerial />} />
             <Route path="offer-letter/add" element={<OfferLetter />} />
-
-
-
-
-
-
-
-
-
-    
+            <Route path="appointment-letter" element={<AppointmentLetterList />} />
 
           </Route>
         </Route>

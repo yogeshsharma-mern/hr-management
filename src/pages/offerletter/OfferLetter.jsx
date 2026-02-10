@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { RiAiGenerate } from "react-icons/ri";
+
 
 
 export default function OfferLetter() {
@@ -97,9 +99,9 @@ export default function OfferLetter() {
         // totalCTC: calculateTotalCTC()
       };
       const response = await apiPost(apiPath.offerLetters, payload);
-      console.log("res", res);
+      // console.log("res", response);
       // alert('Offer letter generated successfully!');
-      toast.success(response?.data);
+      toast.success('Offer letter generated successfully!');
       navigate(-1);
 
     } catch (error) {
@@ -131,7 +133,7 @@ export default function OfferLetter() {
       </button>
       <div className="header-section">
 
-        <h1 className="page-title">Create and Send Offer Letters</h1>
+        <h1 className="page-title">Create  Offer Letter</h1>
         <p className="page-subtitle">Generate professional offer letters for selected candidates</p>
       </div>
 
@@ -404,7 +406,7 @@ export default function OfferLetter() {
                     className="flex justify-center items-center cursor-pointer px-4 py-2 rounded btn-primary"
                     disabled={loading}
                   >
-                    {loading ? 'Generating...' : 'Generate Offer Letter'}
+               <RiAiGenerate className="mr-2" />     {loading ? 'Generating...' : 'Generate Offer Letter'}
                   </button>
                 </div>
               </form>

@@ -8,6 +8,7 @@ import { logout } from "../features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { User } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import Header from "../components/reuseable/Header";
 
 
 export default function AdminLayout() {
@@ -86,63 +87,11 @@ console.log("username",username);
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="h-20 shadow flex items-center bg-[var(--color-neutral)] w-full justify-between px-6 md:px-8">
-          <div className="flex items-center space-x-4">
-            <button
-              className="text-gray-700 cursor-pointer md:hidden focus:outline-none"
-              onClick={toggleSidebar}
-            >
-              <FaBars size={20} />
-            </button>
-            <h1 className="text-xl font-semibold">Admin Panel</h1>
-          </div>
 
-          {/* Right Section */}
-          <div className="flex items-center space-x-4 relative" ref={menuRef}>
-            {/* <button
-              onClick={toggleTheme}
-              className="px-4 py-2 cursor-pointer   rounded transition"
-            >
-              {theme === "light" ? "🌙" : "☀️"}
-            </button> */}
-
-            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setMenuOpen((prev) => !prev)}>
-                     <span className="hidden md:block font-semibold">{user.firstName} {user.lastName}</span>
-       
-              {/* {
-                user?.profilePic !=="" ? <img className="w-[40px] h-[40px] cursor-pointer rounded-full" src={`${user.profilePic}`} alt="profilePicture" /> :<Avatar style={{ width: "40px", height: "40px" }} {...config} />
-              } */}
-
-            <div className="w-[40px] h-[40px] flex justify-center items-center text-white font-bold bg-blue-500 cursor-pointer rounded-full">
-              {username}
-            </div>
-              {/* <img className="w-[40px] h-[40px] cursor-pointer rounded-full" src={`${user.profilePic}`} alt="profilePicture" /> */}
-       
-            </div>
-
-            {/* Dropdown Menu */}
-            {menuOpen && (
-              <div className="absolute right-0 mt-32 w-40 bg-[var(--color-neutral)] bg-white shadow-lg rounded-md overflow-hidden z-[999999]">
-                <button
-                  className="block w-full text-left px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-500 transition"
-                  onClick={goToProfile}
-                >
-                  My Profile
-                </button>
-                <button
-                  className="block w-full text-left px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-500 transition"
-                onClick={()=>dispacth(logout())}
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
-
+<Header toggleSidebar={toggleSidebar} goToProfile={goToProfile} dispatch={dispacth} logout={logout} />
         {/* Page Content */}
         <main className="flex-1 overflow-auto">
-          <div className="w-full md:p-4 overflow-x-auto">
+          <div className="w-full bg-[var(--bg-surface)]  md:p-4 overflow-x-auto">
             <Outlet />
           </div>
         </main>

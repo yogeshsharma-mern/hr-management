@@ -443,313 +443,151 @@
 // }
 
 
-import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleSidebarCollapse } from '../features/ui/uislic';
-import { logout } from '../features/auth/authSlice';
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleSidebarCollapse } from "../features/ui/uislic";
+import { logout } from "../features/auth/authSlice";
 import {
-  MdWork,
-  MdPeople,
-  MdCalendarToday,
-  MdDescription,
-  MdAssignment,
-  MdLogin,
-  MdFolder,
-  MdDashboard,
-  MdEmail,
-  MdNotifications,
-  MdChat,
-  MdSettings,
-  MdHelpOutline
-} from 'react-icons/md';
-import {
-  HiChevronLeft,
-  HiChevronRight
-} from 'react-icons/hi';
-import {
-  FiLogOut
-} from 'react-icons/fi';
+  MdWork, MdPeople, MdCalendarToday, MdDescription,
+  MdAssignment, MdLogin, MdFolder, MdDashboard,
+  MdSettings, MdHelpOutline
+} from "react-icons/md";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { FiLogOut } from "react-icons/fi";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
   const dispatch = useDispatch();
   const location = useLocation();
+  const [activeMenu, setActiveMenu] = useState("dashboard");
 
-  const [activeMenu, setActiveMenu] = useState('dashboard');
-
-  // Navigation items
   const navigationItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: <MdDashboard />, path: '/hr/dashboard' },
-    { id: 'job-openings', label: 'Job Openings', icon: <MdWork />, path: '/hr/job-openings' },
-    { id: 'candidates', label: 'Candidates', icon: <MdPeople />, path: '/hr/candidates' },
-    { id: 'interview-management', label: 'Interviews', icon: <MdCalendarToday />, path: '/hr/interviews' },
-    { id: 'offer-letter', label: 'Offer Letter', icon: <MdDescription />, path: '/hr/offer-letter' },
-    // { id: 'appointment-letter', label: 'Appointment', icon: <MdAssignment />, path: '/hr/appointment-letter' },
-    { id: 'joining', label: 'Onboarding', icon: <MdLogin />, path: '/hr/joining' },
-    { id: 'documents', label: 'Documents', icon: <MdFolder />, path: '/hr/documents' }
+    { id: "dashboard", label: "Dashboard", icon: <MdDashboard />, path: "/hr/dashboard" },
+    { id: "job-openings", label: "Job Openings", icon: <MdWork />, path: "/hr/job-openings" },
+    { id: "candidates", label: "Candidates", icon: <MdPeople />, path: "/hr/candidates" },
+    { id: "interviews", label: "Interviews", icon: <MdCalendarToday />, path: "/hr/interviews" },
+    { id: "offer-letter", label: "Offer Letter", icon: <MdDescription />, path: "/hr/offer-letter" },
+    { id: "appointment-letter", label: "Appointment Letter", icon: <MdAssignment />, path: "/hr/appointment-letter" },
+    { id: "joining", label: "Onboarding", icon: <MdLogin />, path: "/hr/joining" },
+    { id: "documents", label: "Documents", icon: <MdFolder />, path: "/hr/documents" }
   ];
 
-  // Insight items
-  const insightItems = [
-    { id: 'inbox', label: 'Inbox', icon: <MdEmail />, path: '/hr/inbox', badge: 3 },
-    { id: 'notifications', label: 'Notifications', icon: <MdNotifications />, path: '/hr/notifications', badge: 12 },
-    { id: 'chat', label: 'Messages', icon: <MdChat />, path: '/hr/chat', badge: 5 }
-  ];
-
-  // System items
   const systemItems = [
-    { id: 'settings', label: 'Settings', icon: <MdSettings />, path: '/hr/settings' },
-    { id: 'help', label: 'Help & Support', icon: <MdHelpOutline />, path: '/hr/help' }
+    { id: "settings", label: "Settings", icon: <MdSettings />, path: "/hr/settings" },
+    { id: "help", label: "Help & Support", icon: <MdHelpOutline />, path: "/hr/help" }
   ];
 
-  // ✅ Sync activeMenu with current URL
   useEffect(() => {
-    const currentPath = location.pathname;
-    const allItems = [...navigationItems, ...insightItems, ...systemItems];
-    
-    const activeItem = allItems.find(item =>
-      item.path === currentPath || currentPath.startsWith(item.path + '/')
-    );
-    
-    setActiveMenu(activeItem?.id || 'dashboard');
+    const all = [...navigationItems, ...systemItems];
+    const found = all.find(i => location.pathname.startsWith(i.path));
+    setActiveMenu(found?.id || "dashboard");
   }, [location.pathname]);
 
-  const handleMenuClick = (itemId) => {
-    setActiveMenu(itemId);
-    toggleSidebar?.();
-  };
-
-  // Modern nav item styling
-  const navItemClass = (isActive) =>
-    `flex items-center px-4 py-3.5 my-0.5 rounded-xl transition-all duration-200 group relative
-     ${isActive
-      ? 'bg-gradient-to-r from-blue-50 to-blue-50/70 text-blue-600 border-l-4 border-blue-500 shadow-sm'
-      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:border-l-4 hover:border-gray-200'
-    } ${collapsed ? 'justify-center px-3.5' : ''}`;
+  const navItem = (active) =>
+    `flex items-center px-4 py-3 rounded-xl transition-all duration-200 group
+     ${active
+      ? "bg-[var(--primary-soft)] text-[var(--primary)] border-l-4 border-[var(--primary)]"
+      : "text-[var(--text-secondary)] hover:bg-[var(--primary-soft)] hover:text-[var(--text-primary)]"
+     }
+     ${collapsed ? "justify-center px-3" : ""}
+    `;
 
   return (
     <aside
       className={`
-        fixed top-0 left-0 h-full bg-white
-        border-r border-gray-100/80 shadow-sm backdrop-blur-sm z-[999999999]
-        transition-all duration-300 ease-out w-60
+        fixed top-0 left-0 h-full z-[999]
+        bg-[var(--bg-surface)]
+        border-r border-[var(--border-color)]
+        transition-all duration-300 w-60
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
-        ${collapsed ? "md:w-20" : "md:w-74"}
+        ${collapsed ? "md:w-20" : "md:w-72"}
         md:translate-x-0 md:static flex flex-col
       `}
     >
-      {/* Collapse Toggle Button */}
+      {/* Collapse Button */}
       <button
         onClick={() => dispatch(toggleSidebarCollapse())}
-        className="hidden md:flex absolute -right-3.5 top-24 w-7 h-7 
-                 bg-gradient-to-br from-blue-500 to-blue-600 
-                 rounded-full items-center justify-center shadow-lg
-                 cursor-pointer hover:shadow-xl hover:scale-105 
-                 active:scale-95 transition-all duration-200 z-10
-                 border-2 border-white"
-        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        className="
+          hidden md:flex absolute -right-3.5 top-24 w-7 h-7
+          bg-gradient-to-br from-blue-500 to-blue-600
+          rounded-full items-center justify-center
+          border-2 border-white shadow-lg
+        "
       >
-        {collapsed ? 
-          <HiChevronRight className="text-white text-sm" /> : 
-          <HiChevronLeft className="text-white text-sm" />
-        }
+        {collapsed ? <HiChevronRight className="text-white" /> : <HiChevronLeft className="text-white" />}
       </button>
 
-      {/* Logo Section */}
-      <div className="py-5 px-6 border-b border-gray-100/60 bg-white/50">
-        {!collapsed ? (
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 
-                            rounded-xl flex items-center justify-center shadow-md">
-                <span className="text-white font-bold text-lg">HR</span>
-              </div>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 
-                            rounded-full border-2 border-white"></div>
-            </div>
-            <div className="flex-1 min-w-0">
-              <h1 className="text-lg font-bold text-gray-900 truncate">HR Portal</h1>
-              <p className="text-xs text-gray-500 truncate">Waplia Digital</p>
-            </div>
+      {/* Logo */}
+      <div className="px-6 py-4 border-b border-[var(--border-color)]">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white font-bold">
+            HR
           </div>
-        ) : (
-          <div className="flex justify-center">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 
-                          rounded-xl flex items-center justify-center shadow-md 
-                          hover:shadow-lg transition-shadow duration-200">
-              <span className="text-white font-bold text-lg">HR</span>
+          {!collapsed && (
+            <div>
+              <h1 className="font-bold text-[var(--text-primary)]">HR Portal</h1>
+              <p className="text-xs text-[var(--text-secondary)]">Waplia Digital</p>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* Navigation Content */}
+      {/* Navigation */}
       <div className="flex-1 px-3 py-6 overflow-y-auto">
-        {/* Navigation Section */}
-        {!collapsed && (
-          <div className="px-3 mb-3">
-            <h2 className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
-              Navigation
-            </h2>
-          </div>
-        )}
-
-        {/* Main Navigation Items */}
-        <nav className="space-y-0.5 mb-6">
-          {navigationItems.map((item) => (
+        <nav className="space-y-1">
+          {navigationItems.map(item => (
             <NavLink
               key={item.id}
               to={item.path}
-              className={({ isActive }) => navItemClass(isActive)}
-              onClick={() => handleMenuClick(item.id)}
-              end={item.id === 'dashboard'}
+              className={navItem(activeMenu === item.id)}
+              onClick={() => toggleSidebar?.()}
             >
-              <div className={`${collapsed ? '' : 'mr-3'} transition-all duration-200`}>
-                <div className={`text-lg ${activeMenu === item.id ? 
-                  'text-blue-500' : 
-                  'text-gray-500 group-hover:text-blue-500'
-                }`}>
-                  {item.icon}
-                </div>
-              </div>
-              {!collapsed && (
-                <span className="font-medium text-sm flex-1">{item.label}</span>
-              )}
-              {activeMenu === item.id && !collapsed && (
-                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full ml-2"></div>
-              )}
+              <span className="text-lg">{item.icon}</span>
+              {!collapsed && <span className="ml-3 text-sm font-medium">{item.label}</span>}
             </NavLink>
           ))}
         </nav>
 
-        {/* Insight Section */}
-        {/* {!collapsed && (
-          <div className="mb-6">
-            <div className="px-3 mb-3">
-              <h2 className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
-                Communications
-              </h2>
-            </div>
-            <nav className="space-y-0.5">
-              {insightItems.map((item) => (
-                <NavLink
-                  key={item.id}
-                  to={item.path}
-                  className={({ isActive }) => navItemClass(isActive)}
-                  onClick={() => handleMenuClick(item.id)}
-                >
-                  <div className="mr-3 relative">
-                    <div className={`text-lg ${activeMenu === item.id ? 
-                      'text-blue-500' : 
-                      'text-gray-500 group-hover:text-blue-500'
-                    }`}>
-                      {item.icon}
-                    </div>
-                    {item.badge > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 w-5 h-5 
-                                     bg-red-500 text-white text-[10px] 
-                                     rounded-full flex items-center justify-center 
-                                     font-bold border border-white">
-                        {item.badge > 9 ? '9+' : item.badge}
-                      </span>
-                    )}
-                  </div>
-                  {!collapsed && (
-                    <span className="font-medium text-sm flex-1">{item.label}</span>
-                  )}
-                </NavLink>
-              ))}
-            </nav>
-          </div>
-        )} */}
-
-        {/* System Section */}
         {!collapsed && (
-          <div>
-            <div className="px-3 mb-3">
-              <h2 className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest">
-                System
-              </h2>
+          <>
+            <div className="mt-8 mb-2 px-3 text-[11px] uppercase tracking-widest text-[var(--text-secondary)]">
+              System
             </div>
-            <nav className="space-y-0.5">
-              {systemItems.map((item) => (
+            <nav className="space-y-1">
+              {systemItems.map(item => (
                 <NavLink
                   key={item.id}
                   to={item.path}
-                  className={({ isActive }) => navItemClass(isActive)}
-                  onClick={() => handleMenuClick(item.id)}
+                  className={navItem(activeMenu === item.id)}
                 >
-                  <div className={`${collapsed ? '' : 'mr-3'}`}>
-                    <div className={`text-lg ${activeMenu === item.id ? 
-                      'text-blue-500' : 
-                      'text-gray-500 group-hover:text-blue-500'
-                    }`}>
-                      {item.icon}
-                    </div>
-                  </div>
-                  {!collapsed && (
-                    <span className="font-medium text-sm">{item.label}</span>
-                  )}
+                  <span className="text-lg">{item.icon}</span>
+                  <span className="ml-3 text-sm font-medium">{item.label}</span>
                 </NavLink>
               ))}
             </nav>
-          </div>
+          </>
         )}
       </div>
 
-      {/* User & Footer Section */}
-      <div className="p-4 border-t border-gray-100/60 bg-gradient-to-t from-white to-gray-50/30">
-        {/* User Profile Summary */}
-        {/* {!collapsed && (
-          <div className="mb-4 p-3 bg-gradient-to-r from-blue-50/50 to-blue-50/30 
-                        rounded-xl border border-blue-100/50">
-            <div className="flex items-center">
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-400 to-blue-500 
-                            rounded-full flex items-center justify-center mr-3">
-                <span className="text-white text-sm font-bold">JD</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">John Doe</p>
-                <p className="text-xs text-gray-500 truncate">HR Manager</p>
-              </div>
-            </div>
-            <div className="mt-2 pt-2 border-t border-blue-100/50">
-              <div className="flex justify-between text-xs">
-                <span className="text-gray-600">Tasks</span>
-                <span className="font-semibold text-blue-600">12/24</span>
-              </div>
-              <div className="mt-1.5 w-full h-1.5 bg-blue-100 rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-blue-400 to-blue-500 
-                              rounded-full w-1/2"></div>
-              </div>
-            </div>
-          </div>
-        )} */}
-
-        {/* Logout Button */}
+      {/* Footer */}
+      <div className="p-4 border-t border-[var(--border-color)]">
         <button
           onClick={() => dispatch(logout())}
-          className={`
-            w-full flex items-center justify-center py-3 rounded-xl 
-            bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 
-            font-medium hover:from-gray-100 hover:to-gray-200 hover:text-gray-900
-            active:scale-[0.98] transition-all duration-200 group border border-gray-200/50
-            ${collapsed ? 'px-3.5' : 'px-4'}
-          `}
+          className="
+            w-full flex items-center justify-center py-3 rounded-xl
+            bg-[var(--primary-soft)] text-[var(--text-primary)]
+            hover:text-red-500 transition-all
+          "
         >
-          <FiLogOut className={`${collapsed ? '' : 'mr-3'} text-lg text-gray-500 
-                              group-hover:text-gray-700`} />
+          <FiLogOut className={`${collapsed ? "" : "mr-3"}`} />
           {!collapsed && <span className="text-sm font-medium">Logout</span>}
         </button>
 
-        {/* Footer */}
         {!collapsed && (
-          <div className="mt-4 pt-3 border-t border-gray-200/50">
-            <p className="text-xs text-gray-400 text-center">
-              v2.4.1 • © 2024
-            </p>
-          </div>
+          <p className="mt-4 text-xs text-center text-[var(--text-secondary)]">
+            v2.4.1 © 2024
+          </p>
         )}
       </div>
     </aside>
