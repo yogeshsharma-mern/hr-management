@@ -216,10 +216,11 @@ export default function OfferLetterList() {
         });
     };
 
-
-    const offerLetterData = data?.data || [];
+console.log("offer letters data", data);
+    const offerLetterData = data?.data?.data || [];
     console.log("offerLetterData", offerLetterData);
-    const totalCount = data?.totalPages || 0;
+   const totalCount = data?.data?.pagination?.totalPages || 0;
+
 
     // Helper function to calculate total experience from experience array
     const calculateTotalExperience = (experienceArray) => {
@@ -476,7 +477,7 @@ export default function OfferLetterList() {
             <div className="flex items-center justify-center h-96">
                 <div className="text-center">
                     <div className="w-10 h-10 border-3 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-600">Loading candidates...</p>
+                    <p className="text-gray-600">Loading offer letters...</p>
                 </div>
             </div>
         );
@@ -605,7 +606,7 @@ export default function OfferLetterList() {
                             </div>
                         )}
 
-                        <button
+                        {/* <button
                             onClick={() => setShowFilters(!showFilters)}
                             className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 ${hasActiveFilters
                                 ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600"
@@ -614,7 +615,7 @@ export default function OfferLetterList() {
                         >
                             <MdFilterList size={18} />
                             <span>Filters</span>
-                        </button>
+                        </button> */}
 
                         <button
                             onClick={handleAdd}
@@ -627,101 +628,7 @@ export default function OfferLetterList() {
                 </div>
 
                 {/* Inline Filter Panel */}
-                {showFilters && (
-                    <div className="mt-4 pt-4 border-t border-gray-200 animate-fadeIn">
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="font-semibold text-gray-900">Filter Candidates</h3>
-                            <button
-                                onClick={() => setShowFilters(false)}
-                                className="text-gray-400 hover:text-gray-600"
-                            >
-                                <MdClose size={20} />
-                            </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Applied Position
-                                </label>
-                                <select
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                                    value={filters.appliedFor}
-                                    onChange={(e) => setFilters(prev => ({ ...prev, appliedFor: e.target.value }))}
-                                >
-                                    <option value="">All Positions</option>
-                                    {positions.map((position) => (
-                                        <option key={position.value} value={position.value}>
-                                            {position.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Experience Range
-                                </label>
-                                <select
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                                    value={filters.experienceRange}
-                                    onChange={(e) => setFilters(prev => ({ ...prev, experienceRange: e.target.value }))}
-                                >
-                                    <option value="">All Experience Levels</option>
-                                    {experienceRanges.map((range) => (
-                                        <option key={range.value} value={range.value}>
-                                            {range.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="flex items-end space-x-3">
-                                <button
-                                    onClick={handleResetFilters}
-                                    className="w-full px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                                >
-                                    Clear All
-                                </button>
-                                <button
-                                    onClick={handleApplyFilters}
-                                    className="w-full px-4 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all shadow-sm hover:shadow"
-                                >
-                                    Apply Filters
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Active Filters Display */}
-                        {hasActiveFilters && (
-                            <div className="mt-4 flex flex-wrap gap-2">
-                                <span className="text-sm text-gray-500">Active filters:</span>
-                                {filters.appliedFor && (
-                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                                        Position: {getSelectedPositionLabel()}
-                                        <button
-                                            onClick={() => setFilters(prev => ({ ...prev, appliedFor: "" }))}
-                                            className="ml-2 text-blue-600 hover:text-blue-800"
-                                        >
-                                            <MdClose size={14} />
-                                        </button>
-                                    </span>
-                                )}
-                                {filters.experienceRange && (
-                                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-emerald-100 text-emerald-800">
-                                        Experience: {getSelectedExperienceLabel()}
-                                        <button
-                                            onClick={() => setFilters(prev => ({ ...prev, experienceRange: "" }))}
-                                            className="ml-2 text-emerald-600 hover:text-emerald-800"
-                                        >
-                                            <MdClose size={14} />
-                                        </button>
-                                    </span>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                )}
+             
             </div>
 
             {/* Table */}

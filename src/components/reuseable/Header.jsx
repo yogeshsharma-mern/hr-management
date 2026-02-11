@@ -139,7 +139,7 @@ useEffect(() => {
           <div className="flex items-center space-x-3">
             <div className="w-1.5 h-8 bg-gradient-to-b from-blue-500 to-blue-400 rounded-full"></div>
             <div>
-              <h1 className="text-xl font-bold text-gray-800 tracking-tight">
+              <h1 className="text-xl font-bold text-[var(--text-primary)] tracking-tight">
                 HR<span className="text-blue-600 ml-1">Management</span>
               </h1>
               <p className="text-xs text-blue-500 font-medium mt-0.5">
@@ -177,7 +177,7 @@ useEffect(() => {
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-offset-2"
+          className="p-2 rounded-full bg-[var(--bg-surface)] text-blue-600 cursor-pointer hover:text-blue-700 transition-all duration-200 focus:outline-none focus:ring-offset-2"
           aria-label="Toggle theme"
         >
           {theme === "light" ? <FaMoon size={15} /> : <FaSun size={15} />}

@@ -56,14 +56,15 @@ export default function Candidates() {
 
   // Fetch candidates with filters
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["candidates", debouncedSearch, pagination.pageIndex, pagination.pageSize, filters],
+    queryKey: ["candidates", debouncedSearch, pagination.pageIndex, pagination.pageSize, filters.appliedFor,        // ✅ FIX
+      filters.experienceRange],
     queryFn: () => {
       const { min, max } = parseExperienceRange(filters.experienceRange);
 
       const params = {
         limit: pagination.pageSize,
         page: pagination.pageIndex + 1,
-        title: debouncedSearch
+        search: debouncedSearch
       };
 
       if (filters.appliedFor) {
@@ -150,7 +151,7 @@ export default function Candidates() {
   // Apply filters
   const handleApplyFilters = () => {
     setShowFilters(false);
-    refetch();
+    // refetch();
   };
 
   // Check if any filter is active
@@ -289,16 +290,16 @@ export default function Candidates() {
   );
 
   // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-center">
-          <div className="w-10 h-10 border-3 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading candidates...</p>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="flex items-center justify-center h-96">
+  //       <div className="text-center">
+  //         <div className="w-10 h-10 border-3 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+  //         <p className="text-gray-600">Loading candidates...</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // Error state
   if (error) {
@@ -308,7 +309,7 @@ export default function Candidates() {
           <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <MdDelete size={32} className="text-rose-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load</h3>
+          <h3 className="text-lg font-semibold text-[var(--text-secondary)] mb-2">Failed to load</h3>
           <p className="text-gray-600 mb-4">Unable to fetch candidates at the moment.</p>
           <button
             onClick={() => refetch()}
@@ -549,7 +550,12 @@ export default function Candidates() {
 
       {/* Table */}
       <div className="bg-[var(--bg-surface)]
- rounded-xl border border-gray-200 overflow-auto shadow-sm">
+ rounded-xl border relative border-gray-200 overflow-auto shadow-sm">
+   {isLoading && (
+    <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-50">
+      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  )}
         <ReusableTable
           columns={columns}
           data={candidates}

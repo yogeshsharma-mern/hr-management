@@ -20,12 +20,15 @@ import {
     FaFileAlt,
     FaHandshake,
     FaFileSignature,
-    FaHistory
+    FaHistory,
+    FaCalendarCheck,
+    FaCheckCircle
 } from 'react-icons/fa';
 import { MdWork, MdSchool, MdTimeline } from 'react-icons/md';
 import apiPath from '../../api/apiPath';
 import { apiGet } from '../../api/apiFetch';
 import './ViewCandidate.css';
+import { TiTick } from "react-icons/ti";
 
 export default function ViewCandidate() {
     const { id } = useParams();
@@ -121,19 +124,186 @@ const interviews = data?.data?.interviews || [];
         const remainingMonths = months % 12;
         return { years, months: remainingMonths };
     };
+const formatInterviewDate = (dateString) => {
+    if (!dateString) return 'Not scheduled';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+};
+const formatInterviewTime = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+};
 
-    const renderInterviewDetails = () => (
+const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+        case 'scheduled': return '#3b82f6';
+        case 'completed': return '#10b981';
+        case 'cancelled': return '#ef4444';
+        case 'rescheduled': return '#f59e0b';
+        default: return '#6b7280';
+    }
+};
+
+const getResultColor = (result) => {
+    switch (result?.toLowerCase()) {
+        case 'passed': return '#10b981';
+        case 'failed': return '#ef4444';
+        case 'pending': return '#f59e0b';
+        case 'on hold': return '#6b7280';
+        default: return '#6b7280';
+    }
+};
+  const renderInterviewDetails = () => {
+    if (!interviews || interviews.length === 0) {
+        return (
+            <div className="tab-content">
+                <div className="empty-state">
+                    <FaHistory className="empty-icon" />
+                    <h3>Interview History</h3>
+                    <p>No interviews scheduled yet</p>
+                    <button className="schedule-btn" onClick={() => navigate(`/hr/interview/schedule/${id}`)}>
+                        <FaCalendarPlus /> Schedule First Interview
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    return (
         <div className="tab-content">
-            <div className="empty-state">
-                <FaHistory className="empty-icon" />
-                <h3>Interview History</h3>
-                <p>No interviews scheduled yet</p>
-                <button className="schedule-btn" onClick={() => navigate(`/hr/interview/schedule/${id}`)}>
-                    <FaCalendarPlus /> Schedule First Interview
+            <div className="interviews-header">
+                <div className="interviews-stats">
+                    <div className="stat-item">
+                        <span className="stat-label">Total Interviews</span>
+                        <span className="stat-value">{interviews.length}</span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-label">Completed</span>
+                        <span className="stat-value">
+                            {interviews.filter(i => i.status?.toLowerCase() === 'completed').length}
+                        </span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-label">Upcoming</span>
+                        <span className="stat-value">
+                            {interviews.filter(i => i.status?.toLowerCase() === 'scheduled').length}
+                        </span>
+                    </div>
+                </div>
+                <button
+                    className="schedule-interview-btn"
+                    onClick={() => navigate(`/hr/interview/schedule/${id}`)}
+                >
+                    <FaCalendarPlus /> Schedule New Interview
                 </button>
+            </div>
+
+            <div className="interviews-list">
+                {interviews.map((interview, index) => {
+                    const interviewDate = new Date(interview.interviewDate);
+                    const isPast = interviewDate < new Date();
+                    
+                    return (
+                        <div key={interview._id} className="interview-card">
+                            <div className="interview-header">
+                                <div className="interview-round">
+                                    {/* <FaCalendarCheck className="round-icon" /> */}
+                                    <TiTick size={19} className='text-green-500' />
+                                    <div>
+                                        <h4 className="round-name">{interview.round || 'Interview'} Round</h4>
+                                        <div className="interview-date">
+                                            <FaCalendarAlt />
+                                            <span>{formatInterviewDate(interview.interviewDate)}</span>
+                                            {interview.interviewDate && (
+                                                <>
+                                                    <FaClock style={{ marginLeft: '12px' }} />
+                                                    <span>{formatInterviewTime(interview.interviewDate)}</span>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="interview-status">
+                                    <span
+                                        className="status-badge"
+                                        style={{ backgroundColor: getStatusColor(interview.status) + '20', color: getStatusColor(interview.status) }}
+                                    >
+                                        {interview.status || 'Scheduled'}
+                                    </span>
+                                    {interview.result && (
+                                        <span
+                                            className="result-badge"
+                                            style={{ backgroundColor: getResultColor(interview.result) + '20', color: getResultColor(interview.result) }}
+                                        >
+                                            <FaCheckCircle /> {interview.result}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="interview-details">
+                                <div className="detail-row">
+                                    <div className="detail-item">
+                                        <span className="detail-label">Interviewer</span>
+                                        <span className="detail-value">{interview.interviewerName || 'Not assigned'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <span className="detail-label">Mode</span>
+                                        <span className="detail-value">{interview.mode || 'Not specified'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <span className="detail-label">Location/Link</span>
+                                        <span className="detail-value">
+                                            {interview.mode?.toLowerCase() === 'online' 
+                                                ? interview.meetingLink || 'Link not provided'
+                                                : interview.location || 'Location not specified'
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {interview.feedback && (
+                                    <div className="feedback-section">
+                                        <h5>Feedback</h5>
+                                        <p className="feedback-text">{interview.feedback}</p>
+                                    </div>
+                                )}
+
+                                <div className="interview-footer">
+                                    <div className="interview-meta">
+                                        <span className="meta-info">
+                                            Scheduled: {new Date(interview.createdAt).toLocaleDateString()}
+                                        </span>
+                                        {interview.updatedAt && (
+                                            <span className="meta-info">
+                                                Last updated: {new Date(interview.updatedAt).toLocaleDateString()}
+                                            </span>
+                                        )}
+                                    </div>
+                                    {/* <button
+                                        className="view-details-btn"
+                                        onClick={() => navigate(`/hr/interviews/${interview._id}`)}
+                                    >
+                                        View Details
+                                    </button> */}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
+};
 
     const renderOfferDetails = () => (
         <div className="tab-content">

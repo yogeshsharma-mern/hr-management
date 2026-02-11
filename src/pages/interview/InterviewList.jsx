@@ -29,6 +29,7 @@ export default function InterviewList() {
   const [openModal, setOpenModal] = useState(false);
   const [modalType, setModalType] = useState("view"); // 'view', 'delete', 'status'
   const [selectedInterview, setSelectedInterview] = useState(null);
+console.log("selectedinterview",selectedInterview);
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
 
 
@@ -64,7 +65,7 @@ export default function InterviewList() {
       mode: filterMode
     }),
   });
-
+  console.log("interviewData", data);
   // Delete mutation
   const deleteMutation =
     useMutation({
@@ -105,8 +106,9 @@ export default function InterviewList() {
     }
   });
 
-  const interviews = data?.data || [];
-  const totalCount = data?.totalCount || 0;
+  const interviews = data?.data?.data || [];
+  const totalCount = data?.data?.pagination?.totalPages || 0;
+  console.log("totalcount", totalCount);
 
   // Check if a round is completed and passed
   const isRoundCompletedPassed = (interview) => {
@@ -298,23 +300,28 @@ export default function InterviewList() {
   // Format date for display
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      timeZone: "Asia/Kolkata",
     });
   };
+
 
   // Format time for display
   const formatTime = (dateString) => {
     if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit'
+
+    return new Date(dateString).toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata", // ✅ CRITICAL
     });
   };
+
 
   // Memoized columns
   const columns = useMemo(
@@ -352,18 +359,24 @@ export default function InterviewList() {
       {
         header: "DATE & TIME",
         cell: ({ row }) => {
-          const interviewDate = row.original.interviewDate;
+          const interviewDate = row.original.createdAt; // ✅ FIXED
+
           return (
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
                 <MdCalendarToday className="text-gray-400 text-sm" />
-                <span className="font-medium text-[var(--text-primary)]">{formatDate(interviewDate)}</span>
+                <span className="font-medium text-[var(--text-primary)]">
+                  {formatDate(interviewDate)}
+                </span>
               </div>
-              <div className="text-xs text-gray-500">{formatTime(interviewDate)}</div>
+              <div className="text-xs text-gray-500">
+                {formatTime(interviewDate)}
+              </div>
             </div>
           );
         },
-      },
+      }
+      ,
       {
         header: "ROUND",
         accessorKey: "round",
@@ -535,16 +548,7 @@ export default function InterviewList() {
   }, [interviews]);
 
   // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <div className="text-center">
-          <div className="w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading interviews...</p>
-        </div>
-      </div>
-    );
-  }
+
 
   // Error state
   if (error) {
@@ -715,14 +719,19 @@ export default function InterviewList() {
       </div>
 
       {/* Table */}
-      <div className="bg-[var(--bg-surface)] rounded-xl border border-gray-200 overflow-auto">
+      <div className="bg-[var(--bg-surface)] relative rounded-xl border border-gray-200 overflow-auto">
+         {isLoading && (
+    <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-50">
+      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  )}
         <ReusableTable
           columns={columns}
           data={interviews}
           paginationState={pagination}
           setPagination={setPagination}
           setPaginationState={setPagination}
-          totalCount={data?.totalPages || 1}
+          totalCount={totalCount || 1}
         />
       </div>
 
