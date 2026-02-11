@@ -90,7 +90,7 @@ console.log("username",username);
 
 <Header toggleSidebar={toggleSidebar} goToProfile={goToProfile} dispatch={dispacth} logout={logout} />
         {/* Page Content */}
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 bg-[var(--bg-surface)] overflow-auto">
           <div className="w-full bg-[var(--bg-surface)]  md:p-4 overflow-x-auto">
             <Outlet />
           </div>

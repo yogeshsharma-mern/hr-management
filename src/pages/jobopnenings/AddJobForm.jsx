@@ -101,7 +101,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+          <label className="block text-sm font-medium text-[var(--text-secondary)] flex items-center gap-2">
             <FaBriefcase className="text-blue-500" />
             Job Title *
           </label>
@@ -112,7 +112,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             placeholder="e.g., Senior Frontend Developer"
             className={`w-full ${
     errors.title ? "border-red-500" : "border-gray-300"
-  } px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  } px-4 py-3 border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
             
           />
           {errors.title && (
@@ -121,7 +121,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+          <label className="block text-sm font-medium text-[var(--text-secondary)] flex items-center gap-2">
             <FaBuilding className="text-purple-500" />
             Department *
           </label>
@@ -131,7 +131,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             onChange={handleChange}
             className={`w-full px-4 py-3 ${
     errors.department ? "border-red-500" : "border-gray-300"
-  } border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  } border border-gray-300 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
           >
             <option value="">Select Department</option>
@@ -150,7 +150,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+          <label className="block text-sm font-medium text-[var(--text-secondary)] flex items-center gap-2">
             <FaMapMarkerAlt className="text-amber-500" />
             Location *
           </label>
@@ -160,7 +160,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             onChange={handleChange}
             className={`w-full px-4 ${
     errors.location ? "border-red-500" : "border-gray-300"
-  } py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  } py-3 border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
           >
             <option value="">Select Location</option>
@@ -172,14 +172,14 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             {/* <option value="Berlin, Germany">Berlin, Germany</option> */}
           </select>
                       {errors.location && (
-  <p className="text-red-500 text-sm">{errors.location}</p>
+  <p className="text-red-500  text-sm">{errors.location}</p>
 )}
         </div>
 
         <div className="space-y-2">
           <label className={`block text-sm ${
     errors.noOfOpenings ? "border-red-500" : "border-gray-300"
-  } font-medium text-gray-700 flex items-center gap-2`}>
+  } font-medium text-[var(--text-secondary)] flex items-center gap-2`}>
             <FaUsers className="text-emerald-500" />
             Number of Openings *
           </label>
@@ -192,7 +192,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             placeholder="e.g., 5"
             className={`w-full px-4 py-3  ${
     errors.noOfOpenings ? "border-red-500" : "border-gray-300"
-  }  border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  }  border border-gray-300 rounded-xl placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
           />
            {errors.noOfOpenings && (
@@ -202,7 +202,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
 
         {/* {mode === 'edit' && (
           <div className="space-y-2 md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-[var(--text-secondary)]">
               Status
             </label>
             <select
@@ -221,7 +221,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+        <label className="block text-sm font-medium text-[var(--text-secondary)] flex items-center gap-2">
           <FaFileAlt className="text-cyan-500" />
           Job Description
         </label>
@@ -233,7 +233,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
           placeholder="Describe the role, responsibilities, and requirements..."
           className={`w-full  ${
     errors.description ? "border-red-500" : "border-gray-300"
-  }  px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  }  px-4 py-3 border border-gray-300 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
         />
                    {errors.description && (
   <p className="text-red-500 text-sm">{errors.description}</p>
@@ -244,7 +244,7 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
         <button
           type="button"
           onClick={onClose}
-          className="px-5 py-2.5 cursor-pointer border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
+          className="px-5 py-2.5 cursor-pointer border border-gray-300 text-[var(--text-secondary)] rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
           disabled={isLoading}
         >
           Cancel

@@ -107,7 +107,8 @@ console.log("data",data);
             </div>
             <div>
               <div className="font-semibold text-gray-900">{row.original.title}</div>
-              <div className="text-xs text-gray-500">ID: {row.original.id || "N/A"}</div>
+              <div className="text-xs text-[var(--text-secondary)]
+">ID: {row.original.id || "N/A"}</div>
             </div>
           </div>
         ),
@@ -270,7 +271,8 @@ console.log("itme",item.isActive);
             <p className="text-blue-100">Manage and track all job positions</p>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+            <div className="bg-[var(--bg-surface)]
+/10 backdrop-blur-sm rounded-lg p-3">
               <div className="text-3xl font-bold">{jobOpenings.length}</div>
               <div className="text-sm text-blue-200">Total Positions</div>
             </div>
@@ -280,10 +282,12 @@ console.log("itme",item.isActive);
 
       {/* Stats Cards */}
       <div className="hidden grid grid-cols-1  md:grid md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Open Positions</p>
+              <p className="text-sm text-[var(--text-secondary)]
+">Open Positions</p>
               <p className="text-2xl font-bold text-gray-900">
                 {jobOpenings.filter(j => j.status === "open").length}
               </p>
@@ -293,10 +297,12 @@ console.log("itme",item.isActive);
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Openings</p>
+              <p className="text-sm text-[var(--text-secondary)]
+">Total Openings</p>
               <p className="text-2xl font-bold text-gray-900">
                 {jobOpenings.reduce((sum, job) => sum + (parseInt(job.noOfOpenings) || 0), 0)}
               </p>
@@ -306,10 +312,12 @@ console.log("itme",item.isActive);
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Departments</p>
+              <p className="text-sm text-[var(--text-secondary)]
+">Active Departments</p>
               <p className="text-2xl font-bold text-gray-900">
                 {new Set(jobOpenings.map(j => j.department)).size}
               </p>
@@ -319,10 +327,12 @@ console.log("itme",item.isActive);
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Locations</p>
+              <p className="text-sm text-[var(--text-secondary)]
+">Locations</p>
               <p className="text-2xl font-bold text-gray-900">
                 {new Set(jobOpenings.map(j => j.location)).size}
               </p>
@@ -335,23 +345,25 @@ console.log("itme",item.isActive);
       </div>
 
       {/* Toolbar */}
-      <div className="bg-white rounded-xl p-4 border border-gray-200">
+      <div className="bg-[var(--bg-surface)]
+ rounded-xl p-4 border border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 relative">
             <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search jobs by title, department or location..."
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
-              <MdFilterList className="text-gray-500" />
+              <MdFilterList className="text-[var(--text-secondary)]
+" />
               <select
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 text-[var(--text-primary)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -367,7 +379,7 @@ console.log("itme",item.isActive);
                 setModalType("add");
                 setOpenModal(true);
               }}
-              className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-4 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
+              className="flex bg-[var(--bg-surface)] items-center space-x-2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-4 py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg"
             >
               <MdAdd size={20} />
               <span>Add New Job</span>
@@ -377,7 +389,8 @@ console.log("itme",item.isActive);
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-auto">
+      <div className="bg-[var(--bg-surface)]
+ rounded-xl border border-gray-200 overflow-auto">
         <ReusableTable
           columns={columns}
           data={jobOpenings}
@@ -426,24 +439,29 @@ console.log("itme",item.isActive);
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Position</p>
+                <p className="text-sm text-[var(--text-secondary)]
+">Position</p>
                 <p className="font-medium">{selectedJob.title}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Department</p>
+                <p className="text-sm text-[var(--text-secondary)]
+">Department</p>
                 <p className="font-medium">{selectedJob.department}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Location</p>
+                <p className="text-sm text-[var(--text-secondary)]
+">Location</p>
                 <p className="font-medium">{selectedJob.location}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-gray-500">Openings</p>
+                <p className="text-sm text-[var(--text-secondary)]
+">Openings</p>
                 <p className="font-medium">{selectedJob.noOfOpenings}</p>
               </div>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-2">Description</p>
+              <p className="text-sm text-[var(--text-secondary)]
+ mb-2">Description</p>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="text-gray-700">{selectedJob.description}</p>
               </div>

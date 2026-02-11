@@ -169,13 +169,13 @@ export default function AppointmentLetterList() {
     });
     const updateStatusMutation = useMutation({
         mutationFn: ({ id, status }) =>
-            apiPut(`${apiPath.updateOfferStatus}/${id}`, { status }),
+            apiPut(`${apiPath.updateAppointmentStatus}/${id}`, { status }),
 
         onSuccess: (res) => {
             toast.success(res?.message || "Status updated successfully");
 
             // 🔄 Refresh list
-            queryClient.invalidateQueries(["offerlettersData"]);
+            queryClient.invalidateQueries(["appointmentLettersData"]);
 
             setEditModalOpen(false);
             setSelectedCandidate(null);
@@ -193,7 +193,7 @@ export default function AppointmentLetterList() {
         mutationFn: ({ id }) => apiPost(`${apiPath.generateAppointmentLetter}/${id}`),
         onSuccess: (res) => {
             toast.success(res?.message || "Appointment letter generated successfully");
-            queryClient.invalidateQueries(["offerlettersData"]);
+            queryClient.invalidateQueries(["appointmentLettersData"]);
         },
         onError: (error) => {
             toast.error(error?.response?.data?.message || "Failed to generate appointment letter");
@@ -259,7 +259,7 @@ export default function AppointmentLetterList() {
     // };
     const handleView = async (pdfId) => {
         try {
-            const res = await apiGetPdf(`${apiPath.offerLetterPdf}/${pdfId}`);
+            const res = await apiGetPdf(`${apiPath.appointmentLetterPdf}/${pdfId}`);
             const blob = res.data;
             const pdfUrl = URL.createObjectURL(blob);
             window.open(pdfUrl, "_blank");
@@ -385,8 +385,8 @@ export default function AppointmentLetterList() {
             //     },
             //   },
             {
-header:"Location",
-accessorKey:"location",
+                header: "Location",
+                accessorKey: "location",
             },
             {
                 header: "STATUS",
@@ -776,7 +776,7 @@ accessorKey:"location",
                     </p>
                 </div>
             </Modal>
-            <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)} title="Edit Offer Letter Actions">
+            <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)} title="Edit Appointment Letter Actions">
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                         <FaBuilding className="text-purple-500" />

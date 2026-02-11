@@ -1090,7 +1090,7 @@ const AddCandidate = () => {
                 <div className="action-buttons">
                     <button
                         type="button"
-                        className="btn btn-outline"
+                        className="btn btn-outline w-12"
                         onClick={handleBack}
                         disabled={activeStep === 0 || mutation.isLoading}
                     >
@@ -1120,7 +1120,7 @@ const AddCandidate = () => {
                                             Submitting...
                                         </>
                                     ) : (
-                                        'Submit Application'
+                                        'Submit'
                                     )}
                                 </button>
                             </>

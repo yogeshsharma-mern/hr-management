@@ -329,7 +329,7 @@ export default function InterviewList() {
                 <MdPerson className="text-white text-sm" />
               </div>
               <div>
-                <div className="font-semibold text-gray-900">
+                <div className="font-semibold text-[var(--text-primary)]">
                   {interview.candidateName || "Candidate Name"}
                 </div>
                 <div className="text-xs text-gray-500">
@@ -357,7 +357,7 @@ export default function InterviewList() {
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
                 <MdCalendarToday className="text-gray-400 text-sm" />
-                <span className="font-medium text-gray-900">{formatDate(interviewDate)}</span>
+                <span className="font-medium text-[var(--text-primary)]">{formatDate(interviewDate)}</span>
               </div>
               <div className="text-xs text-gray-500">{formatTime(interviewDate)}</div>
             </div>
@@ -554,7 +554,7 @@ export default function InterviewList() {
           <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <MdDelete size={32} className="text-rose-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load</h3>
+          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Failed to load</h3>
           <p className="text-gray-600 mb-4">Unable to fetch interviews at the moment.</p>
           <button
             onClick={() => refetch()}
@@ -571,11 +571,11 @@ export default function InterviewList() {
     <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "md:w-[78vw]"}`}>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Total Interviews</p>
-              <p className="text-2xl font-bold text-gray-900">{totalCount}</p>
+              <p className="text-2xl font-bold text-[var(--text-primary)]">{totalCount}</p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
               <FaBriefcase className="text-blue-600 text-xl" />
@@ -583,11 +583,11 @@ export default function InterviewList() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Scheduled</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {interviews.filter(i => i.status === 'Scheduled').length}
               </p>
             </div>
@@ -597,11 +597,11 @@ export default function InterviewList() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Online Interviews</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {interviews.filter(i => i.mode === 'Online').length}
               </p>
             </div>
@@ -611,11 +611,11 @@ export default function InterviewList() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Completed</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {interviews.filter(i => i.status === 'Completed').length}
               </p>
             </div>
@@ -627,14 +627,14 @@ export default function InterviewList() {
       </div>
 
       {/* Toolbar */}
-      <div className="bg-white rounded-xl p-4 border border-gray-200">
+      <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 relative">
             <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search by candidate name, interviewer, or position..."
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full text-[var(--text-primary)] pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -644,7 +644,7 @@ export default function InterviewList() {
             <div className="flex items-center space-x-2">
               <MdFilterList className="text-gray-500" />
               <select
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
+                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
                 value={filterRound}
                 onChange={(e) => setFilterRound(e.target.value)}
               >
@@ -657,7 +657,7 @@ export default function InterviewList() {
 
             <div className="flex items-center space-x-2">
               <select
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
+                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -670,7 +670,7 @@ export default function InterviewList() {
 
             <div className="flex items-center space-x-2">
               <select
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
+                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
                 value={filterMode}
                 onChange={(e) => setFilterMode(e.target.value)}
               >
@@ -684,7 +684,7 @@ export default function InterviewList() {
             <div className="flex items-center space-x-2">
               <input
                 type="date"
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                 value={filterDate}
                 onChange={(e) => setFilterDate(e.target.value)}
               />
@@ -706,7 +706,7 @@ export default function InterviewList() {
                 setFilterDate("");
                 setFilterMode("");
               }}
-              className="px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-4 py-2.5 border border-gray-300 rounded-lg text-[var(--text-primary)] transition-colors"
             >
               Clear Filters
             </button>
@@ -715,7 +715,7 @@ export default function InterviewList() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-auto">
+      <div className="bg-[var(--bg-surface)] rounded-xl border border-gray-200 overflow-auto">
         <ReusableTable
           columns={columns}
           data={interviews}
@@ -768,7 +768,7 @@ export default function InterviewList() {
             <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <MdDelete size={32} className="text-rose-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
               Delete Interview?
             </h3>
             {selectedInterview &&

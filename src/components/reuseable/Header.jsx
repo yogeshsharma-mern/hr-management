@@ -229,9 +229,9 @@ useEffect(() => {
 
           {/* Modern Dropdown Menu */}
           {menuOpen && (
-            <div  className="absolute right-0 mt-3 w-64 border border-blue-100 rounded-2xl shadow-xl overflow-hidden z-50 animate-slideDown">
+            <div  className="absolute right-0 mt-3 w-64 border bg-white border-blue-100 rounded-2xl shadow-xl overflow-hidden z-100 animate-slideDown">
               {/* Header Section */}
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100/50 p-4">
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100/50 z-[100] px-4 py-3">
                 <div className="flex items-center space-x-4">
                   <div className="relative">
                     <div className="w-13 h-12 rounded-2xl overflow-hidden ring-2 ring-white shadow-lg">
@@ -273,7 +273,7 @@ useEffect(() => {
                 <div className="mt-1 pt-1 border-t border-blue-100">
                   <button
                     onClick={() => dispatch(logout())}
-                    className="w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-red-50 rounded-xl transition-all duration-200 group"
+                    className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-red-50 rounded-xl transition-all duration-200 group"
                   >
                     <div className="w-8 h-6 bg-red-100 rounded-xl flex items-center justify-center group-hover:bg-red-200 transition-colors">
                       <FaSignOutAlt className="text-red-600" size={18} />

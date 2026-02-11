@@ -67,7 +67,7 @@ export default function ReusableTable({
   });
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
   return (
-    <div className={`bg-white text-[14px] w-[99vw] lg:w-[81vw] overflow-auto  shadow-lg border border-gray-200 p-4 overflow-auto ${collapsed ? 'lg:w-[94vw]' : ':w-[81vw]'}`}>
+    <div className={`bg-[var(--bg-surface)] text-[14px] w-[99vw] lg:w-[81vw] overflow-auto  shadow-lg border border-gray-200 p-4 overflow-auto ${collapsed ? 'lg:w-[94vw]' : ':w-[81vw]'}`}>
 
       {/* Header with search and actions */}
       {/* <div className="flex flex-col md:flex-row  justify-between items-start md:items-center mb-6 gap-4">
@@ -120,7 +120,7 @@ export default function ReusableTable({
       <div className="relative rounded-xl text-[12px] border border-gray-200 overflow-hidden">
         {/* Loader Overlay */}
         {(loading || fetching) && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 rounded-xl">
+          <div className="absolute inset-0 flex items-center justify-center bg-[var(--bg-surface)] bg-opacity-90 z-50 rounded-xl">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
               <p className="mt-4 text-gray-600">Loading data...</p>
@@ -131,7 +131,7 @@ export default function ReusableTable({
         {/* Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y text-[12px] divide-gray-200">
-            <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
+            <thead className="bg-[--bg-surface]">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -160,18 +160,19 @@ export default function ReusableTable({
               ))}
             </thead>
 
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-[var(--bg-surface)] divide-y divide-gray-200">
               {table.getRowModel().rows.length > 0 ? (
                 table.getRowModel().rows.map((row, index) => (
                   <tr
                     key={row.id}
-                    className={`hover:bg-blue-50 transition-all duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    className={` transition-all duration-200 ${index % 2 === 0 ? 'bg-[var(--bg-surface)]' : 'bg-[var(--bg-surface)]'
                       }`}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="px-6 py-3 whitespace-nowrap text-[12px] text-gray-900"
+                        className="px-6 py-3 whitespace-nowrap text-[12px] text-[var(--text-primary)]
+"
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
@@ -181,11 +182,13 @@ export default function ReusableTable({
               ) : (
                 <tr>
                   <td colSpan={columns.length} className="px-6 py-12 text-center">
-                    <div className="flex flex-col items-center justify-center text-gray-500">
+                    <div className="flex flex-col items-center justify-center text-[var(--text-primary)]
+">
                       <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      <p className="text-lg font-medium text-gray-900">No data found</p>
+                      <p className="text-lg font-medium text-[var(--text-primary)]
+">No data found</p>
                       <p className="text-gray-600 mt-1">Try adjusting your search or filter to find what you're looking for.</p>
                     </div>
                   </td>
@@ -198,7 +201,7 @@ export default function ReusableTable({
 
       {/* Pagination */}
       <div className="mt-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-        <div className="flex items-center space-x-2 text-sm text-gray-700">
+        <div className="flex items-center space-x-2 text-sm text-[var(--text-secondary)]">
           <span>Showing</span>
           <span className="font-semibold">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span>
           <span>to</span>
@@ -215,11 +218,11 @@ export default function ReusableTable({
 
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-700">Rows per page:</span>
+            <span className="text-sm text-[var(--text-secondary)]">Rows per page:</span>
             <select
               value={table.getState().pagination.pageSize}
               onChange={(e) => table.setPageSize(Number(e.target.value))}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="border border-gray-300 text-[var(--text-primary)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {[5,10, 20, 50, 100].map((size) => (
                 <option key={size} value={size}>
@@ -235,7 +238,7 @@ export default function ReusableTable({
                 setPaginationState((old) => ({ ...old, pageIndex: old.pageIndex - 1 }))
               }
               disabled={!table.getCanPreviousPage()}
-              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 border border-gray-300 text-[var(--text-secondary)] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FaChevronLeft className="w-4 h-4" />
             </button>
@@ -258,9 +261,9 @@ export default function ReusableTable({
                     onClick={() =>
                       setPaginationState((old) => ({ ...old, pageIndex }))
                     }
-                    className={`w-10 h-10 rounded-lg text-sm font-medium transition-all ${table.getState().pagination.pageIndex === pageIndex
-                        ? 'bg-blue-600 text-white'
-                        : 'border border-gray-300 text-gray-700 hover:bg-gray-50'
+                    className={`w-10 h-10 rounded-lg text-sm  font-medium transition-all ${table.getState().pagination.pageIndex === pageIndex
+                        ? 'bg-blue-600 text-[var(--text-primary)] border-transparent'
+                        : 'border border-gray-300 text-[var(--text-secondary)] hover:bg-gray-50'
                       }`}
                   >
                     {pageIndex + 1}
@@ -274,13 +277,13 @@ export default function ReusableTable({
                 setPaginationState((old) => ({ ...old, pageIndex: old.pageIndex + 1 }))
               }
               disabled={!table.getCanNextPage()}
-              className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 border border-gray-300 text-[var(--text-secondary)] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FaChevronRight className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="text-sm text-gray-700">
+          <div className="text-sm text-[var(--text-secondary)]">
             Page <span className="font-semibold">{table.getState().pagination.pageIndex + 1}</span>
             <span className="mx-1">of</span>
             <span className="font-semibold">{table.getPageCount()}</span>
@@ -300,7 +303,8 @@ export default function ReusableTable({
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Records</p>
-                <p className="text-2xl font-bold text-gray-900">{totalCount}</p>
+                <p className="text-2xl font-bold text-[var(--text-primary)]
+">{totalCount}</p>
               </div>
             </div>
           </div>
@@ -314,7 +318,8 @@ export default function ReusableTable({
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Filtered</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-2xl font-bold text-[var(--text-primary)]
+">
                   {table.getRowModel().rows.length}
                 </p>
               </div>
@@ -330,7 +335,8 @@ export default function ReusableTable({
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Sorted By</p>
-                <p className="text-lg font-semibold text-gray-900">
+                <p className="text-lg font-semibold text-[var(--text-primary)]
+">
                   {sortingState?.length > 0
                     ? sortingState?.map(s => s.id).join(', ')
                     : 'None'

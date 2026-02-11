@@ -18,6 +18,8 @@ const apiPath = Object.freeze({
   offerLetterData:"/offer-letters/info",
   generateAppointmentLetter:"/appointment-letters",
   appointmentLetterList:"/appointment-letters",
+  updateAppointmentStatus:"/appointment-letters/status",
+  appointmentLetterPdf:"/appointment-letters",
 
 });
 

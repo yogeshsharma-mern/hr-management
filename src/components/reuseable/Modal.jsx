@@ -55,9 +55,9 @@ export default function Modal({
 
   const typeStyles = {
     default: {
-      header: "bg-gradient-to-r from-gray-50 to-white",
+      header: "bg-[var(--bg-surface)]",
       accent: "from-blue-500 to-cyan-500",
-      text: "text-gray-800",
+      text: "text-[var(--text-primary)]",
       border: "border-gray-200",
     },
     success: {
@@ -119,7 +119,7 @@ export default function Modal({
         }}
       >
         {/* Modal Card */}
-        <div className="bg-white rounded-2xl shadow-2xl shadow-black/20 border border-white/20 overflow-hidden flex flex-col h-full">
+        <div className="bg-[var(--bg-surface)] rounded-2xl shadow-2xl shadow-black/20 border border-white/20 overflow-hidden flex flex-col h-full">
           {/* Header with gradient */}
           {showHeader && (
             <div className={`relative ${currentType.header} px-6 py-5 border-b ${currentType.border}`}>
