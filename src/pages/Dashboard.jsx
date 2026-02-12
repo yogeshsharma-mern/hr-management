@@ -146,8 +146,8 @@ export default function HRDashboard() {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
-          <p className="font-semibold text-gray-900">{label}</p>
+        <div className="bg-[var(--bg-surface)] p-4 rounded-lg shadow-lg border border-gray-200">
+          <p className="font-semibold text-[var(--text-primary)]">{label}</p>
           {payload.map((entry, index) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
               {entry.name}: {entry.value}
@@ -160,18 +160,18 @@ export default function HRDashboard() {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <div className="p-6 bg-[var(--bg-surface)] min-h-screen">
       {/* Header */}
       <div className="mb-8">
         <div className="md:flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">HR Analytics Dashboard</h1>
+            <h1 className="text-3xl font-bold text-[var(--text-primary)]">HR Analytics Dashboard</h1>
             <p className="text-gray-600 mt-2">Welcome back, Erşad. Here's your team overview.</p>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="px-4 py-2 bg-white border border-gray-300 rounded-xl text-sm font-medium hover:bg-gray-50 transition-colors">
+            {/* <button className="px-4 py-2 bg-[var(--bg-surface)] border border-gray-300 rounded-xl text-sm font-medium hover:bg-[var(--bg-surface)] transition-colors">
               Export Report
-            </button>
+            </button> */}
             <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl text-sm font-medium hover:from-blue-700 hover:to-blue-800 transition-all">
               Generate Insights
             </button>
@@ -188,7 +188,7 @@ export default function HRDashboard() {
       {/* Metrics Cards with Mini Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {metrics.map((metric, index) => (
-          <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+          <div key={index} className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
               <div className={`p-3 rounded-xl bg-gradient-to-br ${metric.color} bg-opacity-10`}>
                 {metric.icon}
@@ -198,7 +198,7 @@ export default function HRDashboard() {
                 {metric.change}
               </span>
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-2">{metric.value}</h3>
+            <h3 className="text-3xl font-bold text-[var(--text-primary)] mb-2">{metric.value}</h3>
             <p className="text-gray-600 mb-4">{metric.title}</p>
             {/* Mini Chart */}
             <div className="h-12">
@@ -224,10 +224,10 @@ export default function HRDashboard() {
       {/* Main Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Department Distribution - Pie Chart */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Department Distribution</h2>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">Department Distribution</h2>
               <p className="text-gray-600 text-sm">Employee count by department</p>
             </div>
             <MdPieChart className="text-gray-400 text-2xl" />
@@ -257,10 +257,10 @@ export default function HRDashboard() {
         </div>
 
         {/* Recruitment Trends - Bar Chart */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Recruitment Pipeline</h2>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">Recruitment Pipeline</h2>
               <p className="text-gray-600 text-sm">Monthly recruitment metrics</p>
             </div>
             <MdBarChart className="text-gray-400 text-2xl" />
@@ -286,10 +286,10 @@ export default function HRDashboard() {
       {/* Secondary Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Employee Growth - Area Chart */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Employee Growth</h2>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">Employee Growth</h2>
               <p className="text-gray-600 text-sm">Headcount and monthly hires</p>
             </div>
             <AiOutlineAreaChart className="text-gray-400 text-2xl" />
@@ -310,10 +310,10 @@ export default function HRDashboard() {
         </div>
 
         {/* Performance Ratings - Radial Chart */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Performance Ratings</h2>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">Performance Ratings</h2>
               <p className="text-gray-600 text-sm">Employee performance distribution</p>
             </div>
             <TbChartArcs className="text-gray-400 text-2xl" />
@@ -355,10 +355,10 @@ export default function HRDashboard() {
       {/* Attendance and Payroll Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Weekly Attendance - Line Chart */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Weekly Attendance</h2>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">Weekly Attendance</h2>
               <p className="text-gray-600 text-sm">Present vs. Absent employees</p>
             </div>
             <TbChartLine className="text-gray-400 text-2xl" />
@@ -393,10 +393,10 @@ export default function HRDashboard() {
         </div>
 
         {/* Payroll Distribution - Composed Chart */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Payroll Analysis</h2>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">Payroll Analysis</h2>
               <p className="text-gray-600 text-sm">Salary and bonus by department</p>
             </div>
             <HiOutlineCurrencyDollar className="text-gray-400 text-2xl" />
@@ -421,17 +421,17 @@ export default function HRDashboard() {
       {/* Recent Hires & Quick Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Hires */}
-        <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="lg:col-span-2 bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900">Recent Hires</h2>
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">Recent Hires</h2>
               <p className="text-gray-600 text-sm">New employees this month</p>
             </div>
             <FaUserCheck className="text-gray-400 text-2xl" />
           </div>
           <div className="space-y-4">
             {recentHires.map((hire, index) => (
-              <div key={index} className="flex items-center justify-between p-4 rounded-xl hover:bg-gray-50 transition-colors">
+              <div key={index} className="flex items-center justify-between p-4 rounded-xl hover:bg-[var(--bg-surface)] transition-colors">
                 <div className="flex items-center space-x-4">
                   <div className={`${hire.avatarColor} w-12 h-12 rounded-xl flex items-center justify-center`}>
                     <span className="text-white font-bold">
@@ -439,12 +439,12 @@ export default function HRDashboard() {
                     </span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">{hire.name}</h4>
+                    <h4 className="font-semibold text-[var(--text-primary)]">{hire.name}</h4>
                     <p className="text-sm text-gray-600">{hire.position}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="inline-block px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full font-medium">
+                  <span className="inline-block px-3 py-1 bg-[var(--bg-surface)] text-gray-800 text-sm rounded-full font-medium">
                     {hire.department}
                   </span>
                   <p className="text-sm text-gray-500 mt-1">{hire.date}</p>
@@ -460,7 +460,7 @@ export default function HRDashboard() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-white bg-opacity-20 rounded-lg">
+                <div className="p-2 bg-[var(--bg-surface)] bg-opacity-20 rounded-lg">
                   <FaChartLine className="text-white text-xl" />
                 </div>
                 <div>
@@ -473,7 +473,7 @@ export default function HRDashboard() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-white bg-opacity-20 rounded-lg">
+                <div className="p-2 bg-[var(--bg-surface)] bg-opacity-20 rounded-lg">
                   <FaGraduationCap className="text-white text-xl" />
                 </div>
                 <div>
@@ -486,7 +486,7 @@ export default function HRDashboard() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-white bg-opacity-20 rounded-lg">
+                <div className="p-2 bg-[var(--bg-surface)] bg-opacity-20 rounded-lg">
                   <FaBalanceScale className="text-white text-xl" />
                 </div>
                 <div>
@@ -499,7 +499,7 @@ export default function HRDashboard() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-white bg-opacity-20 rounded-lg">
+                <div className="p-2 bg-[var(--bg-surface)] bg-opacity-20 rounded-lg">
                   <FiDollarSign className="text-white text-xl" />
                 </div>
                 <div>

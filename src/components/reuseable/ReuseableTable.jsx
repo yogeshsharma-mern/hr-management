@@ -67,7 +67,7 @@ export default function ReusableTable({
   });
   const collapsed = useSelector((state) => state.ui.sidebarCollapsed);
   return (
-    <div className={`bg-[var(--bg-surface)] text-[14px] w-[99vw] lg:w-[81vw] overflow-auto  shadow-lg border border-gray-200 p-4 overflow-auto ${collapsed ? 'lg:w-[94vw]' : ':w-[81vw]'}`}>
+    <div className={`bg-[var(--bg-surface)] text-[14px] w-[99vw] lg:w-[81vw] overflow-auto  shadow-lg border border-[var(--border-color)] p-4 overflow-auto ${collapsed ? 'lg:w-[94vw]' : ':w-[81vw]'}`}>
 
       {/* Header with search and actions */}
       {/* <div className="flex flex-col md:flex-row  justify-between items-start md:items-center mb-6 gap-4">
@@ -82,12 +82,12 @@ export default function ReusableTable({
               setGlobalFilter(sanitizedValue);
             }}
             placeholder={tablePlaceholder || "Search..."}
-            className="pl-10 pr-4 py-3 w-full border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            className="pl-10 pr-4 py-3 w-full border border-[var(--border-color)] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
         </div>
         
         <div className="flex items-center space-x-3">
-          <button className="px-4 py-2 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center space-x-2">
+          <button className="px-4 py-2 border border-[var(--border-color)] rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center space-x-2">
             <FaFilter />
             <span>Filter</span>
           </button>
@@ -117,7 +117,7 @@ export default function ReusableTable({
       )}
 
       {/* Table Container with Loader */}
-      <div className="relative rounded-xl text-[12px] border border-gray-200 overflow-hidden">
+      <div className="relative rounded-xl text-[12px] border border-[var(--border-color)] overflow-hidden">
         {/* Loader Overlay */}
         {(loading || fetching) && (
           <div className="absolute inset-0 flex items-center justify-center bg-[var(--bg-surface)] bg-opacity-90 z-50 rounded-xl">
@@ -130,7 +130,7 @@ export default function ReusableTable({
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y text-[12px] divide-gray-200">
+          <table className="min-w-full divide-y text-[12px] divide-[var(--border-color)]">
             <thead className="bg-[--bg-surface]">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -160,7 +160,7 @@ export default function ReusableTable({
               ))}
             </thead>
 
-            <tbody className="bg-[var(--bg-surface)] divide-y divide-gray-200">
+            <tbody className="bg-[var(--bg-surface)] divide-y divide-[var(--border-color)]">
               {table.getRowModel().rows.length > 0 ? (
                 table.getRowModel().rows.map((row, index) => (
                   <tr
@@ -222,7 +222,7 @@ export default function ReusableTable({
             <select
               value={table.getState().pagination.pageSize}
               onChange={(e) => table.setPageSize(Number(e.target.value))}
-              className="border border-gray-300 text-[var(--text-primary)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="border border-[var(--border-color)] text-[var(--text-primary)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               {[5,10, 20, 50, 100].map((size) => (
                 <option key={size} value={size}>
@@ -238,7 +238,7 @@ export default function ReusableTable({
                 setPaginationState((old) => ({ ...old, pageIndex: old.pageIndex - 1 }))
               }
               disabled={!table.getCanPreviousPage()}
-              className="p-2 border border-gray-300 text-[var(--text-secondary)] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 border border-[var(--border-color)] text-[var(--text-secondary)] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FaChevronLeft className="w-4 h-4" />
             </button>
@@ -263,7 +263,7 @@ export default function ReusableTable({
                     }
                     className={`w-10 h-10 rounded-lg text-sm  font-medium transition-all ${table.getState().pagination.pageIndex === pageIndex
                         ? 'bg-blue-600 text-[var(--text-primary)] border-transparent'
-                        : 'border border-gray-300 text-[var(--text-secondary)] hover:bg-gray-50'
+                        : 'border border-[var(--border-color)] text-[var(--text-secondary)] hover:bg-gray-50'
                       }`}
                   >
                     {pageIndex + 1}
@@ -277,7 +277,7 @@ export default function ReusableTable({
                 setPaginationState((old) => ({ ...old, pageIndex: old.pageIndex + 1 }))
               }
               disabled={!table.getCanNextPage()}
-              className="p-2 border border-gray-300 text-[var(--text-secondary)] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 border border-[var(--border-color)] text-[var(--text-secondary)] rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FaChevronRight className="w-4 h-4" />
             </button>
@@ -292,7 +292,7 @@ export default function ReusableTable({
       </div>
 
       {/* Table Stats */}
-      {/* <div className="mt-6 pt-6 border-t border-gray-200">
+      {/* <div className="mt-6 pt-6 border-t border-[var(--border-color)]">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-xl p-4">
             <div className="flex items-center">

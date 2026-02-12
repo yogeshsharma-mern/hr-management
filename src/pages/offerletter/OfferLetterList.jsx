@@ -358,7 +358,7 @@ console.log("offer letters data", data);
                 cell: ({ row }) => (
                     <div className="flex items-center space-x-2">
                         <FaBriefcase className="text-gray-400" />
-                        <span className="font-medium text-gray-700">
+                        <span className="font-medium text-[var(--text-primary)]">
                             {typeof row?.original?.position === 'string'
                                 ? row?.original?.position
                                 : JSON.stringify(row?.original?.position)}
@@ -522,7 +522,7 @@ console.log("offer letters data", data);
         <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "md:w-[78vw]"}`}>
             {/* Stats Cards */}
             <div className="hidden  grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">New Applicants</p>
@@ -535,7 +535,7 @@ console.log("offer letters data", data);
                         </div>
                     </div>
                 </div>
-                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">Shortlisted</p>
@@ -548,7 +548,7 @@ console.log("offer letters data", data);
                         </div>
                     </div>
                 </div>
-                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">In Interview</p>
@@ -561,7 +561,7 @@ console.log("offer letters data", data);
                         </div>
                     </div>
                 </div>
-                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">Hired</p>
@@ -577,14 +577,14 @@ console.log("offer letters data", data);
             </div>
 
             {/* Toolbar */}
-            <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200">
+            <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)]">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex-1 relative">
                         <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
                             type="text"
                             placeholder="Search offer letter by name, email or position"
-                            className="w-full placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] pl-10 pr-4 py-2.5 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -610,7 +610,7 @@ console.log("offer letters data", data);
                             onClick={() => setShowFilters(!showFilters)}
                             className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 ${hasActiveFilters
                                 ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600"
-                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                                : "bg-gray-100 text-[var(--text-primary)] hover:bg-gray-200"
                                 }`}
                         >
                             <MdFilterList size={18} />
@@ -632,7 +632,7 @@ console.log("offer letters data", data);
             </div>
 
             {/* Table */}
-            <div className="bg-[var(--bg-surface)] rounded-xl border border-gray-200 overflow-auto shadow-sm">
+            <div className="bg-[var(--bg-surface)] rounded-xl border border-[var(--border-color)] overflow-auto shadow-sm">
                 <ReusableTable
                     columns={columns}
                     data={offerLetterData}
@@ -677,7 +677,7 @@ console.log("offer letters data", data);
             </Modal>
             <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)} title="Edit Offer Letter Actions">
                 <div className="space-y-2">
-                    <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <label className="block text-sm font-medium text-[var(--text-primary)] flex items-center gap-2">
                         <FaBuilding className="text-purple-500" />
                         Status *
                     </label>
@@ -687,7 +687,7 @@ console.log("offer letters data", data);
                         onChange={(e) => setEditStatus(e.target.value)}
                         className={`w-full px-4 py-3 
          
-  border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  border border-[var(--border-color)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
                     >
                         <option value="">Select Status</option>

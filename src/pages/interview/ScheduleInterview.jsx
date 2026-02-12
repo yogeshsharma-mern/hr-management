@@ -231,7 +231,7 @@ export default function ScheduleInterview() {
                   ))}
                   {candidate?.candidate?.skills?.length > 4 && (
                     <div className="skill-badge more">
-                      +{candidate.skills.length - 4} more
+                      +{candidate?.candidate?.skills?.length - 4} more
                     </div>
                   )}
                 </div>

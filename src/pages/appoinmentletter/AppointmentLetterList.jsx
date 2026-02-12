@@ -524,7 +524,7 @@ export default function AppointmentLetterList() {
             {/* Stats Cards */}
             <div className="hidden  grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">New Applicants</p>
@@ -538,7 +538,7 @@ export default function AppointmentLetterList() {
                     </div>
                 </div>
                 <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">Shortlisted</p>
@@ -552,7 +552,7 @@ export default function AppointmentLetterList() {
                     </div>
                 </div>
                 <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">In Interview</p>
@@ -566,7 +566,7 @@ export default function AppointmentLetterList() {
                     </div>
                 </div>
                 <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-gray-500">Hired</p>
@@ -583,14 +583,14 @@ export default function AppointmentLetterList() {
 
             {/* Toolbar */}
             <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200">
+ rounded-xl p-4 border border-[var(--border-color)]">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex-1 relative">
                         <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
                             type="text"
                             placeholder="Search appointment letter by name, email or position"
-                            className="w-full pl-10 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)]  pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full pl-10 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)]  pr-4 py-2.5 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -635,7 +635,7 @@ export default function AppointmentLetterList() {
 
                 {/* Inline Filter Panel */}
                 {showFilters && (
-                    <div className="mt-4 pt-4 border-t border-gray-200 animate-fadeIn">
+                    <div className="mt-4 pt-4 border-t border-[var(--border-color)] animate-fadeIn">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="font-semibold text-gray-900">Filter Candidates</h3>
                             <button
@@ -652,7 +652,7 @@ export default function AppointmentLetterList() {
                                     Applied Position
                                 </label>
                                 <select
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="w-full px-3 py-2 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                     value={filters.appliedFor}
                                     onChange={(e) => setFilters(prev => ({ ...prev, appliedFor: e.target.value }))}
                                 >
@@ -670,7 +670,7 @@ export default function AppointmentLetterList() {
                                     Experience Range
                                 </label>
                                 <select
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    className="w-full px-3 py-2 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                     value={filters.experienceRange}
                                     onChange={(e) => setFilters(prev => ({ ...prev, experienceRange: e.target.value }))}
                                 >
@@ -686,7 +686,7 @@ export default function AppointmentLetterList() {
                             <div className="flex items-end space-x-3">
                                 <button
                                     onClick={handleResetFilters}
-                                    className="w-full px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    className="w-full px-4 py-2.5 border border-[var(--border-color)] text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                                 >
                                     Clear All
                                 </button>
@@ -733,7 +733,7 @@ export default function AppointmentLetterList() {
 
             {/* Table */}
             <div className="bg-[var(--bg-surface)]
- rounded-xl border border-gray-200 overflow-auto shadow-sm">
+ rounded-xl border border-[var(--border-color)] overflow-auto shadow-sm">
                 <ReusableTable
                     columns={columns}
                     data={appointmentLetterData}
@@ -788,7 +788,7 @@ export default function AppointmentLetterList() {
                         onChange={(e) => setEditStatus(e.target.value)}
                         className={`w-full px-4 py-3 
          
-  border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  border border-[var(--border-color)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
                     >
                         <option value="">Select Status</option>

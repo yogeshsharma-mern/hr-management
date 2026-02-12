@@ -182,8 +182,8 @@ export default function Candidates() {
                 <span className="text-white font-semibold">{initials}</span>
               </div>
               <div>
-                <div className="font-semibold text-gray-900">{candidate.name}</div>
-                <div className="text-xs text-gray-500">{candidate.email}</div>
+                <div className="font-semibold text-[var(--text-primary)]">{candidate.name}</div>
+                <div className="text-xs text-[var(--text-primary)]">{candidate.email}</div>
               </div>
             </div>
           );
@@ -194,8 +194,8 @@ export default function Candidates() {
         accessorKey: "title",
         cell: ({ row }) => (
           <div className="flex items-center space-x-2">
-            <FaBriefcase className="text-gray-400" />
-            <span className="font-medium text-gray-700">
+            <FaBriefcase className="text-[var(--text-primary)]" />
+            <span className="font-medium text-[var(--text-primary)]">
               {typeof row?.original?.jobId?.title === 'string'
                 ? row?.original?.jobId?.title
                 : JSON.stringify(row?.original?.jobId?.title)}
@@ -214,8 +214,8 @@ export default function Candidates() {
           const phoneValue = row.original.phone;
           return (
             <div className="flex items-center space-x-2">
-              <FaPhone className="text-gray-400" />
-              <span className="text-gray-600">
+              <FaPhone className="text-[var(--text-primary)]" />
+              <span className="text-[var(--text-primary)]">
                 {typeof phoneValue === 'string' || typeof phoneValue === 'number'
                   ? phoneValue
                   : "N/A"}
@@ -230,7 +230,7 @@ export default function Candidates() {
         cell: ({ row }) => {
           const date = row.original.createdAt || row.original.appliedDate;
           return (
-            <div className="text-gray-600">
+            <div className="text-[var(--text-primary)]">
               {date ? dayjs(date).format("DD MMM YYYY") : "N/A"}
             </div>
           );
@@ -295,7 +295,7 @@ export default function Candidates() {
   //     <div className="flex items-center justify-center h-96">
   //       <div className="text-center">
   //         <div className="w-10 h-10 border-3 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-  //         <p className="text-gray-600">Loading candidates...</p>
+  //         <p className="text-[var(--text-primary)]">Loading candidates...</p>
   //       </div>
   //     </div>
   //   );
@@ -310,7 +310,7 @@ export default function Candidates() {
             <MdDelete size={32} className="text-rose-600" />
           </div>
           <h3 className="text-lg font-semibold text-[var(--text-secondary)] mb-2">Failed to load</h3>
-          <p className="text-gray-600 mb-4">Unable to fetch candidates at the moment.</p>
+          <p className="text-[var(--text-primary)] mb-4">Unable to fetch candidates at the moment.</p>
           <button
             onClick={() => refetch()}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -341,11 +341,11 @@ export default function Candidates() {
       {/* Stats Cards */}
       <div className="hidden  grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">New Applicants</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm text-[var(--text-primary)]">New Applicants</p>
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {candidates.filter(c => c.status === "applied").length}
               </p>
             </div>
@@ -355,11 +355,11 @@ export default function Candidates() {
           </div>
         </div>
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Shortlisted</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm text-[var(--text-primary)]">Shortlisted</p>
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {candidates.filter(c => c.status === "shortlisted").length}
               </p>
             </div>
@@ -369,11 +369,11 @@ export default function Candidates() {
           </div>
         </div>
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">In Interview</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm text-[var(--text-primary)]">In Interview</p>
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {candidates.filter(c => c.status === "interview").length}
               </p>
             </div>
@@ -383,11 +383,11 @@ export default function Candidates() {
           </div>
         </div>
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Hired</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm text-[var(--text-primary)]">Hired</p>
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {candidates.filter(c => c.status === "hired").length}
               </p>
             </div>
@@ -400,14 +400,14 @@ export default function Candidates() {
 
       {/* Toolbar */}
       <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200">
+ rounded-xl p-4 border border-[var(--border-color)]">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 relative">
-            <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[var(--text-primary)]" />
             <input
               type="text"
               placeholder="Search candidates by name, email or position..."
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-2.5 border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -433,7 +433,7 @@ export default function Candidates() {
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg transition-all duration-300 ${hasActiveFilters
                 ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white hover:from-blue-700 hover:to-cyan-600"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                : "bg-[var(--bg-surface)] text-[var(--text-primary)] hover:bg-gray-200"
                 }`}
             >
               <MdFilterList size={18} />
@@ -452,12 +452,12 @@ export default function Candidates() {
 
         {/* Inline Filter Panel */}
         {showFilters && (
-          <div className="mt-4 pt-4 border-t border-gray-200 animate-fadeIn">
+          <div className="mt-4 pt-4 border-t border-[var(--border-color)] animate-fadeIn">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-semibold text-gray-900">Filter Candidates</h3>
+              <h3 className="font-semibold text-[var(--text-primary)]">Filter Candidates</h3>
               <button
                 onClick={() => setShowFilters(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-[var(--text-primary)] hover:text-[var(--text-primary)]"
               >
                 <MdClose size={20} />
               </button>
@@ -465,11 +465,11 @@ export default function Candidates() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                   Applied Position
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full px-3 py-2 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   value={filters.appliedFor}
                   onChange={(e) => setFilters(prev => ({ ...prev, appliedFor: e.target.value }))}
                 >
@@ -483,11 +483,11 @@ export default function Candidates() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                   Experience Range
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full px-3 py-2 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   value={filters.experienceRange}
                   onChange={(e) => setFilters(prev => ({ ...prev, experienceRange: e.target.value }))}
                 >
@@ -503,7 +503,7 @@ export default function Candidates() {
               <div className="flex items-end space-x-3">
                 <button
                   onClick={handleResetFilters}
-                  className="w-full px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="w-full px-4 py-2.5 border border-[var(--border-color)] text-[var(--text-primary)] rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Clear All
                 </button>
@@ -519,7 +519,7 @@ export default function Candidates() {
             {/* Active Filters Display */}
             {hasActiveFilters && (
               <div className="mt-4 flex flex-wrap gap-2">
-                <span className="text-sm text-gray-500">Active filters:</span>
+                <span className="text-sm text-[var(--text-primary)]">Active filters:</span>
                 {filters.appliedFor && (
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
                     Position: {getSelectedPositionLabel()}
@@ -550,12 +550,12 @@ export default function Candidates() {
 
       {/* Table */}
       <div className="bg-[var(--bg-surface)]
- rounded-xl border relative border-gray-200 overflow-auto shadow-sm">
-   {isLoading && (
-    <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-50">
-      <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
-    </div>
-  )}
+ rounded-xl border relative border-[var(--border-color)] overflow-auto shadow-sm">
+        {isLoading && (
+          <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-50">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        )}
         <ReusableTable
           columns={columns}
           data={candidates}
@@ -590,10 +590,10 @@ export default function Candidates() {
           <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <MdDelete size={32} className="text-rose-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
             Delete {selectedCandidate?.name}?
           </h3>
-          <p className="text-gray-600">
+          <p className="text-[var(--text-primary)]">
             This action cannot be undone. All data for this candidate will be permanently removed.
           </p>
         </div>

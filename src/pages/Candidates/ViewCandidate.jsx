@@ -41,8 +41,8 @@ export default function ViewCandidate() {
         queryFn: () => apiGet(`${apiPath.candidateDetails}/${id}`)
     });
 
-const candidate = data?.data?.candidate;
-const interviews = data?.data?.interviews || [];
+    const candidate = data?.data?.candidate;
+    const interviews = data?.data?.interviews || [];
 
     const downloadResume = async () => {
         if (!candidate?.resume) {
@@ -124,179 +124,296 @@ const interviews = data?.data?.interviews || [];
         const remainingMonths = months % 12;
         return { years, months: remainingMonths };
     };
-const formatInterviewDate = (dateString) => {
-    if (!dateString) return 'Not scheduled';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-    });
-};
-const formatInterviewTime = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    return date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-};
+    const formatInterviewDate = (dateString) => {
+        if (!dateString) return 'Not scheduled';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    };
+    const formatInterviewTime = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
 
-const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-        case 'scheduled': return '#3b82f6';
-        case 'completed': return '#10b981';
-        case 'cancelled': return '#ef4444';
-        case 'rescheduled': return '#f59e0b';
-        default: return '#6b7280';
-    }
-};
+    const getStatusColor = (status) => {
+        switch (status?.toLowerCase()) {
+            case 'scheduled': return '#3b82f6';
+            case 'completed': return '#10b981';
+            case 'cancelled': return '#ef4444';
+            case 'rescheduled': return '#f59e0b';
+            default: return '#6b7280';
+        }
+    };
 
-const getResultColor = (result) => {
-    switch (result?.toLowerCase()) {
-        case 'passed': return '#10b981';
-        case 'failed': return '#ef4444';
-        case 'pending': return '#f59e0b';
-        case 'on hold': return '#6b7280';
-        default: return '#6b7280';
-    }
-};
-  const renderInterviewDetails = () => {
+    const getResultColor = (result) => {
+        switch (result?.toLowerCase()) {
+            case 'passed': return '#10b981';
+            case 'failed': return '#ef4444';
+            case 'pending': return '#f59e0b';
+            case 'on hold': return '#6b7280';
+            default: return '#6b7280';
+        }
+    };
+// Enhanced renderInterviewDetails with light theme and grid layout
+const renderInterviewDetails = () => {
     if (!interviews || interviews.length === 0) {
         return (
             <div className="tab-content">
-                <div className="empty-state">
-                    <FaHistory className="empty-icon" />
-                    <h3>Interview History</h3>
-                    <p>No interviews scheduled yet</p>
-                    <button className="schedule-btn" onClick={() => navigate(`/hr/interview/schedule/${id}`)}>
-                        <FaCalendarPlus /> Schedule First Interview
+                <div className="empty-state-light">
+                    <div className="empty-illustration-light">
+                        <div className="empty-icon-circle-light">
+                            <FaHistory className="empty-icon-light" />
+                        </div>
+                        <div className="empty-glow-light"></div>
+                    </div>
+                    <h3 className="empty-title-light">No Interviews Scheduled</h3>
+                    <p className="empty-description-light">Start the interview process by scheduling the first round</p>
+                    <button className="schedule-btn-light" onClick={() => navigate(`/hr/interview/schedule/${id}`)}>
+                        <FaCalendarPlus className="btn-icon-light" />
+                        <span>Schedule First Interview</span>
                     </button>
                 </div>
             </div>
         );
     }
 
+    // Calculate stats
+    const totalInterviews = interviews.length;
+    const completedInterviews = interviews.filter(i => i.status?.toLowerCase() === 'completed').length;
+    const upcomingInterviews = interviews.filter(i => 
+        i.status?.toLowerCase() === 'scheduled' && new Date(i.interviewDate) > new Date()
+    ).length;
+    const passedInterviews = interviews.filter(i => i.result?.toLowerCase() === 'passed').length;
+
     return (
-        <div className="tab-content">
-            <div className="interviews-header">
-                <div className="interviews-stats">
-                    <div className="stat-item">
-                        <span className="stat-label">Total Interviews</span>
-                        <span className="stat-value">{interviews.length}</span>
+        <div className="tab-content-light">
+            {/* Modern Stats Cards - Grid Layout */}
+            <div className="stats-grid-light">
+                <div className="stat-card-light total">
+                    <div className="stat-icon-wrapper-light">
+                        <FaHistory className="stat-icon-light" />
                     </div>
-                    <div className="stat-item">
-                        <span className="stat-label">Completed</span>
-                        <span className="stat-value">
-                            {interviews.filter(i => i.status?.toLowerCase() === 'completed').length}
-                        </span>
+                    <div className="stat-content-light">
+                        <span className="stat-value-light">{totalInterviews}</span>
+                        <span className="stat-label-light">Total Interviews</span>
                     </div>
-                    <div className="stat-item">
-                        <span className="stat-label">Upcoming</span>
-                        <span className="stat-value">
-                            {interviews.filter(i => i.status?.toLowerCase() === 'scheduled').length}
+                    <div className="stat-trend-light">
+                        <span className="trend-badge-light">All rounds</span>
+                    </div>
+                </div>
+
+                <div className="stat-card-light completed">
+                    <div className="stat-icon-wrapper-light">
+                        <FaCheckCircle className="stat-icon-light" />
+                    </div>
+                    <div className="stat-content-light">
+                        <span className="stat-value-light">{completedInterviews}</span>
+                        <span className="stat-label-light">Completed</span>
+                    </div>
+                    <div className="stat-percentage-light">
+                        <span className="percentage-text-light">{Math.round((completedInterviews / totalInterviews) * 100)}%</span>
+                    </div>
+                </div>
+
+                <div className="stat-card-light upcoming">
+                    <div className="stat-icon-wrapper-light">
+                        <FaCalendarAlt className="stat-icon-light" />
+                    </div>
+                    <div className="stat-content-light">
+                        <span className="stat-value-light">{upcomingInterviews}</span>
+                        <span className="stat-label-light">Upcoming</span>
+                    </div>
+                    <div className="stat-footer-light">
+                        <span className="footer-text-light">
+                            {upcomingInterviews > 0 ? '⏳ Pending' : '✓ No pending'}
                         </span>
                     </div>
                 </div>
+
+                <div className="stat-card-light passed">
+                    <div className="stat-icon-wrapper-light">
+                        <TiTick className="stat-icon-light" />
+                    </div>
+                    <div className="stat-content-light">
+                        <span className="stat-value-light">{passedInterviews}</span>
+                        <span className="stat-label-light">Passed</span>
+                    </div>
+                    <div className="stat-footer-light">
+                        <span className="footer-text-light">
+                            {completedInterviews > 0 ? `${Math.round((passedInterviews / completedInterviews) * 100)}% success` : '0% success'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Header Section */}
+            <div className="interviews-header-light">
+                <div className="header-left-light">
+                    <h3 className="header-title-light">Interview Rounds</h3>
+                    <p className="header-subtitle-light">Comprehensive view of all interview stages</p>
+                </div>
                 <button
-                    className="schedule-interview-btn"
+                    className="schedule-btn-light primary"
                     onClick={() => navigate(`/hr/interview/schedule/${id}`)}
                 >
-                    <FaCalendarPlus /> Schedule New Interview
+                    <FaCalendarPlus className="btn-icon-light" />
+                    <span>Schedule New Interview</span>
                 </button>
             </div>
 
-            <div className="interviews-list">
+            {/* Interview Cards Grid - Responsive: 3 columns on large, 2 on medium, 1 on small */}
+            <div className="interviews-grid-light">
                 {interviews.map((interview, index) => {
+                    console.log("interview",interview);
                     const interviewDate = new Date(interview.interviewDate);
                     const isPast = interviewDate < new Date();
-                    
+                    const isUpcoming = !isPast && interview.status?.toLowerCase() === 'scheduled';
+                    const isCompleted = interview.status?.toLowerCase() === 'completed';
+                    const isPassed = interview.result?.toLowerCase() === 'passed';
+
                     return (
-                        <div key={interview._id} className="interview-card">
-                            <div className="interview-header">
-                                <div className="interview-round">
-                                    {/* <FaCalendarCheck className="round-icon" /> */}
-                                    <TiTick size={19} className='text-green-500' />
-                                    <div>
-                                        <h4 className="round-name">{interview.round || 'Interview'} Round</h4>
-                                        <div className="interview-date">
-                                            <FaCalendarAlt />
+                        <div 
+                            key={interview._id} 
+                            className={`interview-card-light ${isUpcoming ? 'upcoming' : ''} ${isCompleted ? 'completed' : ''}`}
+                        >
+                            {/* Card Header with Status */}
+                            <div className="card-header-light">
+                                <div className="card-header-top">
+                                    <div className={`round-badge-light ${isCompleted ? (isPassed ? 'passed' : 'failed') : 'pending'}`}>
+                                        {isCompleted ? (
+                                            isPassed ? <TiTick className="badge-icon-light" /> : <FaTimes className="badge-icon-light" />
+                                        ) : (
+                                            <span className="round-number-light">{index + 1}</span>
+                                        )}
+                                    </div>
+                                   {interview.result && (
+                                    <div className={`result-chip-light ${interview.result.toLowerCase()}`}>
+                                        <FaCheckCircle className="result-icon-light" />
+                                        <span>{interview.result}</span>
+                                    </div>
+                                )}
+                                </div>
+                                
+                                <div className="round-info-light">
+                                    <h4 className="round-title-light">{interview.round || 'Interview'} Round</h4>
+                                    <div className="date-info-light">
+                                        <div className="date-item-light">
+                                            <FaCalendarAlt className="date-icon-light" />
                                             <span>{formatInterviewDate(interview.interviewDate)}</span>
-                                            {interview.interviewDate && (
-                                                <>
-                                                    <FaClock style={{ marginLeft: '12px' }} />
-                                                    <span>{formatInterviewTime(interview.interviewDate)}</span>
-                                                </>
-                                            )}
+                                        </div>
+                                        <div className="date-item-light">
+                                            <FaClock className="date-icon-light" />
+                                            <span>{formatInterviewTime(interview.interviewDate)}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="interview-status">
-                                    <span
-                                        className="status-badge"
-                                        style={{ backgroundColor: getStatusColor(interview.status) + '20', color: getStatusColor(interview.status) }}
-                                    >
-                                        {interview.status || 'Scheduled'}
-                                    </span>
-                                    {interview.result && (
-                                        <span
-                                            className="result-badge"
-                                            style={{ backgroundColor: getResultColor(interview.result) + '20', color: getResultColor(interview.result) }}
-                                        >
-                                            <FaCheckCircle /> {interview.result}
+                            </div>
+
+                            {/* Card Body */}
+                            <div className="card-body-light ">
+                                {/* Interviewer Section */}
+                                <div className='flex justify-between items-center'>
+                                    <div className="detail-section-light">
+                                    <span className="detail-label-light">Interviewer</span>
+                                    <div className="interviewer-info-light">
+                                        <div className="interviewer-avatar-light">
+                                            {interview.interviewerName?.charAt(0)?.toUpperCase() || '?'}
+                                        </div>
+                                        <span className="interviewer-name-light">
+                                            {interview.interviewerName || 'Not assigned'}
                                         </span>
+                                    </div>
+                                </div>
+
+                                {/* Mode Section */}
+                                <div className="detail-section-light">
+                                    <span className="detail-label-light">Mode</span>
+                                    <div className={`mode-badge-light ${interview.mode?.toLowerCase() || 'offline'}`}>
+                                        {interview.mode?.toLowerCase() === 'online' ? '🌐' : '📍'}
+                                        <span>{interview.mode || 'Offline'}</span>
+                                    </div>
+                                </div>
+                                </div>
+   <div className="detail-section-light">
+                                    <span className="detail-label-light">Position</span>
+                                    <div className="interviewer-info-light">
+                                        {/* <div className="interviewer-avatar-light">
+                                            {interview.interviewerName?.charAt(0)?.toUpperCase() || '?'}
+                                        </div> */}
+                                        <span className="interviewer-name-light">
+                                            {interview?.jobId?.title || 'Not assigned'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Location/Link Section - Compact */}
+                                <div className="location-section-light">
+                                    <div className="location-header-light">
+                                        <span className="location-icon-light">
+                                            {interview.mode?.toLowerCase() === 'online' ? '🔗' : '📍'}
+                                        </span>
+                                        <span className="location-label-light">
+                                            {interview.mode?.toLowerCase() === 'online' ? 'Link' : 'Venue'}
+                                        </span>
+                                    </div>
+                                    <div className="location-value-light">
+                                        {interview.mode?.toLowerCase() === 'online'
+                                            ? interview.meetingLink?.substring(0, 25) + (interview.meetingLink?.length > 25 ? '...' : '') || 'Not provided'
+                                            : interview.location?.substring(0, 25) + (interview.location?.length > 25 ? '...' : '') || 'Not specified'
+                                        }
+                                    </div>
+                                </div>
+
+                                {/* Result Badge - If available */}
+                                
+
+                                {/* Feedback Preview - If available */}
+                                {/* {interview.feedback && (
+                                    <div className="feedback-preview-light">
+                                        <div className="feedback-header-light">
+                                            <FaFileAlt className="feedback-icon-light" />
+                                            <span className="feedback-label-light">Feedback</span>
+                                        </div>
+                                        <p className="feedback-text-light">
+                                            {interview.feedback.substring(0, 40)}
+                                            {interview.feedback.length > 40 ? '...' : ''}
+                                        </p>
+                                    </div>
+                                )} */}
+                            </div>
+
+                            {/* Card Footer */}
+                            {/* <div className="card-footer-light">
+                                <div className="footer-meta-light">
+                                    <div className="meta-item-light">
+                                        <FaClock className="meta-icon-light" />
+                                        <span>{new Date(interview.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                    </div>
+                                    {interview.updatedAt !== interview.createdAt && (
+                                        <div className="meta-item-light updated">
+                                            <span>Updated</span>
+                                        </div>
                                     )}
                                 </div>
-                            </div>
+                                <button
+                                    className="view-btn-light"
+                                    onClick={() => navigate(`/hr/interviews/${interview._id}`)}
+                                >
+                                    Details
+                                    <span className="btn-arrow-light">→</span>
+                                </button>
+                            </div> */}
 
-                            <div className="interview-details">
-                                <div className="detail-row">
-                                    <div className="detail-item">
-                                        <span className="detail-label">Interviewer</span>
-                                        <span className="detail-value">{interview.interviewerName || 'Not assigned'}</span>
-                                    </div>
-                                    <div className="detail-item">
-                                        <span className="detail-label">Mode</span>
-                                        <span className="detail-value">{interview.mode || 'Not specified'}</span>
-                                    </div>
-                                    <div className="detail-item">
-                                        <span className="detail-label">Location/Link</span>
-                                        <span className="detail-value">
-                                            {interview.mode?.toLowerCase() === 'online' 
-                                                ? interview.meetingLink || 'Link not provided'
-                                                : interview.location || 'Location not specified'
-                                            }
-                                        </span>
-                                    </div>
-                                </div>
-
-                                {interview.feedback && (
-                                    <div className="feedback-section">
-                                        <h5>Feedback</h5>
-                                        <p className="feedback-text">{interview.feedback}</p>
-                                    </div>
-                                )}
-
-                                <div className="interview-footer">
-                                    <div className="interview-meta">
-                                        <span className="meta-info">
-                                            Scheduled: {new Date(interview.createdAt).toLocaleDateString()}
-                                        </span>
-                                        {interview.updatedAt && (
-                                            <span className="meta-info">
-                                                Last updated: {new Date(interview.updatedAt).toLocaleDateString()}
-                                            </span>
-                                        )}
-                                    </div>
-                                    {/* <button
-                                        className="view-details-btn"
-                                        onClick={() => navigate(`/hr/interviews/${interview._id}`)}
-                                    >
-                                        View Details
-                                    </button> */}
-                                </div>
-                            </div>
+                            {/* Subtle accent line */}
+                            <div className="card-accent-light"></div>
                         </div>
                     );
                 })}

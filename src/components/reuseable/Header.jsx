@@ -117,7 +117,7 @@ useEffect(() => {
   return (
   <header
   className="
-    h-20 w-full flex items-center justify-between
+    h-[73px] w-full flex items-center justify-between
     px-6 md:px-8 border-b transition-colors
     bg-[var(--bg-surface)]
     border-[var(--border-color)]

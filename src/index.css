@@ -2,99 +2,103 @@
 
 
 
-    @keyframes modal-scale {
-      0% {
-        opacity: 0;
-        transform: scale(0.95) translateY(10px);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
+@keyframes modal-scale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
 
-    @keyframes modal-slide-up {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
 
-    @keyframes modal-slide-down {
-      0% {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+@keyframes modal-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 
-    @keyframes modal-fade {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .animate-modal-scale {
-      animation: modal-scale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+@keyframes modal-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
 
-    .animate-modal-slide-up {
-      animation: modal-slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .animate-modal-slide-down {
-      animation: modal-slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+@keyframes modal-fade {
+  0% {
+    opacity: 0;
+  }
 
-    .animate-modal-fade {
-      animation: modal-fade 0.3s ease-out;
-    }
+  100% {
+    opacity: 1;
+  }
+}
 
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
+.animate-modal-scale {
+  animation: modal-scale 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .custom-scrollbar {
-      scrollbar-width: thin;
-      scrollbar-color: #cbd5e1 #f1f5f9;
-    }
+.animate-modal-slide-up {
+  animation: modal-slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-    }
+.animate-modal-slide-down {
+  animation: modal-slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 3px;
-    }
+.animate-modal-fade {
+  animation: modal-fade 0.3s ease-out;
+}
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 3px;
-    }
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-  
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
 
 
-    /* Remove number input arrows */
+
+/* Remove number input arrows */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -102,7 +106,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
 }
 
 
@@ -113,6 +118,7 @@ input[type="number"] {
     opacity: 0;
     transform: translateY(-8px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -150,6 +156,8 @@ input[type="number"] {
 
   --primary: #2563eb;
   --primary-soft: #eff6ff;
+  --primary-hover: #e5e7eb;
+  /* --border-color: #e5e7eb; */
 }
 
 /* 🌙 DARK THEME */
@@ -158,7 +166,8 @@ input[type="number"] {
   --bg-surface: #0f172a;
   --bg-card: #111827;
 
-  --border-color: #1e293b;
+--border-color: #263445;
+
 
   --text-primary: #e5e7eb;
   --text-secondary: #94a3b8;
@@ -166,5 +175,3 @@ input[type="number"] {
   --primary: #38bdf8;
   --primary-soft: rgba(56, 189, 248, 0.15);
 }
-
-

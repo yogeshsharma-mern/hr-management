@@ -106,7 +106,7 @@ console.log("data",data);
               <FaBriefcase className="text-white text-sm" />
             </div>
             <div>
-              <div className="font-semibold text-gray-900">{row.original.title}</div>
+              <div className="font-semibold text-[var(--text-primary)]">{row.original.title}</div>
               <div className="text-xs text-[var(--text-secondary)]
 ">ID: {row.original.id || "N/A"}</div>
             </div>
@@ -119,7 +119,7 @@ console.log("data",data);
         cell: ({ row }) => (
           <div className="flex items-center space-x-2">
             <FaBuilding className="text-gray-400" />
-            <span className="font-medium text-gray-700">{row.original.department}</span>
+            <span className="font-medium text-[var(--text-primary)]">{row.original.department}</span>
           </div>
         ),
       },
@@ -129,7 +129,7 @@ console.log("data",data);
         cell: ({ row }) => (
           <div className="flex items-center space-x-2">
             <FaMapMarkerAlt className="text-gray-400" />
-            <span className="text-gray-600">{row.original.location}</span>
+            <span className="text-[var(--text-primary)]">{row.original.location}</span>
           </div>
         ),
       },
@@ -139,7 +139,7 @@ console.log("data",data);
         cell: ({ row }) => (
           <div className="flex items-center space-x-2">
             <FaUsers className="text-blue-500" />
-            <span className="font-semibold text-gray-900">{row.original.noOfOpenings}</span>
+            <span className="font-semibold text-[var(--text-primary)]">{row.original.noOfOpenings}</span>
           </div>
         ),
       },
@@ -234,7 +234,7 @@ console.log("itme",item.isActive);
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
           <div className="w-10 h-10 border-3 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading job openings...</p>
+          <p className="text-[var(--text-primary)]">Loading job openings...</p>
         </div>
       </div>
     );
@@ -248,8 +248,8 @@ console.log("itme",item.isActive);
           <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <MdDelete size={32} className="text-rose-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load</h3>
-          <p className="text-gray-600 mb-4">Unable to fetch job openings at the moment.</p>
+          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Failed to load</h3>
+          <p className="text-[var(--text-primary)] mb-4">Unable to fetch job openings at the moment.</p>
           <button
             onClick={() => queryClient.refetchQueries(["jobOpenings"])}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -283,12 +283,12 @@ console.log("itme",item.isActive);
       {/* Stats Cards */}
       <div className="hidden grid grid-cols-1  md:grid md:grid-cols-4 gap-4">
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[var(--text-secondary)]
+              <p className="text-[var(--text-primary)]
 ">Open Positions</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {jobOpenings.filter(j => j.status === "open").length}
               </p>
             </div>
@@ -298,12 +298,12 @@ console.log("itme",item.isActive);
           </div>
         </div>
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[var(--text-secondary)]
+              <p className="text-[var(--text-primary)]
 ">Total Openings</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {jobOpenings.reduce((sum, job) => sum + (parseInt(job.noOfOpenings) || 0), 0)}
               </p>
             </div>
@@ -313,12 +313,12 @@ console.log("itme",item.isActive);
           </div>
         </div>
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[var(--text-secondary)]
+              <p className="text-[var(--text-primary)]
 ">Active Departments</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {new Set(jobOpenings.map(j => j.department)).size}
               </p>
             </div>
@@ -328,12 +328,12 @@ console.log("itme",item.isActive);
           </div>
         </div>
         <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200 shadow-sm">
+ rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-[var(--text-secondary)]
+              <p className="text-[var(--text-primary)]
 ">Locations</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-[var(--text-primary)]">
                 {new Set(jobOpenings.map(j => j.location)).size}
               </p>
             </div>
@@ -346,14 +346,14 @@ console.log("itme",item.isActive);
 
       {/* Toolbar */}
       <div className="bg-[var(--bg-surface)]
- rounded-xl p-4 border border-gray-200">
+ rounded-xl p-4 border border-[var(--border-color)]">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 relative">
             <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search jobs by title, department or location..."
-              className="w-full pl-10 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] pr-4 py-2.5 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -363,7 +363,7 @@ console.log("itme",item.isActive);
               <MdFilterList className="text-[var(--text-secondary)]
 " />
               <select
-                className="border border-gray-300 text-[var(--text-primary)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                className="border border-[var(--border-color)] text-[var(--text-primary)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -390,7 +390,7 @@ console.log("itme",item.isActive);
 
       {/* Table */}
       <div className="bg-[var(--bg-surface)]
- rounded-xl border border-gray-200 overflow-auto">
+ rounded-xl border border-[var(--border-color)] overflow-auto">
         <ReusableTable
           columns={columns}
           data={jobOpenings}
@@ -428,10 +428,10 @@ console.log("itme",item.isActive);
             <div className="w-20 h-20 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <MdDelete size={32} className="text-rose-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
               Delete {selectedJob?.title}?
             </h3>
-            <p className="text-gray-600">
+            <p className="text-[var(--text-primary)]">
               This action cannot be undone. All applications for this position will also be removed.
             </p>
           </div>
@@ -439,31 +439,31 @@ console.log("itme",item.isActive);
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <p className="text-sm text-[var(--text-secondary)]
+                <p className="text-[var(--text-primary)]
 ">Position</p>
                 <p className="font-medium">{selectedJob.title}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-[var(--text-secondary)]
+                <p className="text-[var(--text-primary)]
 ">Department</p>
                 <p className="font-medium">{selectedJob.department}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-[var(--text-secondary)]
+                <p className="text-[var(--text-primary)]
 ">Location</p>
                 <p className="font-medium">{selectedJob.location}</p>
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-[var(--text-secondary)]
+                <p className="text-[var(--text-primary)]
 ">Openings</p>
                 <p className="font-medium">{selectedJob.noOfOpenings}</p>
               </div>
             </div>
             <div>
-              <p className="text-sm text-[var(--text-secondary)]
+              <p className="text-[var(--text-primary)]
  mb-2">Description</p>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-700">{selectedJob.description}</p>
+                <p className="text-[var(--text-primary)]">{selectedJob.description}</p>
               </div>
             </div>
           </div>

@@ -352,7 +352,7 @@ console.log("selectedinterview",selectedInterview);
         cell: ({ row }) => (
           <div className="flex items-center space-x-2">
             <FaUsers className="text-gray-400" />
-            <span className="font-medium text-gray-700">{row.original.interviewerName || "N/A"}</span>
+            <span className="font-medium text-[var(--text-primary)]">{row.original.interviewerName || "N/A"}</span>
           </div>
         ),
       },
@@ -424,7 +424,7 @@ console.log("selectedinterview",selectedInterview);
               ) : (
                 <MdLocationOn className="text-green-500" />
               )}
-              <span className="font-medium text-gray-700">{mode || "N/A"}</span>
+              <span className="font-medium text-[var(--text-primary)]">{mode || "N/A"}</span>
             </div>
           );
         },
@@ -559,7 +559,7 @@ console.log("selectedinterview",selectedInterview);
             <MdDelete size={32} className="text-rose-600" />
           </div>
           <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">Failed to load</h3>
-          <p className="text-gray-600 mb-4">Unable to fetch interviews at the moment.</p>
+          <p className="text-[var(--text-primary)] mb-4">Unable to fetch interviews at the moment.</p>
           <button
             onClick={() => refetch()}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -575,7 +575,7 @@ console.log("selectedinterview",selectedInterview);
     <div className={`space-y-6 ${collapsed ? "w-[92vw]" : "md:w-[78vw]"}`}>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Total Interviews</p>
@@ -587,7 +587,7 @@ console.log("selectedinterview",selectedInterview);
           </div>
         </div>
 
-        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Scheduled</p>
@@ -601,7 +601,7 @@ console.log("selectedinterview",selectedInterview);
           </div>
         </div>
 
-        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Online Interviews</p>
@@ -615,7 +615,7 @@ console.log("selectedinterview",selectedInterview);
           </div>
         </div>
 
-        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200 shadow-sm">
+        <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Completed</p>
@@ -631,14 +631,14 @@ console.log("selectedinterview",selectedInterview);
       </div>
 
       {/* Toolbar */}
-      <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-gray-200">
+      <div className="bg-[var(--bg-surface)] rounded-xl p-4 border border-[var(--border-color)]">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 relative">
             <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
               placeholder="Search by candidate name, interviewer, or position..."
-              className="w-full text-[var(--text-primary)] pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full text-[var(--text-primary)] pl-10 pr-4 py-2.5 border border-[var(--border-color)] rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -648,7 +648,7 @@ console.log("selectedinterview",selectedInterview);
             <div className="flex items-center space-x-2">
               <MdFilterList className="text-gray-500" />
               <select
-                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
+                className="border text-[var(--text-primary)] border-[var(--border-color)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
                 value={filterRound}
                 onChange={(e) => setFilterRound(e.target.value)}
               >
@@ -661,7 +661,7 @@ console.log("selectedinterview",selectedInterview);
 
             <div className="flex items-center space-x-2">
               <select
-                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
+                className="border text-[var(--text-primary)] border-[var(--border-color)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value)}
               >
@@ -674,7 +674,7 @@ console.log("selectedinterview",selectedInterview);
 
             <div className="flex items-center space-x-2">
               <select
-                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
+                className="border text-[var(--text-primary)] border-[var(--border-color)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 min-w-[120px]"
                 value={filterMode}
                 onChange={(e) => setFilterMode(e.target.value)}
               >
@@ -688,14 +688,14 @@ console.log("selectedinterview",selectedInterview);
             <div className="flex items-center space-x-2">
               <input
                 type="date"
-                className="border text-[var(--text-primary)] border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                className="border text-[var(--text-primary)] border-[var(--border-color)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                 value={filterDate}
                 onChange={(e) => setFilterDate(e.target.value)}
               />
               {filterDate && (
                 <button
                   onClick={() => setFilterDate("")}
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-500 hover:text-[var(--text-primary)]"
                 >
                   Clear
                 </button>
@@ -710,7 +710,7 @@ console.log("selectedinterview",selectedInterview);
                 setFilterDate("");
                 setFilterMode("");
               }}
-              className="px-4 py-2.5 border border-gray-300 rounded-lg text-[var(--text-primary)] transition-colors"
+              className="px-4 py-2.5 border border-[var(--border-color)] rounded-lg text-[var(--text-primary)] transition-colors"
             >
               Clear Filters
             </button>
@@ -719,7 +719,7 @@ console.log("selectedinterview",selectedInterview);
       </div>
 
       {/* Table */}
-      <div className="bg-[var(--bg-surface)] relative rounded-xl border border-gray-200 overflow-auto">
+      <div className="bg-[var(--bg-surface)] relative rounded-xl border border-[var(--border-color)] overflow-auto">
          {isLoading && (
     <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-50">
       <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
@@ -785,7 +785,7 @@ console.log("selectedinterview",selectedInterview);
               selectedInterview.result === "Passed" &&
               selectedInterview.round !== "Managerial" ? (
               <div className="text-left">
-                <p className="text-gray-600 mb-3">
+                <p className="text-[var(--text-primary)] mb-3">
                   <strong>Warning:</strong> This is a {selectedInterview.round} round that has been completed and passed.
                 </p>
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
@@ -795,12 +795,12 @@ console.log("selectedinterview",selectedInterview);
                     Deleting this {selectedInterview.round} round may cause inconsistencies.
                   </p>
                 </div>
-                <p className="text-gray-600">
+                <p className="text-[var(--text-primary)]">
                   If you need to cancel this interview, please update the status to "Cancelled" instead.
                 </p>
               </div>
             ) : (
-              <p className="text-gray-600">
+              <p className="text-[var(--text-primary)]">
                 Are you sure you want to delete this interview? This action cannot be undone.
               </p>
             )}
@@ -817,7 +817,7 @@ console.log("selectedinterview",selectedInterview);
               <div className="space-y-1">
                 <p className="text-sm text-gray-500">Position</p>
                 <p className="font-medium">
-                  {selectedInterview.jobId?.title || "N/A"}
+                  {selectedInterview?.position || "N/A"}
                 </p>
               </div>
               <div className="space-y-1">
@@ -886,7 +886,7 @@ console.log("selectedinterview",selectedInterview);
               <div>
                 <p className="text-sm text-gray-500 mb-2">Feedback</p>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <p className="text-gray-700">{selectedInterview.feedback}</p>
+                  <p className="text-[var(--text-primary)]">{selectedInterview.feedback}</p>
                 </div>
               </div>
             )}
@@ -943,7 +943,7 @@ console.log("selectedinterview",selectedInterview);
             ) : (
               <>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-700">Interview Details</p>
+                  <p className="text-sm font-medium text-[var(--text-primary)]">Interview Details</p>
                   <div className="bg-gray-50 p-3 rounded-lg">
                     <p className="font-medium">{selectedInterview.candidateName || "Candidate"}</p>
                     <p className="text-sm text-gray-500">
@@ -969,11 +969,11 @@ console.log("selectedinterview",selectedInterview);
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                       Status
                     </label>
                     <select
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-[var(--border-color)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                       value={statusUpdateData.status}
                       onChange={(e) => setStatusUpdateData({
                         ...statusUpdateData,
@@ -991,11 +991,11 @@ console.log("selectedinterview",selectedInterview);
 
                   {statusUpdateData.status === "Completed" && (
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                         Result
                       </label>
                       <select
-                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                        className="w-full border border-[var(--border-color)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                         value={statusUpdateData.result}
                         onChange={(e) => setStatusUpdateData({
                           ...statusUpdateData,
@@ -1021,11 +1021,11 @@ console.log("selectedinterview",selectedInterview);
                   )}
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                       Feedback (Optional)
                     </label>
                     <textarea
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                      className="w-full border border-[var(--border-color)] rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
                       rows="3"
                       placeholder="Enter feedback..."
                       value={statusUpdateData.feedback}
