@@ -353,70 +353,7 @@ export default function HRDashboard() {
       </div>
 
       {/* Attendance and Payroll Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Weekly Attendance - Line Chart */}
-        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-bold text-[var(--text-primary)]">Weekly Attendance</h2>
-              <p className="text-gray-600 text-sm">Present vs. Absent employees</p>
-            </div>
-            <TbChartLine className="text-gray-400 text-2xl" />
-          </div>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={attendanceData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="day" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="present"
-                  stroke="#10B981"
-                  strokeWidth={3}
-                  dot={{ fill: '#10B981', r: 5 }}
-                  activeDot={{ r: 8 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="absent"
-                  stroke="#EF4444"
-                  strokeWidth={3}
-                  dot={{ fill: '#EF4444', r: 5 }}
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
 
-        {/* Payroll Distribution - Composed Chart */}
-        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-bold text-[var(--text-primary)]">Payroll Analysis</h2>
-              <p className="text-gray-600 text-sm">Salary and bonus by department</p>
-            </div>
-            <HiOutlineCurrencyDollar className="text-gray-400 text-2xl" />
-          </div>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={payrollData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="department" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Bar dataKey="salary" fill="#3B82F6" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="bonus" fill="#8B5CF6" radius={[4, 4, 0, 0]} />
-                <Line type="monotone" dataKey="employees" stroke="#10B981" strokeWidth={3} dot={{ fill: '#10B981', r: 4 }} />
-              </ComposedChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
 
       {/* Recent Hires & Quick Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
