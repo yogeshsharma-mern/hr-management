@@ -21,19 +21,21 @@
 
 .schedule-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  /* background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); */
+  background-color: var(--bg-surface);
 }
 
 /* Header */
 .page-header {
-  background: white;
-  border-bottom: 1px solid var(--gray-200);
+  background: var(--bg-surface) !important;
+  border-bottom: 1px solid var(--border-color);
   padding: 24px 0;
   margin-bottom: 32px;
 }
 
 .container {
   max-width: 1400px;
+  background-color:var(--bg-surface)!important;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -307,17 +309,17 @@
 }
 
 .form-card {
-  background: white;
+  background:var(--bg-surface);
   border-radius: 20px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--border-color) !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 
 .form-header {
-  background: var(--gray-50);
+  background: var(--bg-surface);
   padding: 32px;
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 20px;
@@ -338,7 +340,7 @@
 .form-header h2 {
   font-size: 24px;
   font-weight: 700;
-  color: var(--gray-900);
+  color: var(--text-primary);
   margin: 0 0 4px 0;
 }
 
@@ -351,6 +353,7 @@
 /* Interview Form */
 .interview-form {
   padding: 32px;
+  background-color: var(--bg-surface);
 }
 
 .form-section {
@@ -364,7 +367,7 @@
 .section-header h3 {
   font-size: 18px;
   font-weight: 600;
-  color: var(--gray-900);
+  color: var(--text-primary);
   margin: 0 0 12px 0;
   position: relative;
   display: inline-block;
@@ -421,11 +424,11 @@
 .form-input {
   width: 100%;
   padding: 14px 16px;
-  border: 2px solid var(--gray-200);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   font-size: 14px;
-  color: var(--gray-900);
-  background: white;
+  color: var(--text-primary);
+  background: var(--bg-surface);
   transition: all 0.2s ease;
   font-family: inherit;
 }
@@ -444,11 +447,11 @@
 .form-textarea {
   width: 100%;
   padding: 14px 16px;
-  border: 2px solid var(--gray-200);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   font-size: 14px;
-  color: var(--gray-900);
-  background: white;
+  color: var(--text-primary);
+  background: var(--bg-surface);
   transition: all 0.2s ease;
   font-family: inherit;
   resize: vertical;
@@ -545,13 +548,13 @@
 }
 
 .mode-card {
-  border: 2px solid var(--gray-200);
+  border: 2px solid var(--border-color);
   border-radius: 16px;
   padding: 24px;
   text-align: left;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: white;
+  background:var(--bg-surface);
   position: relative;
   overflow: hidden;
 }
@@ -653,7 +656,7 @@
 
 .checkbox-label {
   font-size: 14px;
-  color: var(--gray-700);
+  color: var(--text-secondary);
   line-height: 1.4;
 }
 
@@ -916,9 +919,9 @@
 
 /* Interview Form Section */
 .interview-form-main {
-  background: white;
+  background: var(--bg-surface);
   border-radius: 20px;
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--border-color) !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
@@ -978,6 +981,7 @@
 @media (max-width:420px) {
   .container {
   max-width: 1400px;
+  background-color:var(--bg-surface)!important;
   margin: 0 auto;
   padding: 0 5px;
 }

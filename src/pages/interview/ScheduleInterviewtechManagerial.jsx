@@ -233,6 +233,7 @@ export default function ScheduleInterview() {
             border-radius: 8px;
             margin-bottom: 24px;
             border-left: 4px solid;
+            color: #3a79de;
         }
         
         .info-banner.success {

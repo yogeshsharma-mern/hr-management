@@ -1510,7 +1510,7 @@ background-color: var(--bg-surface ) !important ;
     align-items: center;
     gap: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color) !important;
     transition: all 0.2s ease;
     position: relative;
 }
@@ -1581,7 +1581,7 @@ background-color: var(--bg-surface ) !important ;
 .stat-value-light {
     font-size: 28px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--text-primary);
     line-height: 1;
 }
 
@@ -1809,12 +1809,12 @@ background-color: var(--bg-surface ) !important ;
     align-items: center;
     gap: 8px;
     font-size: 12px;
-    color: #64748b;
+    color: var(--text-primary) !important;
 }
 
 .date-icon-light {
     font-size: 11px;
-    color: #94a3b8;
+    color: var(--text-primary) !important;
 }
 
 /* Card Body */
@@ -1833,7 +1833,7 @@ background-color: var(--bg-surface ) !important ;
 
 .detail-label-light {
     font-size: 11px;
-    color: #94a3b8;
+    color: var(--text-primary) !important;
     text-transform: uppercase;
     letter-spacing: 0.3px;
     font-weight: 600;
@@ -1862,7 +1862,7 @@ background-color: var(--bg-surface ) !important ;
 .interviewer-name-light {
     font-size: 13px;
     font-weight: 600;
-    color: #334155;
+    color: var(--text-primary) !important;
 }
 
 .mode-badge-light {
@@ -1893,10 +1893,10 @@ background-color: var(--bg-surface ) !important ;
 
 /* Location Section - Compact */
 .location-section-light {
-    background: #f8fafc;
+    background: var(--bg-surface) !important;
     border-radius: 12px;
     padding: 12px;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color) !important;
 }
 
 .location-header-light {
@@ -1913,14 +1913,14 @@ background-color: var(--bg-surface ) !important ;
 .location-label-light {
     font-size: 10px;
     font-weight: 600;
-    color: #64748b;
+    color: var(--text-primary) !important;
     text-transform: uppercase;
     letter-spacing: 0.3px;
 }
 
 .location-value-light {
     font-size: 12px;
-    color: #334155;
+    color: var(--text-primary) !important;
     font-weight: 500;
     word-break: break-all;
     line-height: 1.4;
@@ -2176,7 +2176,7 @@ background-color: var(--bg-surface ) !important ;
 .offer-list-title {
     font-size: 20px;
     font-weight: 700;
-    color: #0a2540;
+    color: var(--heading-color) !important;
     margin: 0;
     letter-spacing: -0.3px;
 }
@@ -2213,14 +2213,15 @@ background-color: var(--bg-surface ) !important ;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    background-color: var(--bg-surface) !important;
 }
 
 /* Offer Row Card */
 .offer-row-card {
-    background: white;
+    background: var(--bg-surface) !important;
     border-radius: 20px;
     padding: 24px;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color) !important;
     transition: all 0.25s ease;
     position: relative;
 }
@@ -2349,10 +2350,10 @@ background-color: var(--bg-surface ) !important ;
     display: flex;
     align-items: center;
     gap: 24px;
-    background: linear-gradient(145deg, #f8fcff, #f0f9ff);
+    background: var(--box-color) !important;
     border-radius: 16px;
     padding: 16px 20px;
-    border: 1px solid #dbeafe;
+    border: 1px solid var(--border-color) !important;
 }
 
 .ctc-highlight {
@@ -2425,9 +2426,9 @@ background-color: var(--bg-surface ) !important ;
     flex-direction: column;
     gap: 6px;
     padding: 12px 16px;
-    background: #f8fafc;
+    background: var(--small-box);
     border-radius: 14px;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color);
     transition: all 0.2s ease;
 }
 
@@ -2465,7 +2466,7 @@ background-color: var(--bg-surface ) !important ;
     align-items: flex-start;
     gap: 12px;
     padding: 16px;
-    background: #fafcff;
+    background: var(--box-color) !important;
     border-radius: 14px;
     border-left: 4px solid #3b82f6;
     margin-top: 8px;
@@ -2480,7 +2481,7 @@ background-color: var(--bg-surface ) !important ;
 
 .remarks-text {
     font-size: 13px;
-    color: #334155;
+    color: var(--remarks-color) !important;
     margin: 0;
     line-height: 1.6;
     font-style: italic;
@@ -2496,8 +2497,8 @@ background-color: var(--bg-surface ) !important ;
 /* Empty State */
 .offer-empty-state {
     padding: 60px 40px !important;
-    background: linear-gradient(145deg, #ffffff, #fafcff);
-    border: 2px dashed #dbeafe !important;
+    background: var(--bg-surface) !important;
+    border: 2px dashed var(--border-color) !important;
     text-align: center;
 }
 
@@ -2640,7 +2641,7 @@ background-color: var(--bg-surface ) !important ;
 .documents-list-title {
     font-size: 22px;
     font-weight: 700;
-    color: #0a2540;
+    color: var(--heading-color) !important;
     margin: 0 0 6px 0;
     letter-spacing: -0.3px;
 }
@@ -2687,10 +2688,10 @@ background-color: var(--bg-surface ) !important ;
 
 /* Modern Document Card */
 .document-card-modern {
-    background: white;
+    background:var(--bg-surface) !important;
     border-radius: 24px;
     padding: 20px;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color);
     box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.02);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
@@ -2703,7 +2704,7 @@ background-color: var(--bg-surface ) !important ;
 .document-card-modern:hover {
     transform: translateY(-6px);
     box-shadow: 0 20px 30px -10px rgba(59, 130, 246, 0.15);
-    border-color: #dbeafe;
+    border-color: var(--border-color);
 }
 
 /* Card Header */
@@ -2823,7 +2824,7 @@ background-color: var(--bg-surface ) !important ;
 .document-title {
     font-size: 18px;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--text-primary);
     margin: 0 0 6px 0;
 }
 

@@ -158,6 +158,11 @@ input[type="number"] {
   --primary-soft: #eff6ff;
   --primary-hover: #e5e7eb;
   /* --border-color: #e5e7eb; */
+   --bg-gradient: linear-gradient(to right, #eff6ff, rgba(219, 234, 254, 0.5));
+   --heading-color: #0a2540;
+     --box-color:linear-gradient(145deg, #f8fcff, #f0f9ff);
+     --small-box:#f8fafc;
+     --remarks-color:#334155
 }
 
 /* 🌙 DARK THEME */
@@ -174,4 +179,99 @@ input[type="number"] {
 
   --primary: #38bdf8;
   --primary-soft: rgba(56, 189, 248, 0.15);
+    --bg-gradient: linear-gradient(to right, #0f172a, rgba(2, 132, 199, 0.12));
+   --heading-color: #3c72a8;
+
+
+--box-color: linear-gradient(145deg, #0f172a, #111827);
+     --small-box:#1a2c3f;
+     --remarks-color:#334155
+
+
+
+
 }
+
+[data-theme="midnight"] {
+  --bg-main: #020617;
+  --bg-surface: #030b1a;
+  --bg-card: #061225;
+
+  --border-color: #0f2740;
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+
+  --primary: #60a5fa;
+  --primary-soft: rgba(96, 165, 250, 0.18);
+  --primary-hover: #3b82f6;
+
+  --bg-gradient: linear-gradient(to right, #030b1a, #020617);
+  --heading-color: #bfdbfe;
+  --box-color: linear-gradient(145deg, #030b1a, #061225);
+  --small-box: #0b1b2f;
+  --remarks-color: #93c5fd;
+}
+
+[data-theme="aurora"] {
+  --bg-main: #0f172a;
+  --bg-surface: #111827;
+  --bg-card: #1f2933;
+
+  --border-color: #243041;
+
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+
+  --primary: #a78bfa;
+  --primary-soft: rgba(167, 139, 250, 0.18);
+  --primary-hover: #8b5cf6;
+
+  --bg-gradient: linear-gradient(to right, #1e293b, #0f172a);
+  --heading-color: #c4b5fd;
+  --box-color: linear-gradient(145deg, #111827, #1e293b);
+  --small-box: #1e293b;
+  --remarks-color: #ddd6fe;
+}
+
+[data-theme="frost"] {
+  /* ❄️ Soft frosted background */
+  --bg-main: #eef4f8;
+  --bg-surface: rgba(255, 255, 255, 0.65);
+  --bg-card: rgba(255, 255, 255, 0.85);
+
+  --border-color: rgba(148, 163, 184, 0.25);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+
+  /* ✨ Elegant icy accent */
+  --primary: #38bdf8;
+  --primary-soft: rgba(56, 189, 248, 0.18);
+  --primary-hover: #0ea5e9;
+
+  /* 🌫️ Atmospheric gradient */
+  --bg-gradient: linear-gradient(
+    135deg,
+    #f8fbff,
+    #e2ecf5,
+    #eef4f8
+  );
+
+  --heading-color: #0b3b5a;
+
+  /* ❄️ Frosted glass card feel */
+  --box-color: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(226, 232, 240, 0.7)
+  );
+
+  --small-box: rgba(241, 245, 249, 0.9);
+  --remarks-color: #334155;
+
+  /* 🔥 Critical for glass look */
+  backdrop-filter: blur(10px);
+}
+
+

@@ -687,7 +687,7 @@ console.log("offer letters data", data);
                         onChange={(e) => setEditStatus(e.target.value)}
                         className={`w-full px-4 py-3 
          
-  border border-[var(--border-color)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+  border border-[var(--border-color)] rounded-xl text-[var(--text-primary)] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
                     >
                         <option value="">Select Status</option>

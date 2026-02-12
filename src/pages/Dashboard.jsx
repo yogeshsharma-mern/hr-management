@@ -188,7 +188,7 @@ export default function HRDashboard() {
       {/* Metrics Cards with Mini Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {metrics.map((metric, index) => (
-          <div key={index} className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-shadow">
+          <div key={index} className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)] hover:shadow-xl transition-shadow">
             <div className="flex items-center justify-between mb-4">
               <div className={`p-3 rounded-xl bg-gradient-to-br ${metric.color} bg-opacity-10`}>
                 {metric.icon}
@@ -224,7 +224,7 @@ export default function HRDashboard() {
       {/* Main Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Department Distribution - Pie Chart */}
-        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-[var(--text-primary)]">Department Distribution</h2>
@@ -257,7 +257,7 @@ export default function HRDashboard() {
         </div>
 
         {/* Recruitment Trends - Bar Chart */}
-        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-[var(--text-primary)]">Recruitment Pipeline</h2>
@@ -286,7 +286,7 @@ export default function HRDashboard() {
       {/* Secondary Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Employee Growth - Area Chart */}
-        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-[var(--text-primary)]">Employee Growth</h2>
@@ -310,7 +310,7 @@ export default function HRDashboard() {
         </div>
 
         {/* Performance Ratings - Radial Chart */}
-        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-[var(--text-primary)]">Performance Ratings</h2>
@@ -358,7 +358,7 @@ export default function HRDashboard() {
       {/* Recent Hires & Quick Stats */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Hires */}
-        <div className="lg:col-span-2 bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-gray-200">
+        <div className="lg:col-span-2 bg-[var(--bg-surface)] rounded-2xl p-6 shadow-lg border border-[var(--border-color)]">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-[var(--text-primary)]">Recent Hires</h2>

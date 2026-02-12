@@ -2187,7 +2187,7 @@ export default function ViewCandidate() {
         <div className="tab-content">
             <div className="section-card">
                 <h3 className="section-title">Professional Summary</h3>
-                <p className="summary-text">
+                <p className="summary-text text-[var(--text-secondary)] ">
                     {candidate.summary || `Experienced professional with ${totalYears} years and ${totalMonths} months of experience in ${candidate.skills?.slice(0, 3).join(', ')}.`}
                 </p>
             </div>

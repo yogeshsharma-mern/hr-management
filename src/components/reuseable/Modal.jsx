@@ -58,7 +58,7 @@ export default function Modal({
       header: "bg-[var(--bg-surface)]",
       accent: "from-blue-500 to-cyan-500",
       text: "text-[var(--text-primary)]",
-      border: "border-gray-200",
+      border: "border-[var(--border-color)]",
     },
     success: {
       header: "bg-gradient-to-r from-emerald-50 to-green-50",
@@ -79,7 +79,7 @@ export default function Modal({
       border: "border-red-200",
     },
     info: {
-      header: "bg-gradient-to-r from-blue-50 to-cyan-50",
+      header: "bg-[(--bg-gradient)]",
       accent: "from-blue-500 to-cyan-500",
       text: "text-blue-800",
       border: "border-blue-200",
@@ -119,7 +119,7 @@ export default function Modal({
         }}
       >
         {/* Modal Card */}
-        <div className="bg-[var(--bg-surface)] rounded-2xl shadow-2xl shadow-black/20 border border-white/20 overflow-hidden flex flex-col h-full">
+        <div className="bg-[var(--bg-surface)] rounded-2xl shadow-2xl shadow-black/20 border border-[var(--border-color)] overflow-hidden flex flex-col h-full">
           {/* Header with gradient */}
           {showHeader && (
             <div className={`relative ${currentType.header} px-6 py-5 border-b ${currentType.border}`}>

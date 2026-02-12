@@ -119,7 +119,7 @@ console.log("data",data);
         cell: ({ row }) => (
           <div className="flex items-center space-x-2">
             <FaBuilding className="text-gray-400" />
-            <span className="font-medium text-[var(--text-primary)]">{row.original.department}</span>
+            <span className="font-medium text-[var(--text-secondary)]">{row.original.department}</span>
           </div>
         ),
       },
@@ -462,7 +462,7 @@ console.log("itme",item.isActive);
             <div>
               <p className="text-[var(--text-primary)]
  mb-2">Description</p>
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className="bg-[var(--bg-surface)] p-4 rounded-lg">
                 <p className="text-[var(--text-primary)]">{selectedJob.description}</p>
               </div>
             </div>

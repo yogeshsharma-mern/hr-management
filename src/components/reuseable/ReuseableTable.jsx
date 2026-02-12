@@ -138,7 +138,7 @@ export default function ReusableTable({
                     <th
                       key={header.id}
                       onClick={header.column.getToggleSortingHandler()}
-                      className="px-6 py-4 text-left text-[10px] font-semibold text-gray-700 uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors group"
+                      className="px-6 py-4 text-left text-[10px] font-semibold text-[var(--text-secondary)] uppercase tracking-wider cursor-pointer hover:bg-gray-200 transition-colors group"
                     >
                       <div className="flex items-center space-x-2">
                         <span>
@@ -224,7 +224,7 @@ export default function ReusableTable({
               onChange={(e) => table.setPageSize(Number(e.target.value))}
               className="border border-[var(--border-color)] text-[var(--text-primary)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              {[5,10, 20, 50, 100].map((size) => (
+              {[5, 10, 20, 50, 100].map((size) => (
                 <option key={size} value={size}>
                   {size}
                 </option>
@@ -262,8 +262,8 @@ export default function ReusableTable({
                       setPaginationState((old) => ({ ...old, pageIndex }))
                     }
                     className={`w-10 h-10 rounded-lg text-sm  font-medium transition-all ${table.getState().pagination.pageIndex === pageIndex
-                        ? 'bg-blue-600 text-[var(--text-primary)] border-transparent'
-                        : 'border border-[var(--border-color)] text-[var(--text-secondary)] hover:bg-gray-50'
+                      ? 'bg-blue-600 text-[var(--text-primary)] border-transparent'
+                      : 'border border-[var(--border-color)] text-[var(--text-secondary)] hover:bg-gray-50'
                       }`}
                   >
                     {pageIndex + 1}

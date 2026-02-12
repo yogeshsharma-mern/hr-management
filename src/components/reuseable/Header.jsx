@@ -229,9 +229,9 @@ useEffect(() => {
 
           {/* Modern Dropdown Menu */}
           {menuOpen && (
-            <div  className="absolute right-0 mt-3 w-64 border bg-white border-blue-100 rounded-2xl shadow-xl overflow-hidden z-100 animate-slideDown">
+            <div  className="absolute right-0 mt-3 w-64 border bg-[var(--bg-surface)] border-blue-100 rounded-2xl shadow-xl overflow-hidden z-100 animate-slideDown">
               {/* Header Section */}
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100/50 z-[100] px-4 py-3">
+              <div className="bg-[var(--bg-gradient)] z-[100] px-4 py-3">
                 <div className="flex items-center space-x-4">
                   <div className="relative">
                     <div className="w-13 h-12 rounded-2xl overflow-hidden ring-2 ring-white shadow-lg">
@@ -241,12 +241,12 @@ useEffect(() => {
                           className="w-full h-full"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-2xl">
+                        <div className="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-[var(--text-primary)] font-bold text-2xl">
                           {getInitials()}
                         </div>
                       )}
                     </div>
-                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center">
+                    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-[var(--border-color)] rounded-full flex items-center justify-center">
                       <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                     </div>
                   </div>
@@ -279,7 +279,7 @@ useEffect(() => {
                       <FaSignOutAlt className="text-red-600" size={18} />
                     </div>
                     <div>
-                      <p className="font-medium cursor-pointer text-gray-800">Logout</p>
+                      <p className="font-medium cursor-pointer text-[var(--text-primary)]">Logout</p>
                       {/* <p className="text-sm text-red-500">Sign out of your account</p> */}
                     </div>
                   </button>

@@ -111,8 +111,8 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             onChange={handleChange}
             placeholder="e.g., Senior Frontend Developer"
             className={`w-full ${
-    errors.title ? "border-red-500" : "border-gray-300"
-  } px-4 py-3 border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+    errors.title ? "border-red-500" : "border-[var(--border-color)]"
+  } px-4 py-3 border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] border-[var(--border-color)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
             
           />
           {errors.title && (
@@ -130,8 +130,8 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             value={formData.department}
             onChange={handleChange}
             className={`w-full px-4 py-3 ${
-    errors.department ? "border-red-500" : "border-gray-300"
-  } border border-gray-300 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+    errors.department ? "border-red-500" : "border-[var(--border-color)]"
+  } border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
           >
             <option value="">Select Department</option>
@@ -159,8 +159,8 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             value={formData.location}
             onChange={handleChange}
             className={`w-full px-4 ${
-    errors.location ? "border-red-500" : "border-gray-300"
-  } py-3 border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+    errors.location ? "border-red-500" : "border-[var(--border-color)]"
+  } py-3 border placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] border-[var(--border-color)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
           >
             <option value="">Select Location</option>
@@ -191,8 +191,8 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
             onChange={handleChange}
             placeholder="e.g., 5"
             className={`w-full px-4 py-3  ${
-    errors.noOfOpenings ? "border-red-500" : "border-gray-300"
-  }  border border-gray-300 rounded-xl placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+    errors.noOfOpenings ? "border-red-500" : "border-[var(--border-color)]"
+  }  border border-[var(--border-color)] rounded-xl placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
 
           />
            {errors.noOfOpenings && (
@@ -232,19 +232,19 @@ export default function AddJobForm({ onClose, jobData, mode = 'add', onSuccess }
           rows="4"
           placeholder="Describe the role, responsibilities, and requirements..."
           className={`w-full  ${
-    errors.description ? "border-red-500" : "border-gray-300"
-  }  px-4 py-3 border border-gray-300 placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
+    errors.description ? "border-red-500" : "border-[var(--border-color)]"
+  }  px-4 py-3 border border-[var(--border-color)] placeholder:text-[var(--text-secondary)] text-[var(--text-primary)] rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all`}
         />
                    {errors.description && (
   <p className="text-red-500 text-sm">{errors.description}</p>
 )}
       </div>
 
-      <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
+      <div className="flex justify-end gap-3 pt-6 border-t border-[var(--border-color)]">
         <button
           type="button"
           onClick={onClose}
-          className="px-5 py-2.5 cursor-pointer border border-gray-300 text-[var(--text-secondary)] rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
+          className="px-5 py-2.5 cursor-pointer border border-[var(--border-color)] text-[var(--text-secondary)] rounded-xl hover:bg-gray-50 transition-all duration-300 font-medium"
           disabled={isLoading}
         >
           Cancel

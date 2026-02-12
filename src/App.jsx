@@ -26,6 +26,7 @@ import HrProfile from './pages/profile/HrProfile.jsx';
 import ScheduleInterviewtechManagerial from "../src/pages/interview/ScheduleInterviewtechManagerial.jsx";
 import OfferLetterList from './pages/offerletter/OfferLetterList.jsx';
 import AppointmentLetterList from './pages/appoinmentletter/AppointmentLetterList.jsx';
+import ThemeSetting from './pages/setting/ThemeSetting.jsx';
 
 
 export default function App() {
@@ -63,6 +64,8 @@ export default function App() {
             <Route path="interview/schedule/:id" element={<ScheduleInterviewtechManagerial />} />
             <Route path="offer-letter/add" element={<OfferLetter />} />
             <Route path="appointment-letter" element={<AppointmentLetterList />} />
+            <Route path="settings" element={<ThemeSetting />} />
+
 
           </Route>
         </Route>
